@@ -15,6 +15,7 @@ android {
         versionCode 5
         versionName "1.0.2"
 
+        /*** build errors on following lines. (under android-lint task)
         buildConfigField("String", "CLIENT_ID", "\"${CLIENT_ID}\"")
         buildConfigField("String", "CLIENT_SECRET", "\"${CLIENT_SECRET}\"")
         buildConfigField("String", "API_BASE_URL", "\"${API_BASE_URL}\"")
@@ -26,6 +27,7 @@ android {
         println("CLIENT_SECRET ========== " + "\"${CLIENT_SECRET}\"")
         println("API_BASE_URL ========== " + "\"${API_BASE_URL}\"")
         println("UMENG_APPKEY ========== " + "\"${UMENG_APPKEY}\"")
+        ***/
     }
 
     //忽略 lint 错误
