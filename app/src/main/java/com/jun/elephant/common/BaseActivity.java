@@ -224,16 +224,14 @@ public class BaseActivity extends AppCompatActivity implements BaseFuncIml , Vie
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (isExit) {
-                if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                    showShortToast("再按一次退出程序");
-                    mExitTime = System.currentTimeMillis();
-                } else {
-                    finish();
-                }
-                return true;
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && (isExit)) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                showShortToast("再按一次退出程序");
+                mExitTime = System.currentTimeMillis();
+            } else {
+                finish();
             }
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }

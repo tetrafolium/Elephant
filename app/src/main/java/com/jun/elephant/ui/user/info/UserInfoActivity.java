@@ -283,10 +283,8 @@ public class UserInfoActivity extends BaseFrameActivity<UserInfoPresenter, UserI
             mUserAddressTv.setVisibility(View.VISIBLE);
         }
 
-        if (getUserConstant().isLogin()) {
-            if (userEntity.getId() == getUserConstant().getUserData().getData().getId()) {
-                mSettingTv.setVisibility(View.VISIBLE);
-            }
+        if ((getUserConstant().isLogin()) && (userEntity.getId() == getUserConstant().getUserData().getData().getId())) {
+            mSettingTv.setVisibility(View.VISIBLE);
         }
 
         if (!TextUtils.isEmpty(mUserEntity.getGithub_url())) {
