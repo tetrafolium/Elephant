@@ -19,9 +19,9 @@ package com.jun.elephant.ui.widget;
  * Created by Jun on 2016/10/20.
  */
 public interface ScrollStateChangedListener {
-void onChildDirectionChange(int position);
+  void onChildDirectionChange(int position);
 
-void onChildPositionChange(ScrollState parama);
+  void onChildPositionChange(ScrollState parama);
 
-enum ScrollState {TOP, BOTTOM, MIDDLE, NO_SCROLL}
+  enum ScrollState { TOP, BOTTOM, MIDDLE, NO_SCROLL }
 }

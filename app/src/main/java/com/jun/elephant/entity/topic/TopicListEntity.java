@@ -22,25 +22,21 @@ import java.util.List;
  */
 public class TopicListEntity {
 
-/**
- * id : 1300
- * title : 督促唱几句
- * is_excellent : false
- * reply_count : 0
- * updated_at : 2016-03-24 18:29:29
- * created_at : 2016-03-24 18:29:21
- * vote_count : 1
- * links : {"details_web_view":"https://staging_api.phphub.org/v1/topics/1300/web_view","replies_web_view":"https://staging_api.phphub.org/v1/topics/1300/replies/web_view","web_url":"http://phphub.org/topics/1300"}
- */
+  /**
+   * id : 1300
+   * title : 督促唱几句
+   * is_excellent : false
+   * reply_count : 0
+   * updated_at : 2016-03-24 18:29:29
+   * created_at : 2016-03-24 18:29:21
+   * vote_count : 1
+   * links :
+   * {"details_web_view":"https://staging_api.phphub.org/v1/topics/1300/web_view","replies_web_view":"https://staging_api.phphub.org/v1/topics/1300/replies/web_view","web_url":"http://phphub.org/topics/1300"}
+   */
 
-private List<TopicEntity> data;
+  private List<TopicEntity> data;
 
-public List<TopicEntity> getData() {
-	return data;
-}
+  public List<TopicEntity> getData() { return data; }
 
-public void setData(List<TopicEntity> data) {
-	this.data = data;
-}
-
+  public void setData(List<TopicEntity> data) { this.data = data; }
 }

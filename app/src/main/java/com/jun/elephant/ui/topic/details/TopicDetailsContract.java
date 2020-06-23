@@ -20,33 +20,32 @@ import com.jun.elephant.entity.topic.TopicDetailEntity;
 import com.jun.elephant.mvpframe.BaseModel;
 import com.jun.elephant.mvpframe.BasePresenter;
 import com.jun.elephant.mvpframe.BaseView;
-
 import rx.Observable;
 
 /**
  * Created by Jun on 2016/10/17.
  */
 public interface TopicDetailsContract {
-interface Model extends BaseModel {
+  interface Model extends BaseModel {
 
-Observable<TopicDetailEntity> getDetailsInfo(int topicId);
+    Observable<TopicDetailEntity> getDetailsInfo(int topicId);
 
-Observable<JsonObject> voteUp(int topicId);
+    Observable<JsonObject> voteUp(int topicId);
 
-Observable<JsonObject> voteDown(int topicId);
-}
+    Observable<JsonObject> voteDown(int topicId);
+  }
 
-interface View extends BaseView {
-void getDetailsInfo(TopicDetailEntity topicDetailEntity);
+  interface View extends BaseView {
+    void getDetailsInfo(TopicDetailEntity topicDetailEntity);
 
-void optVoteUpSuccess(int voteCount);
+    void optVoteUpSuccess(int voteCount);
 
-void optVoteDownSuccess(int voteCount);
-}
+    void optVoteDownSuccess(int voteCount);
+  }
 
-abstract class Presenter extends BasePresenter<Model, View> {
-public abstract void getDetailsInfo(int topicId);
+  abstract class Presenter extends BasePresenter<Model, View> {
+    public abstract void getDetailsInfo(int topicId);
 
-public abstract void optStatusType(int type, int topicId);
-}
+    public abstract void optStatusType(int type, int topicId);
+  }
 }

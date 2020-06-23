@@ -19,9 +19,7 @@ import com.jun.elephant.entity.topic.TopicListEntity;
 import com.jun.elephant.entity.user.UserEntity;
 import com.jun.elephant.entity.user.UserInfoEntity;
 import com.jun.elephant.entity.user.UserMessageEntity;
-
 import java.util.Map;
-
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
@@ -34,28 +32,27 @@ import rx.Observable;
  */
 public interface UserApi {
 
-@GET("me")
-Observable<UserInfoEntity> getUserInfo();
+  @GET("me") Observable<UserInfoEntity> getUserInfo();
 
-@GET("users/{userId}")
-Observable<UserInfoEntity> getUserInfoById(@Path("userId") int userId);
+  @GET("users/{userId}")
+  Observable<UserInfoEntity> getUserInfoById(@Path("userId") int userId);
 
-@GET("users/{userId}/following")
-Observable<TopicListEntity> getAttentions(@Path("userId") int userId);
+  @GET("users/{userId}/following")
+  Observable<TopicListEntity> getAttentions(@Path("userId") int userId);
 
-@GET("user/{userId}/votes")
-Observable<TopicListEntity> getVotes(@Path("userId") int userId,
-                                     @QueryMap Map<String, String> options);
+  @GET("user/{userId}/votes")
+  Observable<TopicListEntity> getVotes(@Path("userId") int userId,
+                                       @QueryMap Map<String, String> options);
 
-@GET("user/{userId}/topics")
-Observable<TopicListEntity> getTopics(@Path("userId") int userId,
-                                      @QueryMap Map<String, String> options);
+  @GET("user/{userId}/topics")
+  Observable<TopicListEntity> getTopics(@Path("userId") int userId,
+                                        @QueryMap Map<String, String> options);
 
-@GET("me/notifications")
-Observable<UserMessageEntity> getMyMessage(@QueryMap Map<String, String> options);
+  @GET("me/notifications")
+  Observable<UserMessageEntity>
+  getMyMessage(@QueryMap Map<String, String> options);
 
-@PUT("users/{userId}")
-Observable<UserInfoEntity> saveUserInfo(@Path("userId") int userId,
-                                        @Body UserEntity userInfo);
-
+  @PUT("users/{userId}")
+  Observable<UserInfoEntity> saveUserInfo(@Path("userId") int userId,
+                                          @Body UserEntity userInfo);
 }

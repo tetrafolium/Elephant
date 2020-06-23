@@ -17,59 +17,55 @@ package com.jun.elephant.ui.user.reply;
 
 import android.os.Bundle;
 import android.webkit.WebView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.jun.elephant.R;
 import com.jun.elephant.api.Networks;
 import com.jun.elephant.common.BaseFragment;
 import com.jun.elephant.common.WebAppClient;
 import com.jun.elephant.global.Constants;
 import com.jun.elephant.ui.widget.MultiStateView;
-
 import java.util.HashMap;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Jun on 2016/5/8.
  */
 public class UserReplyFragment extends BaseFragment {
-@BindView(R.id.webView)
-WebView mWebView;
-@BindView(R.id.multiStateView)
-MultiStateView mMultiStateView;
+  @BindView(R.id.webView) WebView mWebView;
+  @BindView(R.id.multiStateView) MultiStateView mMultiStateView;
 
-private String mWebUrl;
+  private String mWebUrl;
 
-@Override
-public void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.common_webview);
-	ButterKnife.bind(this, getContentView());
-}
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.common_webview);
+    ButterKnife.bind(this, getContentView());
+  }
 
-@Override
-public void initData() {
-	super.initData();
-	mWebUrl = getArguments().getString(Constants.Key.WEB_URL);
-}
+  @Override
+  public void initData() {
+    super.initData();
+    mWebUrl = getArguments().getString(Constants.Key.WEB_URL);
+  }
 
-@Override
-public void initLoad() {
-	super.initLoad();
-	mWebView.setWebViewClient(new WebAppClient(getContext(), mMultiStateView, mWebView));
-	mWebView.loadUrl(mWebUrl, getAuth());
-}
+  @Override
+  public void initLoad() {
+    super.initLoad();
+    mWebView.setWebViewClient(
+        new WebAppClient(getContext(), mMultiStateView, mWebView));
+    mWebView.loadUrl(mWebUrl, getAuth());
+  }
 
-@Override
-public void onDestroyView() {
-	super.onDestroyView();
-}
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+  }
 
-public Map<String, String> getAuth() {
-	Map<String, String> header = new HashMap<>();
-	header.put("Authorization", "Bearer " + Networks.getToken());
-	return header;
-}
+  public Map<String, String> getAuth() {
+    Map<String, String> header = new HashMap<>();
+    header.put("Authorization", "Bearer " + Networks.getToken());
+    return header;
+  }
 }

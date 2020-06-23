@@ -16,13 +16,11 @@
 package com.jun.elephant.ui.login;
 
 import android.content.Context;
-
 import com.jun.elephant.BuildConfig;
 import com.jun.elephant.api.Networks;
 import com.jun.elephant.entity.TokenEntity;
 import com.jun.elephant.entity.user.UserInfoEntity;
 import com.jun.elephant.global.Constants;
-
 import rx.Observable;
 
 /**
@@ -30,29 +28,27 @@ import rx.Observable;
  */
 public class LoginModel implements LoginContract.Model {
 
-/**
- * 获取登录状态 Token，扫描后得到的 userName， loginToken
- * @param context
- * @param userName
- * @param loginToken
- * @return
- */
-@Override
-public Observable<TokenEntity> getLoginToken(Context context, String userName, String loginToken) {
-	return Networks.getInstance().getTokenApi().getToken(
-		Constants.Token.AUTH_TYPE_USER,
-		BuildConfig.CLIENT_ID,
-		BuildConfig.CLIENT_SECRET,
-		userName, loginToken);
-}
+  /**
+   * 获取登录状态 Token，扫描后得到的 userName， loginToken
+   * @param context
+   * @param userName
+   * @param loginToken
+   * @return
+   */
+  @Override
+  public Observable<TokenEntity> getLoginToken(Context context, String userName,
+                                               String loginToken) {
+    return Networks.getInstance().getTokenApi().getToken(
+        Constants.Token.AUTH_TYPE_USER, BuildConfig.CLIENT_ID,
+        BuildConfig.CLIENT_SECRET, userName, loginToken);
+  }
 
-/**
- * 登录
- * @return
- */
-@Override
-public Observable<UserInfoEntity> login() {
-	return Networks.getInstance().getUserApi().getUserInfo();
-}
-
+  /**
+   * 登录
+   * @return
+   */
+  @Override
+  public Observable<UserInfoEntity> login() {
+    return Networks.getInstance().getUserApi().getUserInfo();
+  }
 }

@@ -20,7 +20,6 @@ import com.jun.elephant.entity.user.UserInfoEntity;
 import com.jun.elephant.mvpframe.BaseModel;
 import com.jun.elephant.mvpframe.BasePresenter;
 import com.jun.elephant.mvpframe.BaseView;
-
 import rx.Observable;
 
 /**
@@ -28,20 +27,21 @@ import rx.Observable;
  */
 public interface UserInfoContract {
 
-interface Model extends BaseModel {
-Observable<UserInfoEntity> getUserInfoById(int userId);
+  interface Model extends BaseModel {
+    Observable<UserInfoEntity> getUserInfoById(int userId);
 
-Observable<UserInfoEntity> saveUserInfoById(int userId, UserEntity userEntity);
-}
+    Observable<UserInfoEntity> saveUserInfoById(int userId,
+                                                UserEntity userEntity);
+  }
 
-interface View extends BaseView {
-void getUserInfo(UserInfoEntity userInfoEntity);
-}
+  interface View extends BaseView {
+    void getUserInfo(UserInfoEntity userInfoEntity);
+  }
 
-abstract class Presenter extends BasePresenter<Model, View> {
+  abstract class Presenter extends BasePresenter<Model, View> {
 
-public abstract void getUserInfoById(int userId);
+    public abstract void getUserInfoById(int userId);
 
-public abstract void saveUserInfoById(int userId, UserEntity userEntity);
-}
+    public abstract void saveUserInfoById(int userId, UserEntity userEntity);
+  }
 }

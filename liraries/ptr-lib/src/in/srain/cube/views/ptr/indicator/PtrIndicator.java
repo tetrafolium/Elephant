@@ -4,219 +4,185 @@ import android.graphics.PointF;
 
 public class PtrIndicator {
 
-public final static int POS_START = 0;
-protected int mOffsetToRefresh = 0;
-protected int mOffsetToLoadMore = 0;
-private PointF mPtLastMove = new PointF();
-private float mOffsetX;
-private float mOffsetY;
-private int mCurrentPos = 0;
-private int mLastPos = 0;
-private int mHeaderHeight;
-private int mFooterHeight;
-private int mPressedPos = 0;
-private boolean isHeader = true;
+  public final static int POS_START = 0;
+  protected int mOffsetToRefresh = 0;
+  protected int mOffsetToLoadMore = 0;
+  private PointF mPtLastMove = new PointF();
+  private float mOffsetX;
+  private float mOffsetY;
+  private int mCurrentPos = 0;
+  private int mLastPos = 0;
+  private int mHeaderHeight;
+  private int mFooterHeight;
+  private int mPressedPos = 0;
+  private boolean isHeader = true;
 
-private float mRatioOfHeaderHeightToRefresh = 1.2f;
-private float mResistance = 1.7f;
-private boolean mIsUnderTouch = false;
-private int mOffsetToKeepHeaderWhileLoading = -1;
-// record the refresh complete position
-private int mRefreshCompleteY = 0;
+  private float mRatioOfHeaderHeightToRefresh = 1.2f;
+  private float mResistance = 1.7f;
+  private boolean mIsUnderTouch = false;
+  private int mOffsetToKeepHeaderWhileLoading = -1;
+  // record the refresh complete position
+  private int mRefreshCompleteY = 0;
 
+  public boolean isHeader() { return isHeader; }
 
+  public void setIsHeader(boolean isHeader) { this.isHeader = isHeader; }
 
-public boolean isHeader() {
-	return isHeader;
-}
+  public boolean isUnderTouch() { return mIsUnderTouch; }
 
-public void setIsHeader(boolean isHeader) {
-	this.isHeader = isHeader;
-}
+  public float getResistance() { return mResistance; }
 
-public boolean isUnderTouch() {
-	return mIsUnderTouch;
-}
+  public void setResistance(float resistance) { mResistance = resistance; }
 
-public float getResistance() {
-	return mResistance;
-}
+  public void onRelease() { mIsUnderTouch = false; }
 
-public void setResistance(float resistance) {
-	mResistance = resistance;
-}
+  public void onUIRefreshComplete() { mRefreshCompleteY = mCurrentPos; }
 
-public void onRelease() {
-	mIsUnderTouch = false;
-}
+  public boolean goDownCrossFinishPosition() {
+    return mCurrentPos >= mRefreshCompleteY;
+  }
 
-public void onUIRefreshComplete() {
-	mRefreshCompleteY = mCurrentPos;
-}
+  protected void processOnMove(float currentX, float currentY, float offsetX,
+                               float offsetY) {
+    setOffset(offsetX, offsetY / mResistance);
+  }
 
-public boolean goDownCrossFinishPosition() {
-	return mCurrentPos >= mRefreshCompleteY;
-}
+  public void setRatioOfHeaderHeightToRefresh(float ratio) {
+    mRatioOfHeaderHeightToRefresh = ratio;
+    mOffsetToRefresh = (int)(mHeaderHeight * ratio);
+    mOffsetToLoadMore = (int)(mFooterHeight * ratio);
+  }
 
-protected void processOnMove(float currentX, float currentY, float offsetX, float offsetY) {
-	setOffset(offsetX, offsetY / mResistance);
-}
+  public float getRatioOfHeaderToHeightRefresh() {
+    return mRatioOfHeaderHeightToRefresh;
+  }
 
-public void setRatioOfHeaderHeightToRefresh(float ratio) {
-	mRatioOfHeaderHeightToRefresh = ratio;
-	mOffsetToRefresh = (int) (mHeaderHeight * ratio);
-	mOffsetToLoadMore = (int) (mFooterHeight * ratio);
-}
+  public int getOffsetToRefresh() { return mOffsetToRefresh; }
 
-public float getRatioOfHeaderToHeightRefresh() {
-	return mRatioOfHeaderHeightToRefresh;
-}
+  public int getOffstToLoadMore() { return mOffsetToLoadMore; }
 
-public int getOffsetToRefresh() {
-	return mOffsetToRefresh;
-}
+  public void setOffsetToRefresh(int offset) {
+    mRatioOfHeaderHeightToRefresh = mHeaderHeight * 1f / offset;
+    mOffsetToRefresh = offset;
+    mOffsetToLoadMore = offset;
+  }
 
-public int getOffstToLoadMore() {
-	return mOffsetToLoadMore;
-}
+  public void onPressDown(float x, float y) {
+    mIsUnderTouch = true;
+    mPressedPos = mCurrentPos;
+    mPtLastMove.set(x, y);
+  }
 
-public void setOffsetToRefresh(int offset) {
-	mRatioOfHeaderHeightToRefresh = mHeaderHeight * 1f / offset;
-	mOffsetToRefresh = offset;
-	mOffsetToLoadMore = offset;
-}
+  public final void onMove(float x, float y) {
+    float offsetX = x - mPtLastMove.x;
+    float offsetY = (y - mPtLastMove.y);
+    processOnMove(x, y, offsetX, offsetY);
+    mPtLastMove.set(x, y);
+  }
 
-public void onPressDown(float x, float y) {
-	mIsUnderTouch = true;
-	mPressedPos = mCurrentPos;
-	mPtLastMove.set(x, y);
-}
+  protected void setOffset(float x, float y) {
+    mOffsetX = x;
+    mOffsetY = y;
+  }
 
-public final void onMove(float x, float y) {
-	float offsetX = x - mPtLastMove.x;
-	float offsetY = (y - mPtLastMove.y);
-	processOnMove(x, y, offsetX, offsetY);
-	mPtLastMove.set(x, y);
-}
+  public float getOffsetX() { return mOffsetX; }
 
-protected void setOffset(float x, float y) {
-	mOffsetX = x;
-	mOffsetY = y;
-}
+  public float getOffsetY() { return mOffsetY; }
 
-public float getOffsetX() {
-	return mOffsetX;
-}
+  public int getLastPosY() { return mLastPos; }
 
-public float getOffsetY() {
-	return mOffsetY;
-}
+  public int getCurrentPosY() { return mCurrentPos; }
 
-public int getLastPosY() {
-	return mLastPos;
-}
+  /**
+   * Update current position before update the UI
+   */
+  public final void setCurrentPos(int current) {
+    mLastPos = mCurrentPos;
+    mCurrentPos = current;
+    onUpdatePos(current, mLastPos);
+  }
 
-public int getCurrentPosY() {
-	return mCurrentPos;
-}
+  protected void onUpdatePos(int current, int last) {}
 
-/**
- * Update current position before update the UI
- */
-public final void setCurrentPos(int current) {
-	mLastPos = mCurrentPos;
-	mCurrentPos = current;
-	onUpdatePos(current, mLastPos);
-}
+  public int getHeaderHeight() { return mHeaderHeight; }
 
-protected void onUpdatePos(int current, int last) {
+  public void setHeaderHeight(int height) {
+    mHeaderHeight = height;
+    updateHeight();
+  }
 
-}
+  public void setFooterHeight(int height) {
+    mFooterHeight = height;
+    updateHeight();
+  }
 
-public int getHeaderHeight() {
-	return mHeaderHeight;
-}
+  protected void updateHeight() {
+    mOffsetToRefresh = (int)(mRatioOfHeaderHeightToRefresh * mHeaderHeight);
+    mOffsetToLoadMore = (int)(mRatioOfHeaderHeightToRefresh * mFooterHeight);
+  }
 
-public void setHeaderHeight(int height) {
-	mHeaderHeight = height;
-	updateHeight();
-}
+  public void convertFrom(PtrIndicator ptrSlider) {
+    mCurrentPos = ptrSlider.mCurrentPos;
+    mLastPos = ptrSlider.mLastPos;
+    mHeaderHeight = ptrSlider.mHeaderHeight;
+  }
 
-public void setFooterHeight(int height) {
-	mFooterHeight = height;
-	updateHeight();
-}
+  public boolean hasLeftStartPosition() { return mCurrentPos > POS_START; }
 
-protected void updateHeight() {
-	mOffsetToRefresh = (int) (mRatioOfHeaderHeightToRefresh * mHeaderHeight);
-	mOffsetToLoadMore = (int) (mRatioOfHeaderHeightToRefresh * mFooterHeight);
-}
+  public boolean hasJustLeftStartPosition() {
+    return mLastPos == POS_START && hasLeftStartPosition();
+  }
 
-public void convertFrom(PtrIndicator ptrSlider) {
-	mCurrentPos = ptrSlider.mCurrentPos;
-	mLastPos = ptrSlider.mLastPos;
-	mHeaderHeight = ptrSlider.mHeaderHeight;
-}
+  public boolean hasJustBackToStartPosition() {
+    return mLastPos != POS_START && isInStartPosition();
+  }
 
-public boolean hasLeftStartPosition() {
-	return mCurrentPos > POS_START;
-}
+  public boolean isOverOffsetToRefresh() {
+    return mCurrentPos >= getOffsetToRefresh();
+  }
 
-public boolean hasJustLeftStartPosition() {
-	return mLastPos == POS_START && hasLeftStartPosition();
-}
+  public boolean hasMovedAfterPressedDown() {
+    return mCurrentPos != mPressedPos;
+  }
 
-public boolean hasJustBackToStartPosition() {
-	return mLastPos != POS_START && isInStartPosition();
-}
+  public boolean isInStartPosition() { return mCurrentPos == POS_START; }
 
-public boolean isOverOffsetToRefresh() {
-	return mCurrentPos >= getOffsetToRefresh();
-}
+  public boolean crossRefreshLineFromTopToBottom() {
+    return mLastPos < getOffsetToRefresh() &&
+        mCurrentPos >= getOffsetToRefresh();
+  }
 
-public boolean hasMovedAfterPressedDown() {
-	return mCurrentPos != mPressedPos;
-}
+  public boolean hasJustReachedHeaderHeightFromTopToBottom() {
+    return mLastPos < mHeaderHeight && mCurrentPos >= mHeaderHeight;
+  }
 
-public boolean isInStartPosition() {
-	return mCurrentPos == POS_START;
-}
+  public boolean isOverOffsetToKeepHeaderWhileLoading() {
+    return mCurrentPos > getOffsetToKeepHeaderWhileLoading();
+  }
 
-public boolean crossRefreshLineFromTopToBottom() {
-	return mLastPos < getOffsetToRefresh() && mCurrentPos >= getOffsetToRefresh();
-}
+  public void setOffsetToKeepHeaderWhileLoading(int offset) {
+    mOffsetToKeepHeaderWhileLoading = offset;
+  }
 
-public boolean hasJustReachedHeaderHeightFromTopToBottom() {
-	return mLastPos < mHeaderHeight && mCurrentPos >= mHeaderHeight;
-}
+  public int getOffsetToKeepHeaderWhileLoading() {
+    return mOffsetToKeepHeaderWhileLoading >= 0
+        ? mOffsetToKeepHeaderWhileLoading
+        : mHeaderHeight;
+  }
 
-public boolean isOverOffsetToKeepHeaderWhileLoading() {
-	return mCurrentPos > getOffsetToKeepHeaderWhileLoading();
-}
+  public boolean isAlreadyHere(int to) { return mCurrentPos == to; }
 
-public void setOffsetToKeepHeaderWhileLoading(int offset) {
-	mOffsetToKeepHeaderWhileLoading = offset;
-}
+  public float getLastPercent() {
+    final float oldPercent =
+        mHeaderHeight == 0 ? 0 : mLastPos * 1f / mHeaderHeight;
+    return oldPercent;
+  }
 
-public int getOffsetToKeepHeaderWhileLoading() {
-	return mOffsetToKeepHeaderWhileLoading >= 0 ? mOffsetToKeepHeaderWhileLoading : mHeaderHeight;
-}
+  public float getCurrentPercent() {
+    final float currentPercent =
+        mHeaderHeight == 0 ? 0 : mCurrentPos * 1f / mHeaderHeight;
+    return currentPercent;
+  }
 
-public boolean isAlreadyHere(int to) {
-	return mCurrentPos == to;
-}
-
-public float getLastPercent() {
-	final float oldPercent = mHeaderHeight == 0 ? 0 : mLastPos * 1f / mHeaderHeight;
-	return oldPercent;
-}
-
-public float getCurrentPercent() {
-	final float currentPercent = mHeaderHeight == 0 ? 0 : mCurrentPos * 1f / mHeaderHeight;
-	return currentPercent;
-}
-
-public boolean willOverTop(int to) {
-	return to < POS_START;
-}
+  public boolean willOverTop(int to) { return to < POS_START; }
 }

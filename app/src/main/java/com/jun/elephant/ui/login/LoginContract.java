@@ -16,13 +16,11 @@
 package com.jun.elephant.ui.login;
 
 import android.content.Context;
-
 import com.jun.elephant.entity.TokenEntity;
 import com.jun.elephant.entity.user.UserInfoEntity;
 import com.jun.elephant.mvpframe.BaseModel;
 import com.jun.elephant.mvpframe.BasePresenter;
 import com.jun.elephant.mvpframe.BaseView;
-
 import rx.Observable;
 
 /**
@@ -31,17 +29,19 @@ import rx.Observable;
 
 public interface LoginContract {
 
-interface Model extends BaseModel {
-Observable<TokenEntity> getLoginToken(Context context, String userName, String loginToken);
+  interface Model extends BaseModel {
+    Observable<TokenEntity> getLoginToken(Context context, String userName,
+                                          String loginToken);
 
-Observable<UserInfoEntity> login();
-}
+    Observable<UserInfoEntity> login();
+  }
 
-interface View extends BaseView {
-void onLoginSuccess(UserInfoEntity userInfoEntity);
-}
+  interface View extends BaseView {
+    void onLoginSuccess(UserInfoEntity userInfoEntity);
+  }
 
-abstract class Presenter extends BasePresenter<Model, View> {
-public abstract void login(Context context, String userName, String loginToken);
-}
+  abstract class Presenter extends BasePresenter<Model, View> {
+    public abstract void login(Context context, String userName,
+                               String loginToken);
+  }
 }

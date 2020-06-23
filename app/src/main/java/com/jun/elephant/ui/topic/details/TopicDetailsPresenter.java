@@ -18,7 +18,6 @@ package com.jun.elephant.ui.topic.details;
 import com.google.gson.JsonObject;
 import com.jun.elephant.entity.topic.TopicDetailEntity;
 import com.jun.elephant.global.Constants;
-
 import rx.Observer;
 
 /**
@@ -26,82 +25,83 @@ import rx.Observer;
  */
 public class TopicDetailsPresenter extends TopicDetailsContract.Presenter {
 
-private Observer<TopicDetailEntity> mTopicDetailObserver = new Observer<TopicDetailEntity>() {
+  private Observer<TopicDetailEntity> mTopicDetailObserver =
+      new Observer<TopicDetailEntity>() {
+        @Override
+        public void onCompleted() {
+          mView.onRequestEnd();
+        }
 
-	@Override
-	public void onCompleted() {
-		mView.onRequestEnd();
-	}
+        @Override
+        public void onError(Throwable e) {
+          mView.onRequestError(e.toString());
+          mView.onInternetError();
+        }
 
-	@Override
-	public void onError(Throwable e) {
-		mView.onRequestError(e.toString());
-		mView.onInternetError();
-	}
+        @Override
+        public void onNext(TopicDetailEntity topicDetailEntity) {
+          mView.getDetailsInfo(topicDetailEntity);
+        }
+      };
 
-	@Override
-	public void onNext(TopicDetailEntity topicDetailEntity) {
-		mView.getDetailsInfo(topicDetailEntity);
-	}
-};
+  private Observer<JsonObject> mVoteUpObserver = new Observer<JsonObject>() {
+    @Override
+    public void onCompleted() {
+      mView.onRequestEnd();
+    }
 
-private Observer<JsonObject> mVoteUpObserver = new Observer<JsonObject>() {
+    @Override
+    public void onError(Throwable e) {
+      mView.onRequestError(e.toString());
+      mView.onInternetError();
+    }
 
-	@Override
-	public void onCompleted() {
-		mView.onRequestEnd();
-	}
+    @Override
+    public void onNext(JsonObject jsonObject) {
+      boolean status = jsonObject.get("vote-up").getAsBoolean();
+      int voteCount = jsonObject.get("vote_count").getAsInt();
+      if (status)
+        mView.optVoteUpSuccess(voteCount);
+    }
+  };
 
-	@Override
-	public void onError(Throwable e) {
-		mView.onRequestError(e.toString());
-		mView.onInternetError();
-	}
+  private Observer<JsonObject> mVoteDownObserver = new Observer<JsonObject>() {
+    @Override
+    public void onCompleted() {
+      mView.onRequestEnd();
+    }
 
-	@Override
-	public void onNext(JsonObject jsonObject) {
-		boolean status = jsonObject.get("vote-up").getAsBoolean();
-		int voteCount = jsonObject.get("vote_count").getAsInt();
-		if (status) mView.optVoteUpSuccess(voteCount);
-	}
-};
+    @Override
+    public void onError(Throwable e) {
+      mView.onRequestError(e.toString());
+      mView.onInternetError();
+    }
 
-private Observer<JsonObject> mVoteDownObserver = new Observer<JsonObject>() {
+    @Override
+    public void onNext(JsonObject jsonObject) {
+      boolean status = jsonObject.get("vote-down").getAsBoolean();
+      int voteCount = jsonObject.get("vote_count").getAsInt();
+      if (status)
+        mView.optVoteDownSuccess(voteCount);
+    }
+  };
 
-	@Override
-	public void onCompleted() {
-		mView.onRequestEnd();
-	}
+  @Override
+  public void getDetailsInfo(int topicId) {
+    mRxManager.add(
+        mModel.getDetailsInfo(topicId).subscribe(mTopicDetailObserver));
+  }
 
-	@Override
-	public void onError(Throwable e) {
-		mView.onRequestError(e.toString());
-		mView.onInternetError();
-	}
+  @Override
+  public void optStatusType(int type, int topicId) {
+    switch (type) {
+    case Constants.TopicOpt.TOPIC_VOTE_DOWN:
+      mRxManager.add(mModel.voteDown(topicId).subscribe(mVoteDownObserver));
+      break;
 
-	@Override
-	public void onNext(JsonObject jsonObject) {
-		boolean status = jsonObject.get("vote-down").getAsBoolean();
-		int voteCount = jsonObject.get("vote_count").getAsInt();
-		if (status) mView.optVoteDownSuccess(voteCount);
-	}
-};
-
-@Override
-public void getDetailsInfo(int topicId) {
-	mRxManager.add(mModel.getDetailsInfo(topicId).subscribe(mTopicDetailObserver));
-}
-
-@Override
-public void optStatusType(int type, int topicId) {
-	switch (type) {
-	case Constants.TopicOpt.TOPIC_VOTE_DOWN:
-		mRxManager.add(mModel.voteDown(topicId).subscribe(mVoteDownObserver));
-		break;
-
-	case Constants.TopicOpt.TOPIC_VOTE_UP:
-		mRxManager.add(mModel.voteUp(topicId).subscribe(mVoteUpObserver));
-		break;
-	}
-}
+    case Constants.TopicOpt.TOPIC_VOTE_UP:
+      mRxManager.add(mModel.voteUp(topicId).subscribe(mVoteUpObserver));
+      break;
+    }
+  }
 }

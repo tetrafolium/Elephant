@@ -34,7 +34,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jun.elephant.R;
@@ -47,305 +49,295 @@ import com.jun.elephant.ui.main.WebViewActivity;
 import com.jun.elephant.ui.topic.list.TopicListByUserFragment;
 import com.jun.elephant.ui.user.reply.UserReplyFragment;
 import com.jun.elephant.util.ShareUtil;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
  * Created by Jun on 2016/10/14.
  */
-public class UserInfoActivity extends BaseFrameActivity<UserInfoPresenter, UserInfoModel> implements UserInfoContract.View, Toolbar.OnMenuItemClickListener {
+public class UserInfoActivity
+    extends BaseFrameActivity<UserInfoPresenter, UserInfoModel>
+    implements UserInfoContract.View, Toolbar.OnMenuItemClickListener {
 
-@BindView(R.id.main_bg_iv)
-ImageView mUserImgBg;
-@BindView(R.id.toolBar)
-Toolbar mToolBar;
-@BindView(R.id.user_name_tv)
-TextView mUserNameTv;
-@BindView(R.id.user_real_name_tv)
-TextView mUserRealNameTv;
-@BindView(R.id.tabLayout)
-TabLayout mTabLayout;
-@BindView(R.id.viewPager)
-ViewPager mViewPager;
-@BindView(R.id.collapsing_toolbar)
-CollapsingToolbarLayout mCollapsingToolbar;
-@BindView(R.id.appBarLayout)
-AppBarLayout mAppBarLayout;
-@BindView(R.id.user_address_tv)
-TextView mUserAddressTv;
-@BindView(R.id.user_avatar_civ)
-SimpleDraweeView mUserAvatarCiv;
-@BindView(R.id.user_info_ll)
-LinearLayout mUserInfoLl;
-@BindView(R.id.signature_tv)
-TextView mSignatureTv;
-@BindView(R.id.user_share_tv)
-TextView mUserShareTv;
-@BindView(R.id.user_reply_tv)
-TextView mUserReplyTv;
-@BindView(R.id.user_follow_tv)
-TextView mUserFollowTv;
-@BindView(R.id.edit_tv)
-TextView mSettingTv;
-@BindView(R.id.user_focus_ll)
-LinearLayout mUserFocusLl;
-@BindView(R.id.page_title_tv)
-TextView mPageTitleTv;
+  @BindView(R.id.main_bg_iv) ImageView mUserImgBg;
+  @BindView(R.id.toolBar) Toolbar mToolBar;
+  @BindView(R.id.user_name_tv) TextView mUserNameTv;
+  @BindView(R.id.user_real_name_tv) TextView mUserRealNameTv;
+  @BindView(R.id.tabLayout) TabLayout mTabLayout;
+  @BindView(R.id.viewPager) ViewPager mViewPager;
+  @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
+  @BindView(R.id.appBarLayout) AppBarLayout mAppBarLayout;
+  @BindView(R.id.user_address_tv) TextView mUserAddressTv;
+  @BindView(R.id.user_avatar_civ) SimpleDraweeView mUserAvatarCiv;
+  @BindView(R.id.user_info_ll) LinearLayout mUserInfoLl;
+  @BindView(R.id.signature_tv) TextView mSignatureTv;
+  @BindView(R.id.user_share_tv) TextView mUserShareTv;
+  @BindView(R.id.user_reply_tv) TextView mUserReplyTv;
+  @BindView(R.id.user_follow_tv) TextView mUserFollowTv;
+  @BindView(R.id.edit_tv) TextView mSettingTv;
+  @BindView(R.id.user_focus_ll) LinearLayout mUserFocusLl;
+  @BindView(R.id.page_title_tv) TextView mPageTitleTv;
 
-private TopicListByUserFragment mTopicFragment;
-private TopicListByUserFragment mFollowFragment;
-private TopicListByUserFragment mVoteFragment;
-private UserReplyFragment mReplyFragment;
+  private TopicListByUserFragment mTopicFragment;
+  private TopicListByUserFragment mFollowFragment;
+  private TopicListByUserFragment mVoteFragment;
+  private UserReplyFragment mReplyFragment;
 
-private boolean isShowUserInfo = true;
-private boolean isShowUserFoucs = true;
-private boolean isShowUserDesc = true;
-private boolean isShowTitle = true;
+  private boolean isShowUserInfo = true;
+  private boolean isShowUserFoucs = true;
+  private boolean isShowUserDesc = true;
+  private boolean isShowTitle = true;
 
-private UserEntity mUserEntity;
+  private UserEntity mUserEntity;
 
-private int mUserId;
+  private int mUserId;
 
-public static Intent newIntent(Context context, int userId) {
-	Intent intent = new Intent(context, UserInfoActivity.class);
-	intent.putExtra(Constants.Key.USER_ID, userId);
-	return intent;
-}
+  public static Intent newIntent(Context context, int userId) {
+    Intent intent = new Intent(context, UserInfoActivity.class);
+    intent.putExtra(Constants.Key.USER_ID, userId);
+    return intent;
+  }
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setTheme(R.style.Custom_Theme);
-	setContentView(R.layout.activity_user_info);
-	ButterKnife.bind(this);
-}
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setTheme(R.style.Custom_Theme);
+    setContentView(R.layout.activity_user_info);
+    ButterKnife.bind(this);
+  }
 
-@Override
-public void initData() {
-	super.initData();
-	mUserId = getIntent().getIntExtra(Constants.Key.USER_ID, 1);
-}
+  @Override
+  public void initData() {
+    super.initData();
+    mUserId = getIntent().getIntExtra(Constants.Key.USER_ID, 1);
+  }
 
-@Override
-public void initView() {
-	setToolbar(mToolBar, "");
+  @Override
+  public void initView() {
+    setToolbar(mToolBar, "");
 
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-		Window window = getWindow();
-		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-		window.setStatusBarColor(Color.TRANSPARENT);
-	}
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      Window window = getWindow();
+      window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      window.addFlags(
+          WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      window.setStatusBarColor(Color.TRANSPARENT);
+    }
 
-	mToolBar.inflateMenu(R.menu.menu_user_info);
-	alphaView(mPageTitleTv, 200, 4);
+    mToolBar.inflateMenu(R.menu.menu_user_info);
+    alphaView(mPageTitleTv, 200, 4);
 
-	mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-			@Override
-			public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-			        float f = ((float) Math.abs(verticalOffset)) / (float) (mAppBarLayout.getTotalScrollRange());
+    mAppBarLayout.addOnOffsetChangedListener(
+        new AppBarLayout.OnOffsetChangedListener() {
+          @Override
+          public void onOffsetChanged(AppBarLayout appBarLayout,
+                                      int verticalOffset) {
+            float f = ((float)Math.abs(verticalOffset)) /
+                      (float)(mAppBarLayout.getTotalScrollRange());
 
-			        appBarScrollChange(f);
-			}
-		});
+            appBarScrollChange(f);
+          }
+        });
+  }
 
-}
+  @Override
+  public void initListener() {
+    super.initListener();
+    mToolBar.setOnMenuItemClickListener(this);
+  }
 
-@Override
-public void initListener() {
-	super.initListener();
-	mToolBar.setOnMenuItemClickListener(this);
-}
+  @Override
+  public void initLoad() {
+    super.initLoad();
+    mPresenter.getUserInfoById(mUserId);
+  }
 
-@Override
-public void initLoad() {
-	super.initLoad();
-	mPresenter.getUserInfoById(mUserId);
-}
+  @OnClick({R.id.user_avatar_civ, R.id.edit_tv})
+  @Override
+  public void onClick(View v) {
+    super.onClick(v);
+    switch (v.getId()) {
+    case R.id.user_avatar_civ:
+      break;
+    case R.id.edit_tv:
+      startActivityForResult(UserInfoEditActivity.newIntent(this, mUserEntity),
+                             Constants.Activity.UserInfoEditActivity);
+      break;
+    }
+  }
 
-@OnClick({R.id.user_avatar_civ, R.id.edit_tv})
-@Override
-public void onClick(View v) {
-	super.onClick(v);
-	switch (v.getId()) {
-	case R.id.user_avatar_civ:
-		break;
-	case R.id.edit_tv:
-		startActivityForResult(UserInfoEditActivity.newIntent(this, mUserEntity), Constants.Activity.UserInfoEditActivity);
-		break;
-	}
-}
+  private void setupViewPager() {
+    List<String> titles = new ArrayList<>();
+    titles.add("分享");
+    titles.add("关注");
+    titles.add("赞过");
+    titles.add("回复");
+    mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
+    mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
+    mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
+    mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(3)));
 
-private void setupViewPager() {
-	List<String> titles = new ArrayList<>();
-	titles.add("分享");
-	titles.add("关注");
-	titles.add("赞过");
-	titles.add("回复");
-	mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
-	mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
-	mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
-	mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(3)));
+    Bundle bundleReply = new Bundle();
+    bundleReply.putString(Constants.Key.WEB_URL,
+                          mUserEntity.getLinks().getReplies_web_view());
 
-	Bundle bundleReply = new Bundle();
-	bundleReply.putString(Constants.Key.WEB_URL, mUserEntity.getLinks().getReplies_web_view());
+    mTopicFragment = new TopicListByUserFragment();
+    mFollowFragment = new TopicListByUserFragment();
+    mVoteFragment = new TopicListByUserFragment();
+    mReplyFragment = new UserReplyFragment();
 
-	mTopicFragment = new TopicListByUserFragment();
-	mFollowFragment = new TopicListByUserFragment();
-	mVoteFragment = new TopicListByUserFragment();
-	mReplyFragment = new UserReplyFragment();
+    mTopicFragment.setArguments(TopicListByUserFragment.newBundle(
+        mUserId, Constants.User.USER_TOPIC_MY));
+    mFollowFragment.setArguments(TopicListByUserFragment.newBundle(
+        mUserId, Constants.User.USER_TOPIC_FOLLOW));
+    mVoteFragment.setArguments(TopicListByUserFragment.newBundle(
+        mUserId, Constants.User.USER_TOPIC_VOTES));
+    mReplyFragment.setArguments(bundleReply);
 
-	mTopicFragment.setArguments(TopicListByUserFragment.newBundle(mUserId, Constants.User.USER_TOPIC_MY));
-	mFollowFragment.setArguments(TopicListByUserFragment.newBundle(mUserId, Constants.User.USER_TOPIC_FOLLOW));
-	mVoteFragment.setArguments(TopicListByUserFragment.newBundle(mUserId, Constants.User.USER_TOPIC_VOTES));
-	mReplyFragment.setArguments(bundleReply);
+    FragmentAdapter fragmentAdapter =
+        new FragmentAdapter(getSupportFragmentManager());
+    fragmentAdapter.addFragment(mTopicFragment, titles.get(0));
+    fragmentAdapter.addFragment(mFollowFragment, titles.get(1));
+    fragmentAdapter.addFragment(mVoteFragment, titles.get(2));
+    fragmentAdapter.addFragment(mReplyFragment, titles.get(3));
 
-	FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
-	fragmentAdapter.addFragment(mTopicFragment, titles.get(0));
-	fragmentAdapter.addFragment(mFollowFragment, titles.get(1));
-	fragmentAdapter.addFragment(mVoteFragment, titles.get(2));
-	fragmentAdapter.addFragment(mReplyFragment, titles.get(3));
+    mViewPager.setAdapter(fragmentAdapter);
+    mViewPager.setOffscreenPageLimit(4);
+    mTabLayout.setupWithViewPager(mViewPager);
+    mTabLayout.setTabsFromPagerAdapter(fragmentAdapter);
+  }
 
-	mViewPager.setAdapter(fragmentAdapter);
-	mViewPager.setOffscreenPageLimit(4);
-	mTabLayout.setupWithViewPager(mViewPager);
-	mTabLayout.setTabsFromPagerAdapter(fragmentAdapter);
-}
+  private void alphaView(View view, long duration, int i) {
+    view.animate().alpha(i == 0 ? 1.0f : 0.0f).setDuration(duration).start();
+  }
 
-private void alphaView(View view, long duration, int i) {
-	view.animate().alpha(i == 0 ? 1.0f : 0.0f).setDuration(duration).start();
-}
+  private void appBarScrollChange(float f) {
+    if (f >= 0.1f) {
+      if (isShowUserInfo) {
+        alphaView(mUserInfoLl, 200, 4);
+        isShowUserInfo = false;
+      }
+    } else if (!isShowUserInfo) {
+      alphaView(mUserInfoLl, 200, 0);
+      isShowUserInfo = true;
+    }
 
-private void appBarScrollChange(float f) {
-	if (f >= 0.1f) {
-		if (isShowUserInfo) {
-			alphaView(mUserInfoLl, 200, 4);
-			isShowUserInfo = false;
-		}
-	} else if (!isShowUserInfo) {
-		alphaView(mUserInfoLl, 200, 0);
-		isShowUserInfo = true;
-	}
+    if (f >= 0.5f) {
+      if (isShowUserDesc) {
+        alphaView(mSignatureTv, 200, 4);
+        isShowUserDesc = false;
+      }
+    } else if (!isShowUserDesc) {
+      alphaView(mSignatureTv, 200, 0);
+      mSignatureTv.animate().alpha(0.5f);
+      isShowUserDesc = true;
+    }
 
-	if (f >= 0.5f) {
-		if (isShowUserDesc) {
-			alphaView(mSignatureTv, 200, 4);
-			isShowUserDesc = false;
-		}
-	} else if (!isShowUserDesc) {
-		alphaView(mSignatureTv, 200, 0);
-		mSignatureTv.animate().alpha(0.5f);
-		isShowUserDesc = true;
-	}
+    if (f >= 0.7f) {
+      if (isShowUserFoucs) {
+        alphaView(mUserFocusLl, 200, 4);
+        isShowUserFoucs = false;
+      }
+    } else if (!isShowUserFoucs) {
+      alphaView(mUserFocusLl, 200, 0);
+      isShowUserFoucs = true;
+    }
 
-	if (f >= 0.7f) {
-		if (isShowUserFoucs) {
-			alphaView(mUserFocusLl, 200, 4);
-			isShowUserFoucs = false;
-		}
-	} else if (!isShowUserFoucs) {
-		alphaView(mUserFocusLl, 200, 0);
-		isShowUserFoucs = true;
+    if (f >= 0.86f) {
+      if (!isShowTitle) {
+        alphaView(mPageTitleTv, 200, 0);
+        isShowTitle = true;
+      }
+    } else if (isShowTitle) {
+      alphaView(mPageTitleTv, 200, 4);
+      isShowTitle = false;
+    }
+  }
 
-	}
+  private void initUserInfo(UserEntity userEntity) {
+    Glide.with(this)
+        .load(userEntity.getAvatar())
+        .bitmapTransform(new BlurTransformation(this, 5))
+        .into(mUserImgBg);
+    mCollapsingToolbar.setTitle(userEntity.getName());
+    mPageTitleTv.setText(userEntity.getName());
+    mUserNameTv.setText(userEntity.getName());
+    mUserAvatarCiv.setImageURI(Uri.parse(userEntity.getAvatar()));
+    mUserShareTv.setText(String.valueOf(userEntity.getTopic_count()));
+    mUserReplyTv.setText(String.valueOf(userEntity.getReply_count()));
+    mSignatureTv.setText(userEntity.getIntroduction());
 
-	if (f >= 0.86f) {
-		if (!isShowTitle) {
-			alphaView(mPageTitleTv, 200, 0);
-			isShowTitle = true;
-		}
-	} else if (isShowTitle) {
-		alphaView(mPageTitleTv, 200, 4);
-		isShowTitle = false;
-	}
-}
+    if (!TextUtils.isEmpty(userEntity.getCity())) {
+      mUserAddressTv.setText(userEntity.getCity());
+      mUserAddressTv.setVisibility(View.VISIBLE);
+    }
 
-private void initUserInfo(UserEntity userEntity) {
-	Glide.with(this).load(userEntity.getAvatar())
-	.bitmapTransform(new BlurTransformation(this, 5))
-	.into(mUserImgBg);
-	mCollapsingToolbar.setTitle(userEntity.getName());
-	mPageTitleTv.setText(userEntity.getName());
-	mUserNameTv.setText(userEntity.getName());
-	mUserAvatarCiv.setImageURI(Uri.parse(userEntity.getAvatar()));
-	mUserShareTv.setText(String.valueOf(userEntity.getTopic_count()));
-	mUserReplyTv.setText(String.valueOf(userEntity.getReply_count()));
-	mSignatureTv.setText(userEntity.getIntroduction());
+    if (getUserConstant().isLogin()) {
+      if (userEntity.getId() ==
+          getUserConstant().getUserData().getData().getId()) {
+        mSettingTv.setVisibility(View.VISIBLE);
+      }
+    }
 
-	if (!TextUtils.isEmpty(userEntity.getCity())) {
-		mUserAddressTv.setText(userEntity.getCity());
-		mUserAddressTv.setVisibility(View.VISIBLE);
-	}
+    if (!TextUtils.isEmpty(mUserEntity.getGithub_url())) {
+      mToolBar.getMenu().findItem(R.id.action_github).setVisible(true);
+    }
 
-	if (getUserConstant().isLogin()) {
-		if (userEntity.getId() == getUserConstant().getUserData().getData().getId()) {
-			mSettingTv.setVisibility(View.VISIBLE);
-		}
-	}
+    if (!TextUtils.isEmpty(mUserEntity.getEmail())) {
+      mToolBar.getMenu().findItem(R.id.action_email).setVisible(true);
+    }
 
-	if (!TextUtils.isEmpty(mUserEntity.getGithub_url())) {
-		mToolBar.getMenu().findItem(R.id.action_github).setVisible(true);
-	}
+    if (!TextUtils.isEmpty(mUserEntity.getPersonal_website())) {
+      mToolBar.getMenu().findItem(R.id.action_blog).setVisible(true);
+    }
+  }
 
-	if (!TextUtils.isEmpty(mUserEntity.getEmail())) {
-		mToolBar.getMenu().findItem(R.id.action_email).setVisible(true);
-	}
+  @Override
+  public boolean onMenuItemClick(MenuItem item) {
+    switch (item.getItemId()) {
+    case R.id.action_github:
+      startActivity(WebViewActivity.newIntent(
+          this, mUserEntity.getGithub_name(), mUserEntity.getGithub_url()));
+      break;
+    case R.id.action_blog:
+      String temp = mUserEntity.getPersonal_website();
+      if (!temp.contains("http://") && !temp.contains("https://")) {
+        temp = "http://" + temp;
+      }
+      startActivity(
+          WebViewActivity.newIntent(this, mUserEntity.getName(), temp));
+      break;
+    case R.id.action_email:
+      ShareUtil.feedback(this, mUserEntity.getEmail());
+      break;
+    }
+    return true;
+  }
 
-	if (!TextUtils.isEmpty(mUserEntity.getPersonal_website())) {
-		mToolBar.getMenu().findItem(R.id.action_blog).setVisible(true);
-	}
-}
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode,
+                                  Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == Constants.Activity.UserInfoEditActivity &&
+        resultCode == RESULT_OK) {
+      UserEntity userEntity =
+          data.getExtras().getParcelable(Constants.Key.USER_DATA);
+      this.mUserEntity = userEntity;
+      initUserInfo(userEntity);
+    }
+  }
 
-@Override
-public boolean onMenuItemClick(MenuItem item) {
-	switch (item.getItemId()) {
-	case R.id.action_github:
-		startActivity(WebViewActivity.newIntent(this, mUserEntity.getGithub_name(), mUserEntity.getGithub_url()));
-		break;
-	case R.id.action_blog:
-		String temp = mUserEntity.getPersonal_website();
-		if (!temp.contains("http://") && !temp.contains("https://")) {
-			temp = "http://" + temp;
-		}
-		startActivity(WebViewActivity.newIntent(this, mUserEntity.getName(), temp));
-		break;
-	case R.id.action_email:
-		ShareUtil.feedback(this, mUserEntity.getEmail());
-		break;
-	}
-	return true;
-}
+  @Override
+  public void onRequestStart() {}
 
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	super.onActivityResult(requestCode, resultCode, data);
-	if (requestCode == Constants.Activity.UserInfoEditActivity && resultCode == RESULT_OK) {
-		UserEntity userEntity = data.getExtras().getParcelable(Constants.Key.USER_DATA);
-		this.mUserEntity = userEntity;
-		initUserInfo(userEntity);
-	}
-}
+  @Override
+  public void onRequestEnd() {}
 
-@Override
-public void onRequestStart() {
-
-}
-
-@Override
-public void onRequestEnd() {
-
-}
-
-@Override
-public void getUserInfo(UserInfoEntity userInfoEntity) {
-	mUserEntity = userInfoEntity.getData();
-	initUserInfo(mUserEntity);
-	setupViewPager();
-}
+  @Override
+  public void getUserInfo(UserInfoEntity userInfoEntity) {
+    mUserEntity = userInfoEntity.getData();
+    initUserInfo(mUserEntity);
+    setupViewPager();
+  }
 }

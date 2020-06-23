@@ -26,71 +26,70 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.jun.elephant.R;
 import com.jun.elephant.common.BaseActivity;
 import com.jun.elephant.util.SystemUtil;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Jun on 2016/4/20.
  */
 public class AboutAppActivity extends BaseActivity {
 
-@BindView(R.id.version_tv)
-TextView mVersionTv;
-@BindView(R.id.toolbar)
-Toolbar mToolbar;
-@BindView(R.id.collapsing_toolbar)
-CollapsingToolbarLayout mCollapsingToolbar;
-@BindView(R.id.webView)
-WebView mWebView;
+  @BindView(R.id.version_tv) TextView mVersionTv;
+  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
+  @BindView(R.id.webView) WebView mWebView;
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_about_app);
-	ButterKnife.bind(this);
-}
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_about_app);
+    ButterKnife.bind(this);
+  }
 
-@Override
-public void initView() {
-	super.initView();
-	setToolbar(mToolbar, "");
-	mCollapsingToolbar.setTitle(getResources().getString(R.string.app_about_app));
+  @Override
+  public void initView() {
+    super.initView();
+    setToolbar(mToolbar, "");
+    mCollapsingToolbar.setTitle(
+        getResources().getString(R.string.app_about_app));
 
-	mVersionTv.setText(String.valueOf("Version " + SystemUtil.getVersionName(this)));
+    mVersionTv.setText(
+        String.valueOf("Version " + SystemUtil.getVersionName(this)));
 
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-		mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-	} else {
-		mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
-	}
-	mWebView.setWebViewClient(new AboutClient());
-}
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      mWebView.getSettings().setLayoutAlgorithm(
+          WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+    } else {
+      mWebView.getSettings().setLayoutAlgorithm(
+          WebSettings.LayoutAlgorithm.NORMAL);
+    }
+    mWebView.setWebViewClient(new AboutClient());
+  }
 
-@Override
-public void initLoad() {
-	super.initLoad();
-	mWebView.loadUrl("file:///android_asset/about_app.html");
-}
+  @Override
+  public void initLoad() {
+    super.initLoad();
+    mWebView.loadUrl("file:///android_asset/about_app.html");
+  }
 
-private class AboutClient extends WebViewClient {
-@Override
-public boolean shouldOverrideUrlLoading(WebView view, String url) {
-	if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
-		openBrowser(view.getContext(), url);
-		return true;
-	} else {
-		return false;
-	}
-}
-}
+  private class AboutClient extends WebViewClient {
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+      if (url != null &&
+          (url.startsWith("http://") || url.startsWith("https://"))) {
+        openBrowser(view.getContext(), url);
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 
-private void openBrowser(Context context, String url) {
-	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-	context.startActivity(intent);
-}
+  private void openBrowser(Context context, String url) {
+    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    context.startActivity(intent);
+  }
 }

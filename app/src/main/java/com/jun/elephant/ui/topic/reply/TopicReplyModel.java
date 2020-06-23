@@ -18,10 +18,8 @@ package com.jun.elephant.ui.topic.reply;
 import com.jun.elephant.api.Networks;
 import com.jun.elephant.entity.topic.TopicReplyEntity;
 import com.jun.elephant.mvpframe.rx.RxSchedulers;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import rx.Observable;
 
 /**
@@ -29,18 +27,19 @@ import rx.Observable;
  */
 public class TopicReplyModel implements TopicReplyContract.Model {
 
-private Map<String, String> getOptions(int topicId, String body) {
-	Map<String, String> options = new HashMap<String, String>();
-	options.put("topic_id", String.valueOf(topicId));
-	options.put("body", body);
+  private Map<String, String> getOptions(int topicId, String body) {
+    Map<String, String> options = new HashMap<String, String>();
+    options.put("topic_id", String.valueOf(topicId));
+    options.put("body", body);
 
-	return options;
-}
+    return options;
+  }
 
-@Override
-public Observable<TopicReplyEntity> reply(int topicId, String body) {
-	return Networks.getInstance().getTopicApi()
-	       .publishReply(getOptions(topicId, body))
-	       .compose(RxSchedulers.<TopicReplyEntity>io_main());
-}
+  @Override
+  public Observable<TopicReplyEntity> reply(int topicId, String body) {
+    return Networks.getInstance()
+        .getTopicApi()
+        .publishReply(getOptions(topicId, body))
+        .compose(RxSchedulers.<TopicReplyEntity>io_main());
+  }
 }

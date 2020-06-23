@@ -1,6 +1,5 @@
 package org.gemini.markdown.model;
 
-
 import org.gemini.markdown.model.type.MarkdownSyntaxType;
 import org.gemini.markdown.model.type.Range;
 
@@ -9,28 +8,21 @@ import org.gemini.markdown.model.type.Range;
  */
 public class MarkdownSyntaxModel {
 
-private MarkdownSyntaxType mSyntaxType;
-private Range mRange;
+  private MarkdownSyntaxType mSyntaxType;
+  private Range mRange;
 
-public MarkdownSyntaxModel(MarkdownSyntaxType type, Range range) {
-	this.mSyntaxType = type;
-	this.mRange = range;
-}
+  public MarkdownSyntaxModel(MarkdownSyntaxType type, Range range) {
+    this.mSyntaxType = type;
+    this.mRange = range;
+  }
 
+  public MarkdownSyntaxType getSyntaxType() { return mSyntaxType; }
 
-public MarkdownSyntaxType getSyntaxType() {
-	return mSyntaxType;
-}
+  public void setSyntaxType(MarkdownSyntaxType mSyntaxType) {
+    this.mSyntaxType = mSyntaxType;
+  }
 
-public void setSyntaxType(MarkdownSyntaxType mSyntaxType) {
-	this.mSyntaxType = mSyntaxType;
-}
+  public Range getRange() { return mRange; }
 
-public Range getRange() {
-	return mRange;
-}
-
-public void setRange(Range mRange) {
-	this.mRange = mRange;
-}
+  public void setRange(Range mRange) { this.mRange = mRange; }
 }

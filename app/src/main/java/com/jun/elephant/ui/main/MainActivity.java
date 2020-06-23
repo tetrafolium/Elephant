@@ -15,6 +15,8 @@
  */
 package com.jun.elephant.ui.main;
 
+import static com.jun.elephant.util.PermissionsChecker.REQUEST_STORAGE_PERMISSION;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -39,7 +41,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
@@ -61,443 +65,455 @@ import com.jun.elephant.ui.widget.ThemeDialog;
 import com.jun.elephant.util.OpenWebViewUtils;
 import com.jun.elephant.util.PermissionsChecker;
 import com.jun.elephant.util.SharePreferencesHelper;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
-import static com.jun.elephant.util.PermissionsChecker.REQUEST_STORAGE_PERMISSION;
 
 /**
  * Created by Jun on 2016/3/1.
  */
-public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,
-	                          ThemeDialog.OnThemeChangeListener,
-	                          DrawerMenuAdapter.OnMenuItemClickListener,
-	                          MaterialDialog.SingleButtonCallback {
+public class MainActivity
+    extends BaseActivity implements Toolbar.OnMenuItemClickListener,
+                                    ThemeDialog.OnThemeChangeListener,
+                                    DrawerMenuAdapter.OnMenuItemClickListener,
+                                    MaterialDialog.SingleButtonCallback {
 
-@BindView(R.id.toolBar)
-Toolbar mToolBar;
-@BindView(R.id.container)
-FrameLayout mContainer;
-@BindView(R.id.main_content)
-LinearLayout mMainContentLl;
-@BindView(R.id.name_tv)
-TextView mNameTv;
-@BindView(R.id.user_email_tv)
-TextView mUserEmailTv;
-@BindView(R.id.menu_down_iv)
-ImageView mMenuDownIv;
-@BindView(R.id.drawer_menu_rc)
-RecyclerView mDrawerMenuRc;
-@BindView(R.id.navigation_view)
-LinearLayout mNavigationView;
-@BindView(R.id.drawerLayout)
-DrawerLayout mDrawerLayout;
-@BindView(R.id.user_iv)
-MySimpleDraweeView mUserImgIv;
-@BindView(R.id.login_tv)
-TextView mLoginTv;
-@BindView(R.id.login_success_rl)
-RelativeLayout mLoginShowRl;
+  @BindView(R.id.toolBar) Toolbar mToolBar;
+  @BindView(R.id.container) FrameLayout mContainer;
+  @BindView(R.id.main_content) LinearLayout mMainContentLl;
+  @BindView(R.id.name_tv) TextView mNameTv;
+  @BindView(R.id.user_email_tv) TextView mUserEmailTv;
+  @BindView(R.id.menu_down_iv) ImageView mMenuDownIv;
+  @BindView(R.id.drawer_menu_rc) RecyclerView mDrawerMenuRc;
+  @BindView(R.id.navigation_view) LinearLayout mNavigationView;
+  @BindView(R.id.drawerLayout) DrawerLayout mDrawerLayout;
+  @BindView(R.id.user_iv) MySimpleDraweeView mUserImgIv;
+  @BindView(R.id.login_tv) TextView mLoginTv;
+  @BindView(R.id.login_success_rl) RelativeLayout mLoginShowRl;
 
-private List<DrawerMenuEntity> mMainMenuList, mMyMenuList;
+  private List<DrawerMenuEntity> mMainMenuList, mMyMenuList;
 
-private DrawerMenuAdapter mMenuAdapter;
+  private DrawerMenuAdapter mMenuAdapter;
 
-private TopicListByForumFragment mCommonFragment;
+  private TopicListByForumFragment mCommonFragment;
 
-private TopicListByMeFragment mTopicListByMeFragment;
+  private TopicListByMeFragment mTopicListByMeFragment;
 
-private UserInfoEntity mUserInfoEntity;
+  private UserInfoEntity mUserInfoEntity;
 
-private ThemeDialog mThemeDialog;
+  private ThemeDialog mThemeDialog;
 
-private MaterialDialog.Builder mExitLoginDialog;
+  private MaterialDialog.Builder mExitLoginDialog;
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_main);
-	ButterKnife.bind(this);
-	setFrameId(R.id.container);
-	setExit(true);
-}
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    ButterKnife.bind(this);
+    setFrameId(R.id.container);
+    setExit(true);
+  }
 
-@Override
-public void initData() {
-	super.initData();
+  @Override
+  public void initData() {
+    super.initData();
 
-	mThemeDialog = new ThemeDialog(this);
-	mExitLoginDialog = new MaterialDialog.Builder(this);
+    mThemeDialog = new ThemeDialog(this);
+    mExitLoginDialog = new MaterialDialog.Builder(this);
 
-	mCommonFragment = new TopicListByForumFragment();
-	mTopicListByMeFragment = new TopicListByMeFragment();
+    mCommonFragment = new TopicListByForumFragment();
+    mTopicListByMeFragment = new TopicListByMeFragment();
 
-	String token = SharePreferencesHelper.getInstance(this).getString(Constants.Key.TOKEN);
-	if (!TextUtils.isEmpty(token)) {
-		Networks.setToken(token);
-	}
+    String token =
+        SharePreferencesHelper.getInstance(this).getString(Constants.Key.TOKEN);
+    if (!TextUtils.isEmpty(token)) {
+      Networks.setToken(token);
+    }
 
-	mMainMenuList = new ArrayList<>();
-	mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_recommend), R.mipmap.ic_main_recommend));
-	mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_hot), R.mipmap.ic_main_hot));
-	mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_newest), R.mipmap.ic_main_newest));
-	mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_nobody), R.mipmap.ic_main_nobody));
-	mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_jobs), R.mipmap.ic_main_work));
-	mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_wiki), R.mipmap.ic_main_wiki));
+    mMainMenuList = new ArrayList<>();
+    mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_recommend),
+                                           R.mipmap.ic_main_recommend));
+    mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_hot),
+                                           R.mipmap.ic_main_hot));
+    mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_newest),
+                                           R.mipmap.ic_main_newest));
+    mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_nobody),
+                                           R.mipmap.ic_main_nobody));
+    mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_jobs),
+                                           R.mipmap.ic_main_work));
+    mMainMenuList.add(new DrawerMenuEntity(getString(R.string.menu_wiki),
+                                           R.mipmap.ic_main_wiki));
 
-	mMyMenuList = new ArrayList<>();
-	mMyMenuList.add(new DrawerMenuEntity(getString(R.string.menu_vote), R.mipmap.ic_my_vote));
-	mMyMenuList.add(new DrawerMenuEntity(getString(R.string.menu_topic), R.mipmap.ic_my_topic));
-	mMyMenuList.add(new DrawerMenuEntity(getString(R.string.menu_revert), R.mipmap.ic_my_reply));
+    mMyMenuList = new ArrayList<>();
+    mMyMenuList.add(new DrawerMenuEntity(getString(R.string.menu_vote),
+                                         R.mipmap.ic_my_vote));
+    mMyMenuList.add(new DrawerMenuEntity(getString(R.string.menu_topic),
+                                         R.mipmap.ic_my_topic));
+    mMyMenuList.add(new DrawerMenuEntity(getString(R.string.menu_revert),
+                                         R.mipmap.ic_my_reply));
 
-	mMenuAdapter = new DrawerMenuAdapter(this, mMainMenuList);
+    mMenuAdapter = new DrawerMenuAdapter(this, mMainMenuList);
+  }
 
-}
+  @Override
+  public void initView() {
+    initExitLoginDialog();
+    initToolbar();
 
-@Override
-public void initView() {
-	initExitLoginDialog();
-	initToolbar();
+    if (getUserConstant().isLogin()) {
+      mUserInfoEntity = UserConstant.getInstance(this).getUserData();
 
-	if (getUserConstant().isLogin()) {
-		mUserInfoEntity = UserConstant.getInstance(this).getUserData();
+      Uri uri = Uri.parse(mUserInfoEntity.getData().getAvatar());
+      mUserImgIv.setImageURI(uri);
+      mUserEmailTv.setText(mUserInfoEntity.getData().getEmail());
+      mNameTv.setText(mUserInfoEntity.getData().getName());
 
-		Uri uri = Uri.parse(mUserInfoEntity.getData().getAvatar());
-		mUserImgIv.setImageURI(uri);
-		mUserEmailTv.setText(mUserInfoEntity.getData().getEmail());
-		mNameTv.setText(mUserInfoEntity.getData().getName());
+      mLoginShowRl.setVisibility(View.VISIBLE);
+      mLoginTv.setVisibility(View.GONE);
 
-		mLoginShowRl.setVisibility(View.VISIBLE);
-		mLoginTv.setVisibility(View.GONE);
+      mMainMenuList.addAll(mMyMenuList);
+    }
 
-		mMainMenuList.addAll(mMyMenuList);
-	}
+    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+    mDrawerMenuRc.setLayoutManager(layoutManager);
+    mDrawerMenuRc.setAdapter(mMenuAdapter);
 
-	RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-	mDrawerMenuRc.setLayoutManager(layoutManager);
-	mDrawerMenuRc.setAdapter(mMenuAdapter);
+    Bundle bundle = new Bundle();
+    bundle.putString(Constants.Key.TOPIC_TYPE, Constants.Topic.EXCELLENT);
+    mCommonFragment.setArguments(bundle);
+    setCurrFragment(mCommonFragment);
+    toFragment(mCommonFragment);
+  }
 
-	Bundle bundle = new Bundle();
-	bundle.putString(Constants.Key.TOPIC_TYPE, Constants.Topic.EXCELLENT);
-	mCommonFragment.setArguments(bundle);
-	setCurrFragment(mCommonFragment);
-	toFragment(mCommonFragment);
-}
+  private void initToolbar() {
+    mToolBar.inflateMenu(R.menu.menu_main);
+    Resources.Theme theme = getTheme();
+    TypedValue navIcon = new TypedValue();
+    TypedValue overFlowIcon = new TypedValue();
 
-private void initToolbar() {
-	mToolBar.inflateMenu(R.menu.menu_main);
-	Resources.Theme theme = getTheme();
-	TypedValue navIcon = new TypedValue();
-	TypedValue overFlowIcon = new TypedValue();
+    theme.resolveAttribute(R.attr.navIcon, navIcon, true);
+    theme.resolveAttribute(R.attr.overFlowIcon, overFlowIcon, true);
 
-	theme.resolveAttribute(R.attr.navIcon, navIcon, true);
-	theme.resolveAttribute(R.attr.overFlowIcon, overFlowIcon, true);
+    mToolBar.setNavigationIcon(navIcon.resourceId);
+    mToolBar.setOverflowIcon(
+        ContextCompat.getDrawable(this, overFlowIcon.resourceId));
+  }
 
-	mToolBar.setNavigationIcon(navIcon.resourceId);
-	mToolBar.setOverflowIcon(ContextCompat.getDrawable(this, overFlowIcon.resourceId));
-}
+  private void initExitLoginDialog() {
+    mExitLoginDialog.content(getString(R.string.dialog_exit_login))
+        .positiveColorRes(R.color.colorPrimary)
+        .negativeColorRes(R.color.colorPrimary)
+        .positiveText(getString(R.string.dialog_exit_positive_text))
+        .negativeText(getString(R.string.dialog_exit_negative_text));
+  }
 
-private void initExitLoginDialog() {
-	mExitLoginDialog.content(getString(R.string.dialog_exit_login))
-	.positiveColorRes(R.color.colorPrimary)
-	.negativeColorRes(R.color.colorPrimary)
-	.positiveText(getString(R.string.dialog_exit_positive_text))
-	.negativeText(getString(R.string.dialog_exit_negative_text));
-}
+  @Override
+  public void initListener() {
+    mToolBar.setOnMenuItemClickListener(this);
+    mToolBar.setNavigationOnClickListener(this);
+    mThemeDialog.setOnThemeChangeListener(this);
+    mMenuAdapter.setOnMenuItemClickListener(this);
+    mExitLoginDialog.onPositive(this);
+  }
 
-@Override
-public void initListener() {
-	mToolBar.setOnMenuItemClickListener(this);
-	mToolBar.setNavigationOnClickListener(this);
-	mThemeDialog.setOnThemeChangeListener(this);
-	mMenuAdapter.setOnMenuItemClickListener(this);
-	mExitLoginDialog.onPositive(this);
-}
+  private void toUserFragment() {
+    toFragment(mTopicListByMeFragment);
+    if (mTopicListByMeFragment.isAdded()) {
+      mTopicListByMeFragment.getData();
+    }
+  }
 
-private void toUserFragment() {
-	toFragment(mTopicListByMeFragment);
-	if (mTopicListByMeFragment.isAdded()) {
-		mTopicListByMeFragment.getData();
-	}
-}
+  private void toCommonFragment() {
+    toFragment(mCommonFragment);
+    if (mCommonFragment.isAdded()) {
+      mCommonFragment.getData();
+    }
+  }
 
-private void toCommonFragment() {
-	toFragment(mCommonFragment);
-	if (mCommonFragment.isAdded()) {
-		mCommonFragment.getData();
-	}
-}
+  @OnClick({R.id.login_tv, R.id.login_success_rl, R.id.user_iv, R.id.setting_ll,
+            R.id.login_help_ll})
+  @Override
+  public void
+  onClick(View v) {
+    super.onClick(v);
+    switch (v.getId()) {
+    case R.id.login_success_rl:
+      mExitLoginDialog.show();
+      break;
 
-@OnClick({R.id.login_tv, R.id.login_success_rl, R.id.user_iv, R.id.setting_ll, R.id.login_help_ll})
-@Override
-public void onClick(View v) {
-	super.onClick(v);
-	switch (v.getId()) {
-	case R.id.login_success_rl:
-		mExitLoginDialog.show();
-		break;
+    case R.id.login_tv:
+    case R.id.user_iv:
+      if (getUserConstant().isLogin()) {
+        startActivity(UserInfoActivity.newIntent(
+            this, getUserConstant().getUserData().getData().getId()));
+        return;
+      }
+      //判断一下是否开启权限
+      if (PermissionsChecker.lacksPermissions(
+              this, PermissionsChecker.photosPermissions)) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivityForResult(intent, Constants.Activity.LoginActivity);
+      }
+      break;
+    case R.id.setting_ll:
+      mThemeDialog.show();
+      break;
+    case R.id.login_help_ll:
+      OpenWebViewUtils.loginHelp(this);
+      break;
+    default:
+      if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+        mDrawerLayout.closeDrawers();
+      } else {
+        mDrawerLayout.openDrawer(Gravity.LEFT);
+      }
+      break;
+    }
+  }
 
-	case R.id.login_tv:
-	case R.id.user_iv:
-		if (getUserConstant().isLogin()) {
-			startActivity(UserInfoActivity.newIntent(this, getUserConstant().getUserData().getData().getId()));
-			return;
-		}
-		//判断一下是否开启权限
-		if (PermissionsChecker.lacksPermissions(this, PermissionsChecker.photosPermissions)) {
-			Intent intent = new Intent(this, LoginActivity.class);
-			startActivityForResult(intent, Constants.Activity.LoginActivity);
-		}
-		break;
-	case R.id.setting_ll:
-		mThemeDialog.show();
-		break;
-	case R.id.login_help_ll:
-		OpenWebViewUtils.loginHelp(this);
-		break;
-	default:
-		if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-			mDrawerLayout.closeDrawers();
-		} else {
-			mDrawerLayout.openDrawer(Gravity.LEFT);
-		}
-		break;
-	}
-}
+  /**
+   * 退出登录 dialog 按钮点击监听事件
+   * @param dialog
+   * @param which
+   */
+  @Override
+  public void onClick(@NonNull MaterialDialog dialog,
+                      @NonNull DialogAction which) {
+    switch (which) {
+    case POSITIVE:
+      if (getUserConstant().logout()) { //退出登录
+        mLoginShowRl.setVisibility(View.GONE);
+        mLoginTv.setVisibility(View.VISIBLE);
+        mMainMenuList.removeAll(mMyMenuList);
+        mMenuAdapter.notifyDataSetChanged();
+        mUserImgIv.setImageURI(
+            Uri.parse("res://com.jun.elephant/" + R.color.main_bg));
+        dialog.dismiss();
+      }
+      break;
+    case NEGATIVE:
+      dialog.dismiss();
+      break;
+    }
+  }
 
-/**
- * 退出登录 dialog 按钮点击监听事件
- * @param dialog
- * @param which
- */
-@Override
-public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-	switch (which) {
-	case POSITIVE:
-		if (getUserConstant().logout()) { //退出登录
-			mLoginShowRl.setVisibility(View.GONE);
-			mLoginTv.setVisibility(View.VISIBLE);
-			mMainMenuList.removeAll(mMyMenuList);
-			mMenuAdapter.notifyDataSetChanged();
-			mUserImgIv.setImageURI(Uri.parse("res://com.jun.elephant/" + R.color.main_bg));
-			dialog.dismiss();
-		}
-		break;
-	case NEGATIVE:
-		dialog.dismiss();
-		break;
-	}
-}
+  /**
+   * DrawerLayout menu click callback
+   * @param position menu click position
+   */
+  @Override
+  public void onMenuItemClick(int position) {
+    switch (position) {
+    case 0:
+      switchFragment(getString(R.string.menu_recommend),
+                     Constants.Topic.EXCELLENT);
+      break;
+    case 1:
+      switchFragment(getString(R.string.menu_hot), Constants.Topic.VOTE);
+      break;
+    case 2:
+      switchFragment(getString(R.string.menu_newest), Constants.Topic.NEWEST);
+      break;
+    case 3:
+      switchFragment(getString(R.string.menu_nobody), Constants.Topic.NOBODY);
+      break;
+    case 4:
+      switchFragment(getString(R.string.menu_jobs), Constants.Topic.JOBS);
+      break;
+    case 5:
+      switchFragment(getString(R.string.menu_wiki), Constants.Topic.WIKI);
+      break;
+    case 6:
+      mToolBar.setTitle(getString(R.string.menu_vote));
+      mTopicListByMeFragment.TYPE = Constants.User.USER_TOPIC_VOTES;
+      toUserFragment();
+      break;
+    case 7:
+      mToolBar.setTitle(getString(R.string.menu_topic));
+      mTopicListByMeFragment.TYPE = Constants.User.USER_TOPIC_MY;
+      toUserFragment();
+      break;
+    case 8:
+      OpenWebViewUtils.myReply(
+          MainActivity.this,
+          mUserInfoEntity.getData().getLinks().getReplies_web_view());
+      break;
+    }
 
-/**
- * DrawerLayout menu click callback
- * @param position menu click position
- */
-@Override
-public void onMenuItemClick(int position) {
-	switch (position) {
-	case 0:
-		switchFragment(getString(R.string.menu_recommend), Constants.Topic.EXCELLENT);
-		break;
-	case 1:
-		switchFragment(getString(R.string.menu_hot), Constants.Topic.VOTE);
-		break;
-	case 2:
-		switchFragment(getString(R.string.menu_newest), Constants.Topic.NEWEST);
-		break;
-	case 3:
-		switchFragment(getString(R.string.menu_nobody), Constants.Topic.NOBODY);
-		break;
-	case 4:
-		switchFragment(getString(R.string.menu_jobs), Constants.Topic.JOBS);
-		break;
-	case 5:
-		switchFragment(getString(R.string.menu_wiki), Constants.Topic.WIKI);
-		break;
-	case 6:
-		mToolBar.setTitle(getString(R.string.menu_vote));
-		mTopicListByMeFragment.TYPE = Constants.User.USER_TOPIC_VOTES;
-		toUserFragment();
-		break;
-	case 7:
-		mToolBar.setTitle(getString(R.string.menu_topic));
-		mTopicListByMeFragment.TYPE = Constants.User.USER_TOPIC_MY;
-		toUserFragment();
-		break;
-	case 8:
-		OpenWebViewUtils.myReply(MainActivity.this, mUserInfoEntity.getData().getLinks().getReplies_web_view());
-		break;
-	}
+    if (position != 8) {
+      mMenuAdapter.setSelectPosition(position);
+      mMenuAdapter.notifyDataSetChanged();
+      mDrawerLayout.closeDrawers();
+    }
+  }
 
-	if (position != 8) {
-		mMenuAdapter.setSelectPosition(position);
-		mMenuAdapter.notifyDataSetChanged();
-		mDrawerLayout.closeDrawers();
-	}
-}
+  /**
+   * toolbar menu click callback
+   * @param item menu item
+   * @return true
+   */
+  @Override
+  public boolean onMenuItemClick(MenuItem item) {
+    switch (item.getItemId()) {
+    case R.id.action_notice:
+      if (getUserConstant().isLogin()) {
+        openActivity(UserMessageActivity.class);
+      } else {
+        showShortToast(getString(R.string.toast_no_login));
+      }
+      break;
 
-/**
- * toolbar menu click callback
- * @param item menu item
- * @return true
- */
-@Override
-public boolean onMenuItemClick(MenuItem item) {
-	switch (item.getItemId()) {
-	case R.id.action_notice:
-		if (getUserConstant().isLogin()) {
-			openActivity(UserMessageActivity.class);
-		} else {
-			showShortToast(getString(R.string.toast_no_login));
-		}
-		break;
+    case R.id.action_about:
+      OpenWebViewUtils.aboutMe(this);
+      break;
 
-	case R.id.action_about:
-		OpenWebViewUtils.aboutMe(this);
-		break;
+    case R.id.action_search:
+      showShortToast(getString(R.string.toast_adorn));
+      break;
 
-	case R.id.action_search:
-		showShortToast(getString(R.string.toast_adorn));
-		break;
+    case R.id.action_settings:
+      openActivity(SettingActivity.class);
+      break;
+    }
+    return true;
+  }
 
-	case R.id.action_settings:
-		openActivity(SettingActivity.class);
-		break;
-	}
-	return true;
-}
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode,
+                                  Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
 
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode == RESULT_OK &&
+        requestCode == Constants.Activity.LoginActivity) {
+      mUserInfoEntity = data.getExtras().getParcelable(Constants.Key.USER_DATA);
 
-	if (resultCode == RESULT_OK && requestCode == Constants.Activity.LoginActivity) {
-		mUserInfoEntity = data.getExtras().getParcelable(Constants.Key.USER_DATA);
+      assert mUserInfoEntity != null;
+      Uri uri = Uri.parse(mUserInfoEntity.getData().getAvatar());
+      mUserImgIv.setImageURI(uri);
+      mUserEmailTv.setText(mUserInfoEntity.getData().getEmail());
+      mNameTv.setText(mUserInfoEntity.getData().getName());
 
-		assert mUserInfoEntity != null;
-		Uri uri = Uri.parse(mUserInfoEntity.getData().getAvatar());
-		mUserImgIv.setImageURI(uri);
-		mUserEmailTv.setText(mUserInfoEntity.getData().getEmail());
-		mNameTv.setText(mUserInfoEntity.getData().getName());
+      getUserConstant().saveUserData(new Gson().toJson(mUserInfoEntity));
 
-		getUserConstant().saveUserData(new Gson().toJson(mUserInfoEntity));
+      mLoginShowRl.setVisibility(View.VISIBLE);
+      mLoginTv.setVisibility(View.GONE);
 
-		mLoginShowRl.setVisibility(View.VISIBLE);
-		mLoginTv.setVisibility(View.GONE);
+      mMainMenuList.addAll(mMyMenuList);
+      mMenuAdapter.notifyDataSetChanged();
+    }
+  }
 
-		mMainMenuList.addAll(mMyMenuList);
-		mMenuAdapter.notifyDataSetChanged();
-	}
-}
+  /**
+   * 切换 fragment 操作
+   * @param title 标题
+   * @param type 类型
+   */
+  private void switchFragment(String title, String type) {
+    mCommonFragment.TYPE = type;
+    mToolBar.setTitle(title);
+    toCommonFragment();
+  }
 
-/**
- * 切换 fragment 操作
- * @param title 标题
- * @param type 类型
- */
-private void switchFragment(String title, String type) {
-	mCommonFragment.TYPE = type;
-	mToolBar.setTitle(title);
-	toCommonFragment();
-}
+  /**
+   * 改变主题
+   */
+  private void changeTheme() {
+    refreshUI();
+    mCommonFragment.refreshUI();
+    mDrawerLayout.closeDrawers();
+  }
 
-/**
- * 改变主题
- */
-private void changeTheme() {
-	refreshUI();
-	mCommonFragment.refreshUI();
-	mDrawerLayout.closeDrawers();
-}
+  /**
+   * 刷新 UI
+   * 遍历所有view，替换相对应主题颜色
+   */
+  private void refreshUI() {
+    TypedValue themeColor = new TypedValue();       //主题
+    TypedValue statusColor = new TypedValue();      //状态栏
+    TypedValue toolbarTextColor = new TypedValue(); //状态栏字体颜色
+    TypedValue navIcon = new TypedValue();          // toolbar 导航图标
+    TypedValue searchIcon = new TypedValue();       // toolbar 搜索图标
+    TypedValue noticeIcon = new TypedValue();       // toolbar 通知图标
+    TypedValue overFlowIcon = new TypedValue();     // toolbar 更多图标
 
-/**
- * 刷新 UI
- * 遍历所有view，替换相对应主题颜色
- */
-private void refreshUI() {
-	TypedValue themeColor = new TypedValue();        //主题
-	TypedValue statusColor = new TypedValue();       //状态栏
-	TypedValue toolbarTextColor = new TypedValue();  //状态栏字体颜色
-	TypedValue navIcon = new TypedValue();           //toolbar 导航图标
-	TypedValue searchIcon = new TypedValue();        //toolbar 搜索图标
-	TypedValue noticeIcon = new TypedValue();        //toolbar 通知图标
-	TypedValue overFlowIcon = new TypedValue();          //toolbar 更多图标
+    //获取切换后的主题，以及主题相对应对的属性值
+    Resources.Theme theme = getTheme();
+    theme.resolveAttribute(R.attr.elephantTheme, themeColor, true);
+    theme.resolveAttribute(R.attr.elephantStatus, statusColor, true);
+    theme.resolveAttribute(R.attr.elephantToolbarText, toolbarTextColor, true);
+    theme.resolveAttribute(R.attr.navIcon, navIcon, true);
+    theme.resolveAttribute(R.attr.menuSearch, searchIcon, true);
+    theme.resolveAttribute(R.attr.menuNotice, noticeIcon, true);
+    theme.resolveAttribute(R.attr.overFlowIcon, overFlowIcon, true);
 
-	//获取切换后的主题，以及主题相对应对的属性值
-	Resources.Theme theme = getTheme();
-	theme.resolveAttribute(R.attr.elephantTheme, themeColor, true);
-	theme.resolveAttribute(R.attr.elephantStatus, statusColor, true);
-	theme.resolveAttribute(R.attr.elephantToolbarText, toolbarTextColor, true);
-	theme.resolveAttribute(R.attr.navIcon, navIcon, true);
-	theme.resolveAttribute(R.attr.menuSearch, searchIcon, true);
-	theme.resolveAttribute(R.attr.menuNotice, noticeIcon, true);
-	theme.resolveAttribute(R.attr.overFlowIcon, overFlowIcon, true);
+    //切换到主题相对应的图标以及颜色值
+    mToolBar.getMenu()
+        .findItem(R.id.action_search)
+        .setIcon(searchIcon.resourceId);
+    mToolBar.getMenu()
+        .findItem(R.id.action_notice)
+        .setIcon(noticeIcon.resourceId);
+    mToolBar.setNavigationIcon(navIcon.resourceId);
+    mToolBar.setOverflowIcon(
+        ContextCompat.getDrawable(this, overFlowIcon.resourceId));
+    mToolBar.setBackgroundColor(
+        ContextCompat.getColor(this, themeColor.resourceId));
+    mToolBar.setTitleTextColor(
+        ContextCompat.getColor(this, toolbarTextColor.resourceId));
 
-	//切换到主题相对应的图标以及颜色值
-	mToolBar.getMenu().findItem(R.id.action_search).setIcon(searchIcon.resourceId);
-	mToolBar.getMenu().findItem(R.id.action_notice).setIcon(noticeIcon.resourceId);
-	mToolBar.setNavigationIcon(navIcon.resourceId);
-	mToolBar.setOverflowIcon(ContextCompat.getDrawable(this, overFlowIcon.resourceId));
-	mToolBar.setBackgroundColor(ContextCompat.getColor(this, themeColor.resourceId));
-	mToolBar.setTitleTextColor(ContextCompat.getColor(this, toolbarTextColor.resourceId));
+    changeStatusColor(statusColor.resourceId);
+  }
 
-	changeStatusColor(statusColor.resourceId);
-}
+  /**
+   * 切换状态栏颜色值
+   * @param colorValue 颜色值
+   */
+  private void changeStatusColor(int colorValue) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      Window window = getWindow();
+      window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      window.addFlags(
+          WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      window.setStatusBarColor(ContextCompat.getColor(this, colorValue));
+    }
+  }
 
-/**
- * 切换状态栏颜色值
- * @param colorValue 颜色值
- */
-private void changeStatusColor(int colorValue) {
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-		Window window = getWindow();
-		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-		window.setStatusBarColor(ContextCompat.getColor(this, colorValue));
-	}
-}
+  @Override
+  public void onChangeTheme(View view) {
+    switch (view.getId()) {
+    case R.id.theme_blue:
+      setTheme(R.style.BlueTheme);               //设置主题
+      mThemeUtil.setTheme(Constants.Theme.Blue); //保存当前主题
+      break;
+    case R.id.theme_gray:
+      setTheme(R.style.GrayTheme);
+      mThemeUtil.setTheme(Constants.Theme.Gray);
+      break;
+    case R.id.theme_white:
+      setTheme(R.style.WhiteTheme);
+      mThemeUtil.setTheme(Constants.Theme.White);
+      break;
+    }
+    changeTheme();
+  }
 
-@Override
-public void onChangeTheme(View view) {
-	switch (view.getId()) {
-	case R.id.theme_blue:
-		setTheme(R.style.BlueTheme);            //设置主题
-		mThemeUtil.setTheme(Constants.Theme.Blue); //保存当前主题
-		break;
-	case R.id.theme_gray:
-		setTheme(R.style.GrayTheme);
-		mThemeUtil.setTheme(Constants.Theme.Gray);
-		break;
-	case R.id.theme_white:
-		setTheme(R.style.WhiteTheme);
-		mThemeUtil.setTheme(Constants.Theme.White);
-		break;
-	}
-	changeTheme();
-}
-
-/**
- * 权限操作回调
- * @param requestCode
- * @param permissions
- * @param grantResults
- */
-@Override
-public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-	super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-	if (requestCode == REQUEST_STORAGE_PERMISSION) {
-		if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { //允许
-			Intent intent = new Intent(this, LoginActivity.class);
-			startActivityForResult(intent, Constants.Activity.LoginActivity);
-		} else { // 拒绝
-			showShortToast(getString(R.string.toast_permission_fail));
-		}
-	}
-}
-
+  /**
+   * 权限操作回调
+   * @param requestCode
+   * @param permissions
+   * @param grantResults
+   */
+  @Override
+  public void onRequestPermissionsResult(int requestCode,
+                                         @NonNull String[] permissions,
+                                         @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (requestCode == REQUEST_STORAGE_PERMISSION) {
+      if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { //允许
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivityForResult(intent, Constants.Activity.LoginActivity);
+      } else { // 拒绝
+        showShortToast(getString(R.string.toast_permission_fail));
+      }
+    }
+  }
 }

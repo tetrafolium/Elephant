@@ -19,27 +19,19 @@ package com.jun.elephant.entity;
  * Created by Jun on 2016/6/1.
  */
 public class DrawerMenuEntity {
-private String title;
-private int icon;
+  private String title;
+  private int icon;
 
-public DrawerMenuEntity(String title, int icon) {
-	this.title = title;
-	this.icon = icon;
-}
+  public DrawerMenuEntity(String title, int icon) {
+    this.title = title;
+    this.icon = icon;
+  }
 
-public String getTitle() {
-	return title;
-}
+  public String getTitle() { return title; }
 
-public void setTitle(String title) {
-	this.title = title;
-}
+  public void setTitle(String title) { this.title = title; }
 
-public int getIcon() {
-	return icon;
-}
+  public int getIcon() { return icon; }
 
-public void setIcon(int icon) {
-	this.icon = icon;
-}
+  public void setIcon(int icon) { this.icon = icon; }
 }

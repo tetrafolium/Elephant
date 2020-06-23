@@ -16,167 +16,168 @@ import in.srain.cube.views.ptr.indicator.PtrIndicator;
 
 public class MaterialHeader extends View implements PtrUIHandler {
 
-private MaterialProgressDrawable mDrawable;
-private float mScale = 1f;
-private PtrFrameLayout mPtrFrameLayout;
+  private MaterialProgressDrawable mDrawable;
+  private float mScale = 1f;
+  private PtrFrameLayout mPtrFrameLayout;
 
-private Animation mScaleAnimation = new Animation() {
-	@Override
-	public void applyTransformation(float interpolatedTime, Transformation t) {
-		mScale = 1f - interpolatedTime;
-		mDrawable.setAlpha((int) (255 * mScale));
-		invalidate();
-	}
-};
+  private Animation mScaleAnimation = new Animation() {
+    @Override
+    public void applyTransformation(float interpolatedTime, Transformation t) {
+      mScale = 1f - interpolatedTime;
+      mDrawable.setAlpha((int)(255 * mScale));
+      invalidate();
+    }
+  };
 
-public MaterialHeader(Context context) {
-	super(context);
-	initView();
-}
+  public MaterialHeader(Context context) {
+    super(context);
+    initView();
+  }
 
-public MaterialHeader(Context context, AttributeSet attrs) {
-	super(context, attrs);
-	initView();
-}
+  public MaterialHeader(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    initView();
+  }
 
-public MaterialHeader(Context context, AttributeSet attrs, int defStyleAttr) {
-	super(context, attrs, defStyleAttr);
-	initView();
-}
+  public MaterialHeader(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    initView();
+  }
 
-public void setPtrFrameLayout(PtrFrameLayout layout) {
+  public void setPtrFrameLayout(PtrFrameLayout layout) {
 
-	final PtrUIHandlerHook mPtrUIHandlerHook = new PtrUIHandlerHook() {
-		@Override
-		public void run() {
-			startAnimation(mScaleAnimation);
-		}
-	};
+    final PtrUIHandlerHook mPtrUIHandlerHook = new PtrUIHandlerHook() {
+      @Override
+      public void run() {
+        startAnimation(mScaleAnimation);
+      }
+    };
 
-	mScaleAnimation.setDuration(200);
-	mScaleAnimation.setAnimationListener(new Animation.AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
+    mScaleAnimation.setDuration(200);
+    mScaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+      @Override
+      public void onAnimationStart(Animation animation) {}
 
-			}
+      @Override
+      public void onAnimationEnd(Animation animation) {
+        mPtrUIHandlerHook.resume();
+      }
 
-			@Override
-			public void onAnimationEnd(Animation animation) {
-			        mPtrUIHandlerHook.resume();
-			}
+      @Override
+      public void onAnimationRepeat(Animation animation) {}
+    });
 
-			@Override
-			public void onAnimationRepeat(Animation animation) {
+    mPtrFrameLayout = layout;
+    mPtrFrameLayout.setRefreshCompleteHook(mPtrUIHandlerHook);
+  }
 
-			}
-		});
+  private void initView() {
+    mDrawable = new MaterialProgressDrawable(getContext(), this);
+    mDrawable.setBackgroundColor(Color.WHITE);
+    mDrawable.setCallback(this);
+  }
 
-	mPtrFrameLayout = layout;
-	mPtrFrameLayout.setRefreshCompleteHook(mPtrUIHandlerHook);
-}
+  @Override
+  public void invalidateDrawable(Drawable dr) {
+    if (dr == mDrawable) {
+      invalidate();
+    } else {
+      super.invalidateDrawable(dr);
+    }
+  }
 
-private void initView() {
-	mDrawable = new MaterialProgressDrawable(getContext(), this);
-	mDrawable.setBackgroundColor(Color.WHITE);
-	mDrawable.setCallback(this);
-}
+  public void setColorSchemeColors(int[] colors) {
+    mDrawable.setColorSchemeColors(colors);
+    invalidate();
+  }
 
-@Override
-public void invalidateDrawable(Drawable dr) {
-	if (dr == mDrawable) {
-		invalidate();
-	} else {
-		super.invalidateDrawable(dr);
-	}
-}
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    int height =
+        mDrawable.getIntrinsicHeight() + getPaddingTop() + getPaddingBottom();
+    heightMeasureSpec =
+        MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+  }
 
-public void setColorSchemeColors(int[] colors) {
-	mDrawable.setColorSchemeColors(colors);
-	invalidate();
-}
+  @Override
+  protected void onLayout(boolean changed, int left, int top, int right,
+                          int bottom) {
+    final int size = mDrawable.getIntrinsicHeight();
+    mDrawable.setBounds(0, 0, size, size);
+  }
 
-@Override
-protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-	int height = mDrawable.getIntrinsicHeight() + getPaddingTop() + getPaddingBottom();
-	heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-	super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-}
+  @Override
+  protected void onDraw(Canvas canvas) {
+    final int saveCount = canvas.save();
+    Rect rect = mDrawable.getBounds();
+    int l = getPaddingLeft() +
+            (getMeasuredWidth() - mDrawable.getIntrinsicWidth()) / 2;
+    canvas.translate(l, getPaddingTop());
+    canvas.scale(mScale, mScale, rect.exactCenterX(), rect.exactCenterY());
+    mDrawable.draw(canvas);
+    canvas.restoreToCount(saveCount);
+  }
 
-@Override
-protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-	final int size = mDrawable.getIntrinsicHeight();
-	mDrawable.setBounds(0, 0, size, size);
-}
+  /**
+   * When the content view has reached top and refresh has been completed, view
+   * will be reset.
+   *
+   * @param frame
+   */
+  @Override
+  public void onUIReset(PtrFrameLayout frame) {
+    mScale = 1f;
+    mDrawable.stop();
+  }
 
-@Override
-protected void onDraw(Canvas canvas) {
-	final int saveCount = canvas.save();
-	Rect rect = mDrawable.getBounds();
-	int l = getPaddingLeft() + (getMeasuredWidth() - mDrawable.getIntrinsicWidth()) / 2;
-	canvas.translate(l, getPaddingTop());
-	canvas.scale(mScale, mScale, rect.exactCenterX(), rect.exactCenterY());
-	mDrawable.draw(canvas);
-	canvas.restoreToCount(saveCount);
-}
+  /**
+   * prepare for loading
+   *
+   * @param frame
+   */
+  @Override
+  public void onUIRefreshPrepare(PtrFrameLayout frame) {}
 
-/**
- * When the content view has reached top and refresh has been completed, view will be reset.
- *
- * @param frame
- */
-@Override
-public void onUIReset(PtrFrameLayout frame) {
-	mScale = 1f;
-	mDrawable.stop();
-}
+  /**
+   * perform refreshing UI
+   *
+   * @param frame
+   */
+  @Override
+  public void onUIRefreshBegin(PtrFrameLayout frame) {
+    mDrawable.setAlpha(255);
+    mDrawable.start();
+  }
 
-/**
- * prepare for loading
- *
- * @param frame
- */
-@Override
-public void onUIRefreshPrepare(PtrFrameLayout frame) {
-}
+  /**
+   * perform UI after refresh
+   *
+   * @param frame
+   */
+  @Override
+  public void onUIRefreshComplete(PtrFrameLayout frame) {
+    mDrawable.stop();
+  }
 
-/**
- * perform refreshing UI
- *
- * @param frame
- */
-@Override
-public void onUIRefreshBegin(PtrFrameLayout frame) {
-	mDrawable.setAlpha(255);
-	mDrawable.start();
-}
+  @Override
+  public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch,
+                                 byte status, PtrIndicator ptrIndicator) {
 
-/**
- * perform UI after refresh
- *
- * @param frame
- */
-@Override
-public void onUIRefreshComplete(PtrFrameLayout frame) {
-	mDrawable.stop();
-}
+    float percent = Math.min(1f, ptrIndicator.getCurrentPercent());
 
-@Override
-public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
+    if (status == PtrFrameLayout.PTR_STATUS_PREPARE) {
+      mDrawable.setAlpha((int)(255 * percent));
+      mDrawable.showArrow(true);
 
-	float percent = Math.min(1f, ptrIndicator.getCurrentPercent());
+      float strokeStart = ((percent)*.8f);
+      mDrawable.setStartEndTrim(0f, Math.min(0.8f, strokeStart));
+      mDrawable.setArrowScale(Math.min(1f, percent));
 
-	if (status == PtrFrameLayout.PTR_STATUS_PREPARE) {
-		mDrawable.setAlpha((int) (255 * percent));
-		mDrawable.showArrow(true);
-
-		float strokeStart = ((percent) * .8f);
-		mDrawable.setStartEndTrim(0f, Math.min(0.8f, strokeStart));
-		mDrawable.setArrowScale(Math.min(1f, percent));
-
-		// magic
-		float rotation = (-0.25f + .4f * percent + percent * 2) * .5f;
-		mDrawable.setProgressRotation(rotation);
-		invalidate();
-	}
-}
+      // magic
+      float rotation = (-0.25f + .4f * percent + percent * 2) * .5f;
+      mDrawable.setProgressRotation(rotation);
+      invalidate();
+    }
+  }
 }

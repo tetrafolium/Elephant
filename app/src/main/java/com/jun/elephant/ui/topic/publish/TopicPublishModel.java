@@ -19,10 +19,8 @@ import com.jun.elephant.api.Networks;
 import com.jun.elephant.entity.topic.CategoryEntity;
 import com.jun.elephant.entity.topic.TopicPublishEntity;
 import com.jun.elephant.mvpframe.rx.RxSchedulers;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import rx.Observable;
 
 /**
@@ -30,22 +28,21 @@ import rx.Observable;
  */
 public class TopicPublishModel implements TopicPublishContract.Model {
 
-@Override
-public Observable<CategoryEntity> getCategories() {
-	return Networks.getInstance().getTopicApi()
-	       .getCategories()
-	       .compose(RxSchedulers.<CategoryEntity>io_main());
-}
+  @Override
+  public Observable<CategoryEntity> getCategories() {
+    return Networks.getInstance().getTopicApi().getCategories().compose(
+        RxSchedulers.<CategoryEntity>io_main());
+  }
 
-@Override
-public Observable<TopicPublishEntity> publishTopic(String title, String body, String categoryId) {
-	Map<String, String> options = new HashMap<>();
-	options.put("title", title);
-	options.put("body", body);
-	options.put("category_id", categoryId);
+  @Override
+  public Observable<TopicPublishEntity> publishTopic(String title, String body,
+                                                     String categoryId) {
+    Map<String, String> options = new HashMap<>();
+    options.put("title", title);
+    options.put("body", body);
+    options.put("category_id", categoryId);
 
-	return Networks.getInstance().getTopicApi()
-	       .publishTopic(options)
-	       .compose(RxSchedulers.<TopicPublishEntity>io_main());
-}
+    return Networks.getInstance().getTopicApi().publishTopic(options).compose(
+        RxSchedulers.<TopicPublishEntity>io_main());
+  }
 }

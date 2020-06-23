@@ -19,13 +19,9 @@ package com.jun.elephant.entity.topic;
  * Created by Jun on 2016/5/4.
  */
 public class TopicDetailEntity {
-private TopicEntity data;
+  private TopicEntity data;
 
-public TopicEntity getData() {
-	return data;
-}
+  public TopicEntity getData() { return data; }
 
-public void setData(TopicEntity data) {
-	this.data = data;
-}
+  public void setData(TopicEntity data) { this.data = data; }
 }

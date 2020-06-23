@@ -19,7 +19,8 @@ import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -27,9 +28,6 @@ import com.facebook.imagepipeline.image.ImageInfo;
 import com.jun.elephant.R;
 import com.jun.elephant.common.BaseActivity;
 import com.jun.elephant.global.Constants;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.relex.photodraweeview.PhotoDraweeView;
 
 /**
@@ -37,51 +35,52 @@ import me.relex.photodraweeview.PhotoDraweeView;
  */
 public class PhotoShowActivity extends BaseActivity {
 
-@BindView(R.id.toolBar)
-Toolbar mToolbar;
-@BindView(R.id.photo_iv)
-PhotoDraweeView mPhotoIv;
+  @BindView(R.id.toolBar) Toolbar mToolbar;
+  @BindView(R.id.photo_iv) PhotoDraweeView mPhotoIv;
 
-private String mImageUrl;
+  private String mImageUrl;
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_show_photo);
-	ButterKnife.bind(this);
-}
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_show_photo);
+    ButterKnife.bind(this);
+  }
 
-@Override
-public void initData() {
-	super.initData();
-	mImageUrl = getIntent().getExtras().getString(Constants.Key.TOPIC_IMAGE_URL);
-}
+  @Override
+  public void initData() {
+    super.initData();
+    mImageUrl =
+        getIntent().getExtras().getString(Constants.Key.TOPIC_IMAGE_URL);
+  }
 
-@Override
-public void initView() {
-	super.initView();
-	setToolbar(mToolbar, getString(R.string.app_photo_show));
-}
+  @Override
+  public void initView() {
+    super.initView();
+    setToolbar(mToolbar, getString(R.string.app_photo_show));
+  }
 
-@Override
-public void initLoad() {
-	super.initLoad();
+  @Override
+  public void initLoad() {
+    super.initLoad();
 
-	if (!TextUtils.isEmpty(mImageUrl)) {
-		PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
-		controller.setUri(mImageUrl);
-		controller.setOldController(mPhotoIv.getController());
-		controller.setControllerListener(new BaseControllerListener<ImageInfo>() {
-				@Override
-				public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
-				        super.onFinalImageSet(id, imageInfo, animatable);
-				        if (imageInfo == null || mPhotoIv == null) {
-				                return;
-					}
-				        mPhotoIv.update(imageInfo.getWidth(), imageInfo.getHeight());
-				}
-			});
-		mPhotoIv.setController(controller.build());
-	}
-}
+    if (!TextUtils.isEmpty(mImageUrl)) {
+      PipelineDraweeControllerBuilder controller =
+          Fresco.newDraweeControllerBuilder();
+      controller.setUri(mImageUrl);
+      controller.setOldController(mPhotoIv.getController());
+      controller.setControllerListener(new BaseControllerListener<ImageInfo>() {
+        @Override
+        public void onFinalImageSet(String id, ImageInfo imageInfo,
+                                    Animatable animatable) {
+          super.onFinalImageSet(id, imageInfo, animatable);
+          if (imageInfo == null || mPhotoIv == null) {
+            return;
+          }
+          mPhotoIv.update(imageInfo.getWidth(), imageInfo.getHeight());
+        }
+      });
+      mPhotoIv.setController(controller.build());
+    }
+  }
 }
