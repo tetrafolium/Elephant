@@ -28,20 +28,20 @@ import rx.Observable;
  */
 public interface UserInfoContract {
 
-    interface Model extends BaseModel {
-        Observable<UserInfoEntity> getUserInfoById(int userId);
+interface Model extends BaseModel {
+Observable<UserInfoEntity> getUserInfoById(int userId);
 
-        Observable<UserInfoEntity> saveUserInfoById(int userId, UserEntity userEntity);
-    }
+Observable<UserInfoEntity> saveUserInfoById(int userId, UserEntity userEntity);
+}
 
-    interface View extends BaseView {
-        void getUserInfo(UserInfoEntity userInfoEntity);
-    }
+interface View extends BaseView {
+void getUserInfo(UserInfoEntity userInfoEntity);
+}
 
-    abstract class Presenter extends BasePresenter<Model, View> {
+abstract class Presenter extends BasePresenter<Model, View> {
 
-        public abstract void getUserInfoById(int userId);
+public abstract void getUserInfoById(int userId);
 
-        public abstract void saveUserInfoById(int userId, UserEntity userEntity);
-    }
+public abstract void saveUserInfoById(int userId, UserEntity userEntity);
+}
 }

@@ -35,67 +35,67 @@ import butterknife.ButterKnife;
  */
 public class WebViewActivity extends BaseWebViewActivity {
 
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
-    @BindView(R.id.webView)
-    WebView mWebView;
-    @BindView(R.id.multiStateView)
-    MultiStateView mMultiStateView;
+@BindView(R.id.toolBar)
+Toolbar mToolBar;
+@BindView(R.id.webView)
+WebView mWebView;
+@BindView(R.id.multiStateView)
+MultiStateView mMultiStateView;
 
-    private String mWebUrl, mTitle;
+private String mWebUrl, mTitle;
 
-    public static Intent newIntent(Context context, String title, String url) {
-        Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra(Constants.Key.WEB_TITLE, title);
-        intent.putExtra(Constants.Key.WEB_URL, url);
-        return intent;
-    }
+public static Intent newIntent(Context context, String title, String url) {
+	Intent intent = new Intent(context, WebViewActivity.class);
+	intent.putExtra(Constants.Key.WEB_TITLE, title);
+	intent.putExtra(Constants.Key.WEB_URL, url);
+	return intent;
+}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
-        ButterKnife.bind(this);
-    }
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_webview);
+	ButterKnife.bind(this);
+}
 
-    @Override
-    public void initData() {
-        super.initData();
-        mWebUrl = getIntent().getStringExtra(Constants.Key.WEB_URL);
-        mTitle = getIntent().getStringExtra(Constants.Key.WEB_TITLE);
-    }
+@Override
+public void initData() {
+	super.initData();
+	mWebUrl = getIntent().getStringExtra(Constants.Key.WEB_URL);
+	mTitle = getIntent().getStringExtra(Constants.Key.WEB_TITLE);
+}
 
-    @Override
-    public void initView() {
-        super.initView();
-        mToolBar.setTitle(mTitle);
-    }
+@Override
+public void initView() {
+	super.initView();
+	mToolBar.setTitle(mTitle);
+}
 
-    @Override
-    public void initLoad() {
-        super.initLoad();
+@Override
+public void initLoad() {
+	super.initLoad();
 
-        mWebView.setWebViewClient(new WebAppClient(this, mMultiStateView, mWebView));
-        mWebView.loadUrl(mWebUrl, getAuth());
-    }
+	mWebView.setWebViewClient(new WebAppClient(this, mMultiStateView, mWebView));
+	mWebView.loadUrl(mWebUrl, getAuth());
+}
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
+@Override
+public void initListener() {
+	super.initListener();
+	mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        finish();
+			}
+		});
+}
 
-    @Override
-    public void finish() {
-        if (mWebView.canGoBack()) {
-            mWebView.goBack();
-        } else {
-            super.finish();
-        }
-    }
+@Override
+public void finish() {
+	if (mWebView.canGoBack()) {
+		mWebView.goBack();
+	} else {
+		super.finish();
+	}
+}
 }

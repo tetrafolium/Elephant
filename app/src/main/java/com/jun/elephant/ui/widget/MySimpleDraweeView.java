@@ -18,48 +18,48 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 public class MySimpleDraweeView extends SimpleDraweeView {
 
-    public MySimpleDraweeView(Context context, GenericDraweeHierarchy hierarchy) {
-        super(context, hierarchy);
-    }
+public MySimpleDraweeView(Context context, GenericDraweeHierarchy hierarchy) {
+	super(context, hierarchy);
+}
 
-    public MySimpleDraweeView(Context context) {
-        super(context);
-    }
+public MySimpleDraweeView(Context context) {
+	super(context);
+}
 
-    public MySimpleDraweeView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+public MySimpleDraweeView(Context context, AttributeSet attrs) {
+	super(context, attrs);
+}
 
-    @Override
-    public void setImageURI(Uri uri) {
+@Override
+public void setImageURI(Uri uri) {
 
-        ImageRequest request = ImageRequestBuilder
-                               .newBuilderWithSource(uri)
-                               .setLocalThumbnailPreviewsEnabled(true)
-                               .setProgressiveRenderingEnabled(false)
-                               .setResizeOptions(new ResizeOptions(50, 50))
-                               .build();
-        /*
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setUri(uri)
-                        .setTapToRetryEnabled(true)
-                        .setImageRequest(request)
-                        .setOldController(getController())
-                        .build();*/
+	ImageRequest request = ImageRequestBuilder
+	                       .newBuilderWithSource(uri)
+	                       .setLocalThumbnailPreviewsEnabled(true)
+	                       .setProgressiveRenderingEnabled(false)
+	                       .setResizeOptions(new ResizeOptions(50, 50))
+	                       .build();
+	/*
+	        DraweeController controller = Fresco.newDraweeControllerBuilder()
+	                .setUri(uri)
+	                .setTapToRetryEnabled(true)
+	                .setImageRequest(request)
+	                .setOldController(getController())
+	                .build();*/
 
-        PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
-                                              .setUri(uri)
-                                              .setTapToRetryEnabled(true)
-                                              .setImageRequest(request)
-                                              .setOldController(getController())
-                                              .build();
+	PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+	                                      .setUri(uri)
+	                                      .setTapToRetryEnabled(true)
+	                                      .setImageRequest(request)
+	                                      .setOldController(getController())
+	                                      .build();
 
-        setController(controller);
+	setController(controller);
 
-        super.setImageURI(uri);
-    }
+	super.setImageURI(uri);
+}
 
-    public void setImageUrl(String url) {
-        setImageURI(Uri.parse(url));
-    }
+public void setImageUrl(String url) {
+	setImageURI(Uri.parse(url));
+}
 }

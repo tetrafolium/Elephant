@@ -21,13 +21,13 @@ import java.util.List;
  * Created by Jun on 2016/5/6.
  */
 public class UserMessageEntity {
-    private List<MessageEntity> data;
+private List<MessageEntity> data;
 
-    public List<MessageEntity> getData() {
-        return data;
-    }
+public List<MessageEntity> getData() {
+	return data;
+}
 
-    public void setData(List<MessageEntity> data) {
-        this.data = data;
-    }
+public void setData(List<MessageEntity> data) {
+	this.data = data;
+}
 }

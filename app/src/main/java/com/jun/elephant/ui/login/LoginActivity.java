@@ -34,79 +34,79 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  */
 public class LoginActivity extends BaseFrameActivity<LoginPresenter, LoginModel> implements ZXingScannerView.ResultHandler, LoginContract.View {
 
-    private ZXingScannerView mScannerView;
+private ZXingScannerView mScannerView;
 
-    private MaterialDialog mLoadingDialog;
+private MaterialDialog mLoadingDialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mScannerView = new ZXingScannerView(this);
-        setContentView(mScannerView);
-    }
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	mScannerView = new ZXingScannerView(this);
+	setContentView(mScannerView);
+}
 
-    @Override
-    public void initView() {
-        super.initView();
-        getLoadingDialog().content("正在登录...");
-        mLoadingDialog = getLoadingDialog().build();
-    }
+@Override
+public void initView() {
+	super.initView();
+	getLoadingDialog().content("正在登录...");
+	mLoadingDialog = getLoadingDialog().build();
+}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mScannerView.setResultHandler(this);
-        mScannerView.startCamera();
-    }
+@Override
+public void onResume() {
+	super.onResume();
+	mScannerView.setResultHandler(this);
+	mScannerView.startCamera();
+}
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mScannerView.stopCamera();
-    }
+@Override
+public void onPause() {
+	super.onPause();
+	mScannerView.stopCamera();
+}
 
-    @Override
-    public void handleResult(Result result) {
-        String mUserName = "";
-        String mLoginToken = "";
-        String s = result.getText();
-        if (!TextUtils.isEmpty(s) && s.contains(",")) {
-            String[] data = s.split(",", 2);
-            if (data.length == 2) {
-                mUserName = data[0];
-                mLoginToken = data[1];
-            }
-        }
+@Override
+public void handleResult(Result result) {
+	String mUserName = "";
+	String mLoginToken = "";
+	String s = result.getText();
+	if (!TextUtils.isEmpty(s) && s.contains(",")) {
+		String[] data = s.split(",", 2);
+		if (data.length == 2) {
+			mUserName = data[0];
+			mLoginToken = data[1];
+		}
+	}
 
-        JLog.d("Login info: ", "UserName === " + mUserName + " LoginToken ======= "+ mLoginToken);
+	JLog.d("Login info: ", "UserName === " + mUserName + " LoginToken ======= "+ mLoginToken);
 
-        mPresenter.login(this, mUserName, mLoginToken);
-    }
+	mPresenter.login(this, mUserName, mLoginToken);
+}
 
-    @Override
-    public void onRequestStart() {
-        mLoadingDialog.show();
-    }
+@Override
+public void onRequestStart() {
+	mLoadingDialog.show();
+}
 
-    @Override
-    public void onRequestEnd() {
-        mLoadingDialog.dismiss();
-    }
+@Override
+public void onRequestEnd() {
+	mLoadingDialog.dismiss();
+}
 
-    @Override
-    public void onLoginSuccess(UserInfoEntity userInfoEntity) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.Key.USER_DATA, userInfoEntity);
-        Intent intent = new Intent();
-        intent.putExtras(bundle);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
+@Override
+public void onLoginSuccess(UserInfoEntity userInfoEntity) {
+	Bundle bundle = new Bundle();
+	bundle.putParcelable(Constants.Key.USER_DATA, userInfoEntity);
+	Intent intent = new Intent();
+	intent.putExtras(bundle);
+	setResult(RESULT_OK, intent);
+	finish();
+}
 
-    @Override
-    public void onInternetError() {
-        super.onInternetError();
-        showShortToast(getString(R.string.toast_login_fail));
-        mScannerView.resumeCameraPreview(this); //重置扫描
-    }
+@Override
+public void onInternetError() {
+	super.onInternetError();
+	showShortToast(getString(R.string.toast_login_fail));
+	mScannerView.resumeCameraPreview(this); //重置扫描
+}
 }

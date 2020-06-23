@@ -20,13 +20,13 @@ import com.jun.elephant.global.Constants;
 
 
 public class MarkDownRenderer {
-    AndDown andDown = new AndDown();
+AndDown andDown = new AndDown();
 
-    public String renderMarkdown(String markdownRaw) {
-        return  Constants.MD_HTML_PREFIX +
-                andDown.markdownToHtml(markdownRaw) +
-                Constants.MD_HTML_SUFFIX;
-    }
+public String renderMarkdown(String markdownRaw) {
+	return Constants.MD_HTML_PREFIX +
+	       andDown.markdownToHtml(markdownRaw) +
+	       Constants.MD_HTML_SUFFIX;
+}
 
 //    private String themeStringFromContext(Context context) {
 //        String theme = getThemeFromPrefs(context);

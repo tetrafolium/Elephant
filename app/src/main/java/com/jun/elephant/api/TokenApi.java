@@ -28,33 +28,33 @@ import rx.Observable;
  */
 public interface TokenApi {
 
-    /**
-     * client_credentials 认证
-     * @param authType
-     * @param clientId
-     * @param clientSecret
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("oauth/access_token")
-    Observable<TokenEntity> getToken(@Field("grant_type") String authType,
-                                     @Field("client_id") String clientId,
-                                     @Field("client_secret") String clientSecret);
+/**
+ * client_credentials 认证
+ * @param authType
+ * @param clientId
+ * @param clientSecret
+ * @return
+ */
+@FormUrlEncoded
+@POST("oauth/access_token")
+Observable<TokenEntity> getToken(@Field("grant_type") String authType,
+                                 @Field("client_id") String clientId,
+                                 @Field("client_secret") String clientSecret);
 
-    /**
-     * login_token 认证
-     * @param authType
-     * @param clientId
-     * @param clientSecret
-     * @param username
-     * @param loginToken
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("oauth/access_token")
-    Observable<TokenEntity> getToken(@Field("grant_type") String authType,
-                                     @Field("client_id") String clientId,
-                                     @Field("client_secret") String clientSecret,
-                                     @Field("username") String username,
-                                     @Field("login_token") String loginToken);
+/**
+ * login_token 认证
+ * @param authType
+ * @param clientId
+ * @param clientSecret
+ * @param username
+ * @param loginToken
+ * @return
+ */
+@FormUrlEncoded
+@POST("oauth/access_token")
+Observable<TokenEntity> getToken(@Field("grant_type") String authType,
+                                 @Field("client_id") String clientId,
+                                 @Field("client_secret") String clientSecret,
+                                 @Field("username") String username,
+                                 @Field("login_token") String loginToken);
 }

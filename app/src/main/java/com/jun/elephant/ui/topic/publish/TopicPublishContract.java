@@ -28,25 +28,25 @@ import rx.Observable;
  */
 public interface TopicPublishContract {
 
-    interface Model extends BaseModel {
-        Observable<CategoryEntity> getCategories();
+interface Model extends BaseModel {
+Observable<CategoryEntity> getCategories();
 
-        Observable<TopicPublishEntity> publishTopic(String title, String body, String categoryId);
-    }
+Observable<TopicPublishEntity> publishTopic(String title, String body, String categoryId);
+}
 
-    interface View extends BaseView {
+interface View extends BaseView {
 
-        void getCategory(CategoryEntity categoryEntity);
+void getCategory(CategoryEntity categoryEntity);
 
-        void publishTopicSuccess(TopicPublishEntity.DataBean topicEntity);
+void publishTopicSuccess(TopicPublishEntity.DataBean topicEntity);
 
-    }
+}
 
-    abstract class Presenter extends BasePresenter<Model, View> {
+abstract class Presenter extends BasePresenter<Model, View> {
 
-        public abstract void getCategory();
+public abstract void getCategory();
 
-        public abstract void publishTopic(String title, String body, String categoryId);
+public abstract void publishTopic(String title, String body, String categoryId);
 
-    }
+}
 }

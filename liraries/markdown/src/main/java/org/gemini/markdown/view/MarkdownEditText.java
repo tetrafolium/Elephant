@@ -11,33 +11,33 @@ import android.widget.EditText;
  */
 public class MarkdownEditText extends EditText {
 
-    private MarkdownTextChangeWatcher mTextWatcher;
+private MarkdownTextChangeWatcher mTextWatcher;
 
-    public MarkdownEditText(Context context) {
-        super(context);
-        init();
-    }
+public MarkdownEditText(Context context) {
+	super(context);
+	init();
+}
 
-    public MarkdownEditText(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
+public MarkdownEditText(Context context, AttributeSet attrs) {
+	super(context, attrs);
+	init();
+}
 
-    public MarkdownEditText(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
+public MarkdownEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+	super(context, attrs, defStyleAttr);
+	init();
+}
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public MarkdownEditText(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+public MarkdownEditText(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+	super(context, attrs, defStyleAttr, defStyleRes);
+	init();
+}
 
-    private void init () {
-        mTextWatcher = new MarkdownTextChangeWatcher();
-        this.addTextChangedListener(mTextWatcher);
-    }
+private void init () {
+	mTextWatcher = new MarkdownTextChangeWatcher();
+	this.addTextChangedListener(mTextWatcher);
+}
 
 
 }

@@ -27,42 +27,42 @@ import rx.functions.Action0;
  */
 public class UserInfoPresenter extends UserInfoContract.Presenter {
 
-    public Observer<UserInfoEntity> getUserInfoObserver() {
-        return new Observer<UserInfoEntity>() {
-            @Override
-            public void onCompleted() {
-                mView.onRequestEnd();
-            }
+public Observer<UserInfoEntity> getUserInfoObserver() {
+	return new Observer<UserInfoEntity>() {
+		       @Override
+		       public void onCompleted() {
+			       mView.onRequestEnd();
+		       }
 
-            @Override
-            public void onError(Throwable e) {
-                mView.onRequestError(e.getMessage());
-            }
+		       @Override
+		       public void onError(Throwable e) {
+			       mView.onRequestError(e.getMessage());
+		       }
 
-            @Override
-            public void onNext(UserInfoEntity userInfoEntity) {
-                mView.getUserInfo(userInfoEntity);
-            }
-        };
-    }
+		       @Override
+		       public void onNext(UserInfoEntity userInfoEntity) {
+			       mView.getUserInfo(userInfoEntity);
+		       }
+	};
+}
 
-    @Override
-    public void getUserInfoById(int userId) {
-        mRxManager.add(mModel.getUserInfoById(userId).subscribe(getUserInfoObserver()));
-    }
+@Override
+public void getUserInfoById(int userId) {
+	mRxManager.add(mModel.getUserInfoById(userId).subscribe(getUserInfoObserver()));
+}
 
-    @Override
-    public void saveUserInfoById(int userId, UserEntity userEntity) {
-        mRxManager.add(mModel.saveUserInfoById(userId, userEntity)
-        .doOnSubscribe(new Action0() {
-            @Override
-            public void call() {
-                mView.onRequestStart();
-            }
-        })
-        .subscribeOn(AndroidSchedulers.mainThread())
-        .subscribe(getUserInfoObserver())
+@Override
+public void saveUserInfoById(int userId, UserEntity userEntity) {
+	mRxManager.add(mModel.saveUserInfoById(userId, userEntity)
+	               .doOnSubscribe(new Action0() {
+			@Override
+			public void call() {
+			        mView.onRequestStart();
+			}
+		})
+	               .subscribeOn(AndroidSchedulers.mainThread())
+	               .subscribe(getUserInfoObserver())
 
-                      );
-    }
+	               );
+}
 }

@@ -27,15 +27,15 @@ import rx.Observable;
  */
 
 public interface TopicReplyContract {
-    interface Model extends BaseModel {
-        Observable<TopicReplyEntity> reply(int topicId, String body);
-    }
+interface Model extends BaseModel {
+Observable<TopicReplyEntity> reply(int topicId, String body);
+}
 
-    interface View extends BaseView {
-        void replySuccess(TopicReplyEntity topicReplyEntity);
-    }
+interface View extends BaseView {
+void replySuccess(TopicReplyEntity topicReplyEntity);
+}
 
-    abstract class Presenter extends BasePresenter<Model, View> {
-        public abstract void reply(int topicId, String body);
-    }
+abstract class Presenter extends BasePresenter<Model, View> {
+public abstract void reply(int topicId, String body);
+}
 }

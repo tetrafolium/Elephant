@@ -16,20 +16,20 @@ public class RxSchedulers {
 //
 //    }
 
-    public static <T> Observable.Transformer<T, T> io_main() {
+public static <T> Observable.Transformer<T, T> io_main() {
 
-        return new Observable.Transformer<T, T>() {
-            @Override
-            public Observable<T> call(Observable<T> tObservable) {
+	return new Observable.Transformer<T, T>() {
+		       @Override
+		       public Observable<T> call(Observable<T> tObservable) {
 
-                return tObservable
-                       //生产线程
-                       .subscribeOn(Schedulers.io())
-                       //消费线程
-                       .observeOn(AndroidSchedulers.mainThread());
-            }
-        };
+			       return tObservable
+			              //生产线程
+			              .subscribeOn(Schedulers.io())
+			              //消费线程
+			              .observeOn(AndroidSchedulers.mainThread());
+		       }
+	};
 
 
-    }
+}
 }

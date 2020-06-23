@@ -26,26 +26,26 @@ import rx.Observable;
  * Created by Jun on 2016/10/14.
  */
 public class UserInfoModel implements UserInfoContract.Model {
-    /**
-     * 根据用户 Id 获取用户信息
-     * @param userId
-     * @return
-     */
-    @Override
-    public Observable<UserInfoEntity> getUserInfoById(int userId) {
-        return Networks.getInstance().getUserApi().getUserInfoById(userId)
-               .compose(RxSchedulers.<UserInfoEntity>io_main());
-    }
+/**
+ * 根据用户 Id 获取用户信息
+ * @param userId
+ * @return
+ */
+@Override
+public Observable<UserInfoEntity> getUserInfoById(int userId) {
+	return Networks.getInstance().getUserApi().getUserInfoById(userId)
+	       .compose(RxSchedulers.<UserInfoEntity>io_main());
+}
 
-    /**
-     * 保存修改过后的用户信息
-     * @param userId
-     * @param userEntity
-     * @return
-     */
-    @Override
-    public Observable<UserInfoEntity> saveUserInfoById(int userId, UserEntity userEntity) {
-        return Networks.getInstance().getUserApi().saveUserInfo(userId, userEntity)
-               .compose(RxSchedulers.<UserInfoEntity>io_main());
-    }
+/**
+ * 保存修改过后的用户信息
+ * @param userId
+ * @param userEntity
+ * @return
+ */
+@Override
+public Observable<UserInfoEntity> saveUserInfoById(int userId, UserEntity userEntity) {
+	return Networks.getInstance().getUserApi().saveUserInfo(userId, userEntity)
+	       .compose(RxSchedulers.<UserInfoEntity>io_main());
+}
 }

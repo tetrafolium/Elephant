@@ -26,35 +26,35 @@ import rx.functions.Action0;
  */
 public class TopicReplyPresenter extends TopicReplyContract.Presenter {
 
-    private Observer<TopicReplyEntity> mReplyObserver = new Observer<TopicReplyEntity>() {
+private Observer<TopicReplyEntity> mReplyObserver = new Observer<TopicReplyEntity>() {
 
-        @Override
-        public void onCompleted() {
-            mView.onRequestEnd();
-        }
+	@Override
+	public void onCompleted() {
+		mView.onRequestEnd();
+	}
 
-        @Override
-        public void onError(Throwable e) {
-            mView.onRequestError(e.toString());
-            mView.onInternetError();
-        }
+	@Override
+	public void onError(Throwable e) {
+		mView.onRequestError(e.toString());
+		mView.onInternetError();
+	}
 
-        @Override
-        public void onNext(TopicReplyEntity topicReplyEntity) {
-            mView.replySuccess(topicReplyEntity);
-        }
-    };
+	@Override
+	public void onNext(TopicReplyEntity topicReplyEntity) {
+		mView.replySuccess(topicReplyEntity);
+	}
+};
 
-    @Override
-    public void reply(int topicId, String body) {
-        mRxManager.add(mModel.reply(topicId, body)
-        .doOnSubscribe(new Action0() {
-            @Override
-            public void call() {
-                mView.onRequestStart();
-            }
-        })
-        .subscribeOn(AndroidSchedulers.mainThread())
-        .subscribe(mReplyObserver));
-    }
+@Override
+public void reply(int topicId, String body) {
+	mRxManager.add(mModel.reply(topicId, body)
+	               .doOnSubscribe(new Action0() {
+			@Override
+			public void call() {
+			        mView.onRequestStart();
+			}
+		})
+	               .subscribeOn(AndroidSchedulers.mainThread())
+	               .subscribe(mReplyObserver));
+}
 }

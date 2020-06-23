@@ -31,49 +31,49 @@ import java.io.File;
  */
 public class Elephant extends Application {
 
-    public static Context applicationContext;
+public static Context applicationContext;
 
-    public static String APP_CACHE_PATH = "Elephant/cache";
+public static String APP_CACHE_PATH = "Elephant/cache";
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        applicationContext = this;
+@Override
+public void onCreate() {
+	super.onCreate();
+	applicationContext = this;
 
-        /**
-         * 设置 Fresco 图片缓存的路径
-         */
-        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(getApplicationContext())
-                                          .setBaseDirectoryPath(getOwnCacheDirectory(this, APP_CACHE_PATH))
-                                          .build();
-        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(getApplicationContext())
-                                     .setMainDiskCacheConfig(diskCacheConfig)
-                                     .setSmallImageDiskCacheConfig(diskCacheConfig)
-                                     .build();
+	/**
+	 * 设置 Fresco 图片缓存的路径
+	 */
+	DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(getApplicationContext())
+	                                  .setBaseDirectoryPath(getOwnCacheDirectory(this, APP_CACHE_PATH))
+	                                  .build();
+	ImagePipelineConfig config = ImagePipelineConfig.newBuilder(getApplicationContext())
+	                             .setMainDiskCacheConfig(diskCacheConfig)
+	                             .setSmallImageDiskCacheConfig(diskCacheConfig)
+	                             .build();
 
-        //初始化 Fresco 图片缓存库
-        Fresco.initialize(this, config);
-        //初始化日志输出工具
-        JLog.initialize(BuildConfig.LOG_DEBUG);
-    }
+	//初始化 Fresco 图片缓存库
+	Fresco.initialize(this, config);
+	//初始化日志输出工具
+	JLog.initialize(BuildConfig.LOG_DEBUG);
+}
 
-    public static File getOwnCacheDirectory(Context context, String cachePath) {
-        File appCacheDir = null;
+public static File getOwnCacheDirectory(Context context, String cachePath) {
+	File appCacheDir = null;
 
-        if ("mounted".equals(Environment.getExternalStorageState()) && hasExternalStoragePermission(context)) {
-            appCacheDir = new File(Environment.getExternalStorageDirectory(), cachePath);
-        }
+	if ("mounted".equals(Environment.getExternalStorageState()) && hasExternalStoragePermission(context)) {
+		appCacheDir = new File(Environment.getExternalStorageDirectory(), cachePath);
+	}
 
-        if (appCacheDir == null || !appCacheDir.exists() && !appCacheDir.mkdirs()) {
-            appCacheDir = context.getCacheDir();
-        }
+	if (appCacheDir == null || !appCacheDir.exists() && !appCacheDir.mkdirs()) {
+		appCacheDir = context.getCacheDir();
+	}
 
-        return appCacheDir;
-    }
+	return appCacheDir;
+}
 
-    public static boolean hasExternalStoragePermission(Context context) {
-        int perm = context.checkCallingOrSelfPermission("android.permission.WRITE_EXTERNAL_STORAGE");
-        return perm == 0;
-    }
+public static boolean hasExternalStoragePermission(Context context) {
+	int perm = context.checkCallingOrSelfPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+	return perm == 0;
+}
 
 }

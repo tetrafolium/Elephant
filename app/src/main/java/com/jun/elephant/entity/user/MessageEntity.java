@@ -22,119 +22,119 @@ import com.jun.elephant.entity.topic.TopicDetailEntity;
  * Created by Jun on 2016/5/6.
  */
 public class MessageEntity {
-    private int id;
+private int id;
 
-    private String type;
+private String type;
 
-    private String body;
+private String body;
 
-    @SerializedName("topic_id")
-    private int topicId;
+@SerializedName("topic_id")
+private int topicId;
 
-    @SerializedName("reply_id")
-    private int replyId;
+@SerializedName("reply_id")
+private int replyId;
 
-    @SerializedName("created_at")
-    private String createdAt;
+@SerializedName("created_at")
+private String createdAt;
 
-    @SerializedName("from_user_id")
-    private int fromUserId;
+@SerializedName("from_user_id")
+private int fromUserId;
 
-    @SerializedName("type_msg")
-    private String typeMsg;
+@SerializedName("type_msg")
+private String typeMsg;
 
-    private String message;
+private String message;
 
-    @SerializedName("from_user")
-    private UserInfoEntity fromUserEntity;
+@SerializedName("from_user")
+private UserInfoEntity fromUserEntity;
 
-    private TopicDetailEntity topic;
+private TopicDetailEntity topic;
 
-    public int getId() {
-        return id;
-    }
+public int getId() {
+	return id;
+}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+public void setId(int id) {
+	this.id = id;
+}
 
-    public String getType() {
-        return type;
-    }
+public String getType() {
+	return type;
+}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+public void setType(String type) {
+	this.type = type;
+}
 
-    public String getBody() {
-        return body;
-    }
+public String getBody() {
+	return body;
+}
 
-    public void setBody(String body) {
-        this.body = body;
-    }
+public void setBody(String body) {
+	this.body = body;
+}
 
-    public int getTopicId() {
-        return topicId;
-    }
+public int getTopicId() {
+	return topicId;
+}
 
-    public void setTopicId(int topicId) {
-        this.topicId = topicId;
-    }
+public void setTopicId(int topicId) {
+	this.topicId = topicId;
+}
 
-    public int getReplyId() {
-        return replyId;
-    }
+public int getReplyId() {
+	return replyId;
+}
 
-    public void setReplyId(int replyId) {
-        this.replyId = replyId;
-    }
+public void setReplyId(int replyId) {
+	this.replyId = replyId;
+}
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
+public String getCreatedAt() {
+	return createdAt;
+}
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
+public void setCreatedAt(String createdAt) {
+	this.createdAt = createdAt;
+}
 
-    public int getFromUserId() {
-        return fromUserId;
-    }
+public int getFromUserId() {
+	return fromUserId;
+}
 
-    public void setFromUserId(int fromUserId) {
-        this.fromUserId = fromUserId;
-    }
+public void setFromUserId(int fromUserId) {
+	this.fromUserId = fromUserId;
+}
 
-    public String getTypeMsg() {
-        return typeMsg;
-    }
+public String getTypeMsg() {
+	return typeMsg;
+}
 
-    public void setTypeMsg(String typeMsg) {
-        this.typeMsg = typeMsg;
-    }
+public void setTypeMsg(String typeMsg) {
+	this.typeMsg = typeMsg;
+}
 
-    public String getMessage() {
-        return message;
-    }
+public String getMessage() {
+	return message;
+}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+public void setMessage(String message) {
+	this.message = message;
+}
 
-    public UserInfoEntity getFromUserEntity() {
-        return fromUserEntity;
-    }
+public UserInfoEntity getFromUserEntity() {
+	return fromUserEntity;
+}
 
-    public void setFromUserEntity(UserInfoEntity fromUserEntity) {
-        this.fromUserEntity = fromUserEntity;
-    }
+public void setFromUserEntity(UserInfoEntity fromUserEntity) {
+	this.fromUserEntity = fromUserEntity;
+}
 
-    public TopicDetailEntity getTopic() {
-        return topic;
-    }
+public TopicDetailEntity getTopic() {
+	return topic;
+}
 
-    public void setTopic(TopicDetailEntity topic) {
-        this.topic = topic;
-    }
+public void setTopic(TopicDetailEntity topic) {
+	this.topic = topic;
+}
 }

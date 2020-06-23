@@ -31,17 +31,17 @@ import rx.Observable;
 
 public interface LoginContract {
 
-    interface Model extends BaseModel {
-        Observable<TokenEntity> getLoginToken(Context context, String userName, String loginToken);
+interface Model extends BaseModel {
+Observable<TokenEntity> getLoginToken(Context context, String userName, String loginToken);
 
-        Observable<UserInfoEntity> login();
-    }
+Observable<UserInfoEntity> login();
+}
 
-    interface View extends BaseView {
-        void onLoginSuccess(UserInfoEntity userInfoEntity);
-    }
+interface View extends BaseView {
+void onLoginSuccess(UserInfoEntity userInfoEntity);
+}
 
-    abstract class Presenter extends BasePresenter<Model, View> {
-        public abstract void login(Context context, String userName, String loginToken);
-    }
+abstract class Presenter extends BasePresenter<Model, View> {
+public abstract void login(Context context, String userName, String loginToken);
+}
 }

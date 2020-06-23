@@ -34,85 +34,85 @@ import java.util.List;
  */
 public class PermissionsChecker {
 
-    private static Activity mContext;
+private static Activity mContext;
 
-    private static PermissionsChecker mPermissionChecker;
+private static PermissionsChecker mPermissionChecker;
 
-    public static int REQUEST_STORAGE_PERMISSION = 100;
+public static int REQUEST_STORAGE_PERMISSION = 100;
 
-    public static String[] photosPermissions = new String[] {
-        Manifest.permission.CAMERA
-    };
+public static String[] photosPermissions = new String[] {
+	Manifest.permission.CAMERA
+};
 
-    private static List<String> closePermissions = new ArrayList<>();
-    public static PermissionsChecker getInstance(Context context) {
-        if (mPermissionChecker == null) {
-            mPermissionChecker = new PermissionsChecker(context);
-        }
+private static List<String> closePermissions = new ArrayList<>();
+public static PermissionsChecker getInstance(Context context) {
+	if (mPermissionChecker == null) {
+		mPermissionChecker = new PermissionsChecker(context);
+	}
 
-        return mPermissionChecker;
-    }
+	return mPermissionChecker;
+}
 
-    private PermissionsChecker(Context context) {
-        mContext = (Activity) context;
-    }
+private PermissionsChecker(Context context) {
+	mContext = (Activity) context;
+}
 
-    // 判断权限集合
-    public static boolean lacksPermissions(Context context, String... permissions) {
-        mContext = (Activity) context;
-        closePermissions.clear();
+// 判断权限集合
+public static boolean lacksPermissions(Context context, String... permissions) {
+	mContext = (Activity) context;
+	closePermissions.clear();
 
-        for (String permission : permissions) {
-            if (!lacksPermission(permission)) {
-                closePermissions.add(permission);
-            }
-        }
+	for (String permission : permissions) {
+		if (!lacksPermission(permission)) {
+			closePermissions.add(permission);
+		}
+	}
 
-        System.out.println("========== " + closePermissions.size() + " ============");
-        if (closePermissions.size() != 0) {
-            openPermission(closePermissions.toArray(new String[closePermissions.size()]));
-            return false;
-        } else {
-            return true;
-        }
+	System.out.println("========== " + closePermissions.size() + " ============");
+	if (closePermissions.size() != 0) {
+		openPermission(closePermissions.toArray(new String[closePermissions.size()]));
+		return false;
+	} else {
+		return true;
+	}
 
-    }
+}
 
-    // 判断是否缺少权限
-    private static boolean lacksPermission(String permission) {
-        int checkSelfPermission = ContextCompat.checkSelfPermission(mContext, permission);
-        return checkSelfPermission == PackageManager.PERMISSION_GRANTED;
-    }
+// 判断是否缺少权限
+private static boolean lacksPermission(String permission) {
+	int checkSelfPermission = ContextCompat.checkSelfPermission(mContext, permission);
+	return checkSelfPermission == PackageManager.PERMISSION_GRANTED;
+}
 
-    //询问是否允许开启权限
-    private static void openPermission(final String[] permission) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(mContext,
-                Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            new AlertDialog.Builder(mContext)
-            .setMessage("你需要启动权限才能使用该功能")
-            .setPositiveButton("允许", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ActivityCompat.requestPermissions( mContext, permission, REQUEST_STORAGE_PERMISSION);//请求开启权限
-                }
-            })
-            .setNegativeButton("拒绝",null)
-            .create()
-            .show();
-        } else {
-            ActivityCompat.requestPermissions(mContext, permission, REQUEST_STORAGE_PERMISSION);
-        }
-    }
+//询问是否允许开启权限
+private static void openPermission(final String[] permission) {
+	if (ActivityCompat.shouldShowRequestPermissionRationale(mContext,
+	                                                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+		new AlertDialog.Builder(mContext)
+		.setMessage("你需要启动权限才能使用该功能")
+		.setPositiveButton("允许", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				        ActivityCompat.requestPermissions( mContext, permission, REQUEST_STORAGE_PERMISSION);//请求开启权限
+				}
+			})
+		.setNegativeButton("拒绝",null)
+		.create()
+		.show();
+	} else {
+		ActivityCompat.requestPermissions(mContext, permission, REQUEST_STORAGE_PERMISSION);
+	}
+}
 
-    //是否允许开启权限回调
-    public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_STORAGE_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//是否允许开启权限回调
+public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+	if (requestCode == REQUEST_STORAGE_PERMISSION) {
+		if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 //                Toast.makeText(mContext,"获取权限成功",Toast.LENGTH_SHORT).show();
-            } else {
+		} else {
 //                Toast.makeText(mContext,"获取权限失败",Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+		}
+	}
+}
 
 }

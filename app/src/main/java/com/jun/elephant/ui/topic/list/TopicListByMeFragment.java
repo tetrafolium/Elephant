@@ -44,132 +44,132 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class TopicListByMeFragment extends BaseFrameFragment<TopicPresenter, TopicModel> implements TopicContract.View {
 
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.swipe_layout)
-    MySwipeRefreshLayout mSwipeLayout;
-    @BindView(R.id.multiStateView)
-    MultiStateView mMultiStateView;
-    @BindView(R.id.fab)
-    FloatingActionButton mFabBtn;
+@BindView(R.id.recyclerView)
+RecyclerView mRecyclerView;
+@BindView(R.id.swipe_layout)
+MySwipeRefreshLayout mSwipeLayout;
+@BindView(R.id.multiStateView)
+MultiStateView mMultiStateView;
+@BindView(R.id.fab)
+FloatingActionButton mFabBtn;
 
-    private List<TopicEntity> mTopicList;
+private List<TopicEntity> mTopicList;
 
-    public int TYPE = Constants.User.USER_TOPIC_MY;
+public int TYPE = Constants.User.USER_TOPIC_MY;
 
-    private int mUserId;
+private int mUserId;
 
-    private TopicListAdapter mAdapter;
+private TopicListAdapter mAdapter;
 
-    private int mPageIndex = 1;
+private int mPageIndex = 1;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_topic_list);
-        ButterKnife.bind(this, getContentView());
-    }
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.fragment_topic_list);
+	ButterKnife.bind(this, getContentView());
+}
 
-    @Override
-    public void initData() {
-        super.initData();
-        mTopicList = new ArrayList<>();
-        mAdapter = new TopicListAdapter(getContext(), mTopicList);
-        mUserId = getUserConstant().getUserData().getData().getId();
-    }
+@Override
+public void initData() {
+	super.initData();
+	mTopicList = new ArrayList<>();
+	mAdapter = new TopicListAdapter(getContext(), mTopicList);
+	mUserId = getUserConstant().getUserData().getData().getId();
+}
 
-    @Override
-    public void initView() {
-        super.initView();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(mAdapter);
-    }
+@Override
+public void initView() {
+	super.initView();
+	mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+	mRecyclerView.setAdapter(mAdapter);
+}
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        mFabBtn.attachToRecyclerView(mRecyclerView);
+@Override
+public void initListener() {
+	super.initListener();
+	mFabBtn.attachToRecyclerView(mRecyclerView);
 
-        mSwipeLayout.setPtrHandler(new PtrDefaultHandler2() {
-            @Override
-            public void onLoadMoreBegin(PtrFrameLayout ptrFrameLayout) {
-                mPageIndex ++;
-                mPresenter.getTopicListByUser(TYPE, mUserId, mPageIndex);
-            }
+	mSwipeLayout.setPtrHandler(new PtrDefaultHandler2() {
+			@Override
+			public void onLoadMoreBegin(PtrFrameLayout ptrFrameLayout) {
+			        mPageIndex++;
+			        mPresenter.getTopicListByUser(TYPE, mUserId, mPageIndex);
+			}
 
-            @Override
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
-                mPageIndex = 1;
-                mPresenter.getTopicListByUser(TYPE, mUserId, mPageIndex);
-            }
-        });
+			@Override
+			public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+			        mPageIndex = 1;
+			        mPresenter.getTopicListByUser(TYPE, mUserId, mPageIndex);
+			}
+		});
 
-        mFabBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openActivity(TopicPublishActivity.class);
-            }
-        });
-    }
+	mFabBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        openActivity(TopicPublishActivity.class);
+			}
+		});
+}
 
-    @Override
-    public void initLoad() {
-        super.initLoad();
-        mMultiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
-        getData();
-    }
+@Override
+public void initLoad() {
+	super.initLoad();
+	mMultiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+	getData();
+}
 
-    public void getData() {
-        int state = mMultiStateView.getViewState();
-        if (state == MultiStateView.VIEW_STATE_EMPTY || state == MultiStateView.VIEW_STATE_ERROR) {
-            mPageIndex = 1;
-            mMultiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
-            mPresenter.getTopicListByUser(TYPE, mUserId, mPageIndex);
-            return;
-        }
-        mSwipeLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeLayout.autoRefresh();
-            }
-        });
-    }
+public void getData() {
+	int state = mMultiStateView.getViewState();
+	if (state == MultiStateView.VIEW_STATE_EMPTY || state == MultiStateView.VIEW_STATE_ERROR) {
+		mPageIndex = 1;
+		mMultiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+		mPresenter.getTopicListByUser(TYPE, mUserId, mPageIndex);
+		return;
+	}
+	mSwipeLayout.post(new Runnable() {
+			@Override
+			public void run() {
+			        mSwipeLayout.autoRefresh();
+			}
+		});
+}
 
-    @Override
-    public void refreshTopicList(TopicListEntity topicListEntity) {
-        if (topicListEntity.getData().size() == 0) {
-            mMultiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
-            return;
-        }
+@Override
+public void refreshTopicList(TopicListEntity topicListEntity) {
+	if (topicListEntity.getData().size() == 0) {
+		mMultiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+		return;
+	}
 
-        mTopicList.clear();
-        mTopicList.addAll(topicListEntity.getData());
-        mAdapter.notifyDataSetChanged();
-        mMultiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-    }
+	mTopicList.clear();
+	mTopicList.addAll(topicListEntity.getData());
+	mAdapter.notifyDataSetChanged();
+	mMultiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+}
 
-    @Override
-    public void loadMoreTopicList(TopicListEntity topicListEntity) {
-        List<TopicEntity> temp = topicListEntity.getData();
-        if (temp.size() != 0) {
-            mTopicList.addAll(temp);
-            mAdapter.notifyDataSetChanged();
-        }
-    }
+@Override
+public void loadMoreTopicList(TopicListEntity topicListEntity) {
+	List<TopicEntity> temp = topicListEntity.getData();
+	if (temp.size() != 0) {
+		mTopicList.addAll(temp);
+		mAdapter.notifyDataSetChanged();
+	}
+}
 
-    @Override
-    public void onRequestStart() {
+@Override
+public void onRequestStart() {
 
-    }
+}
 
-    @Override
-    public void onRequestEnd() {
-        if (mSwipeLayout != null) mSwipeLayout.refreshComplete();
-    }
+@Override
+public void onRequestEnd() {
+	if (mSwipeLayout != null) mSwipeLayout.refreshComplete();
+}
 
-    @Override
-    public void onRequestError(String msg) {
-        super.onRequestError(msg);
-        mMultiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
-    }
+@Override
+public void onRequestError(String msg) {
+	super.onRequestError(msg);
+	mMultiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+}
 }

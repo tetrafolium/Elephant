@@ -35,25 +35,25 @@ import rx.Observable;
  */
 public interface TopicApi {
 
-    @GET("topics/{topicId}")
-    Observable<TopicDetailEntity> getTopicDetail(@Path("topicId") double topicId,
-            @QueryMap Map<String, String> options);
+@GET("topics/{topicId}")
+Observable<TopicDetailEntity> getTopicDetail(@Path("topicId") double topicId,
+                                             @QueryMap Map<String, String> options);
 
-    @GET("topics")
-    Observable<TopicListEntity> getTopics(@QueryMap Map<String, String> options);
+@GET("topics")
+Observable<TopicListEntity> getTopics(@QueryMap Map<String, String> options);
 
-    @POST("topics/{topicId}/vote-up")
-    Observable<JsonObject> voteUp(@Path("topicId") double topicId);
+@POST("topics/{topicId}/vote-up")
+Observable<JsonObject> voteUp(@Path("topicId") double topicId);
 
-    @POST("topics/{topicId}/vote-down")
-    Observable<JsonObject> voteDown(@Path("topicId") double topicId);
+@POST("topics/{topicId}/vote-down")
+Observable<JsonObject> voteDown(@Path("topicId") double topicId);
 
-    @POST("topics")
-    Observable<TopicPublishEntity> publishTopic(@QueryMap Map<String, String> options);
+@POST("topics")
+Observable<TopicPublishEntity> publishTopic(@QueryMap Map<String, String> options);
 
-    @GET("categories")
-    Observable<CategoryEntity> getCategories();
+@GET("categories")
+Observable<CategoryEntity> getCategories();
 
-    @POST("replies")
-    Observable<TopicReplyEntity> publishReply(@QueryMap Map<String, String> options);
+@POST("replies")
+Observable<TopicReplyEntity> publishReply(@QueryMap Map<String, String> options);
 }

@@ -40,104 +40,104 @@ import butterknife.OnClick;
  * Created by Jun on 2016/3/14.
  */
 public class TopicCommentListActivity extends BaseFrameWebViewActivity<TopicReplyPresenter, TopicReplyModel>
-    implements TopicReplyContract.View {
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
-    @BindView(R.id.multiStateView)
-    MultiStateView mMultiStateView;
-    @BindView(R.id.webView)
-    WebView mWebView;
-    @BindView(R.id.bottom_rl)
-    LinearLayout mBottomRl;
-    @BindView(R.id.comment_edt)
-    AppCompatEditText mCommentEdt;
+	implements TopicReplyContract.View {
+@BindView(R.id.toolBar)
+Toolbar mToolBar;
+@BindView(R.id.multiStateView)
+MultiStateView mMultiStateView;
+@BindView(R.id.webView)
+WebView mWebView;
+@BindView(R.id.bottom_rl)
+LinearLayout mBottomRl;
+@BindView(R.id.comment_edt)
+AppCompatEditText mCommentEdt;
 
-    private String mCommentUrl;
+private String mCommentUrl;
 
-    private int mTopicId;
+private int mTopicId;
 
-    public static Intent newIntent(Context context, String commentUrl, int topicId) {
-        Intent intent = new Intent(context, TopicCommentListActivity.class);
-        intent.putExtra(Constants.Key.COMMENT_URL, commentUrl);
-        intent.putExtra(Constants.Key.TOPIC_ID, topicId);
-        return intent;
-    }
+public static Intent newIntent(Context context, String commentUrl, int topicId) {
+	Intent intent = new Intent(context, TopicCommentListActivity.class);
+	intent.putExtra(Constants.Key.COMMENT_URL, commentUrl);
+	intent.putExtra(Constants.Key.TOPIC_ID, topicId);
+	return intent;
+}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comment_list);
-        ButterKnife.bind(this);
-    }
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_comment_list);
+	ButterKnife.bind(this);
+}
 
-    @Override
-    public void initData() {
-        super.initData();
-        mCommentUrl = getIntent().getStringExtra(Constants.Key.COMMENT_URL);
-        mTopicId = getIntent().getIntExtra(Constants.Key.TOPIC_ID, 1);
-    }
+@Override
+public void initData() {
+	super.initData();
+	mCommentUrl = getIntent().getStringExtra(Constants.Key.COMMENT_URL);
+	mTopicId = getIntent().getIntExtra(Constants.Key.TOPIC_ID, 1);
+}
 
-    @Override
-    public void initView() {
-        super.initView();
-        setToolbar(mToolBar, getString(R.string.app_comment_list));
-    }
+@Override
+public void initView() {
+	super.initView();
+	setToolbar(mToolBar, getString(R.string.app_comment_list));
+}
 
-    @Override
-    public void initLoad() {
-        super.initLoad();
+@Override
+public void initLoad() {
+	super.initLoad();
 
-        mWebView.setWebViewClient(new WebAppClient(this, mMultiStateView, mWebView));
-        mWebView.loadUrl(mCommentUrl, getAuth());
-        mWebView.addJavascriptInterface(new WebAppInterface(this), PLATFORM);
-    }
+	mWebView.setWebViewClient(new WebAppClient(this, mMultiStateView, mWebView));
+	mWebView.loadUrl(mCommentUrl, getAuth());
+	mWebView.addJavascriptInterface(new WebAppInterface(this), PLATFORM);
+}
 
-    @OnClick({R.id.send_iv})
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-        case R.id.send_iv:
-            if (getUserConstant().isLogin()) {
-                if (TextUtils.isEmpty(mCommentEdt.getText())) {
-                    showShortToast(getString(R.string.toast_no_content));
-                    return;
-                }
+@OnClick({R.id.send_iv})
+@Override
+public void onClick(View v) {
+	super.onClick(v);
+	switch (v.getId()) {
+	case R.id.send_iv:
+		if (getUserConstant().isLogin()) {
+			if (TextUtils.isEmpty(mCommentEdt.getText())) {
+				showShortToast(getString(R.string.toast_no_content));
+				return;
+			}
 
-                mPresenter.reply(mTopicId, mCommentEdt.getText().toString());
-            } else {
-                showShortToast(getString(R.string.toast_no_login));
-            }
-            break;
-        }
-    }
+			mPresenter.reply(mTopicId, mCommentEdt.getText().toString());
+		} else {
+			showShortToast(getString(R.string.toast_no_login));
+		}
+		break;
+	}
+}
 
-    @Override
-    public void replySuccess(TopicReplyEntity topicReplyEntity) {
-        mCommentEdt.setText("");
-        if (topicReplyEntity.getData() != null) mWebView.loadUrl(mCommentUrl, getAuth());
-    }
+@Override
+public void replySuccess(TopicReplyEntity topicReplyEntity) {
+	mCommentEdt.setText("");
+	if (topicReplyEntity.getData() != null) mWebView.loadUrl(mCommentUrl, getAuth());
+}
 
-    @Override
-    public void onRequestStart() {
+@Override
+public void onRequestStart() {
 
-    }
+}
 
-    @Override
-    public void onRequestEnd() {
-        hideKeyboard(mCommentEdt);
-    }
+@Override
+public void onRequestEnd() {
+	hideKeyboard(mCommentEdt);
+}
 
-    @Override
-    public void onInternetError() {
-        super.onInternetError();
-        showShortToast(getString(R.string.toast_comment_fail));
-    }
+@Override
+public void onInternetError() {
+	super.onInternetError();
+	showShortToast(getString(R.string.toast_comment_fail));
+}
 
-    private void hideKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
-        }
-    }
+private void hideKeyboard(View view) {
+	InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	if (imm.isActive()) {
+		imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+	}
+}
 }

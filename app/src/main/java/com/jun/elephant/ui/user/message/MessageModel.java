@@ -30,20 +30,20 @@ import rx.Observable;
  */
 public class MessageModel implements MessageListContract.Model {
 
-    @Override
-    public Observable<UserMessageEntity> getUserMessage(int pageIndex) {
-        return Networks.getInstance().getUserApi()
-               .getMyMessage(getOptions(pageIndex))
-               .compose(RxSchedulers.<UserMessageEntity>io_main());
-    }
+@Override
+public Observable<UserMessageEntity> getUserMessage(int pageIndex) {
+	return Networks.getInstance().getUserApi()
+	       .getMyMessage(getOptions(pageIndex))
+	       .compose(RxSchedulers.<UserMessageEntity>io_main());
+}
 
 
-    private Map<String, String> getOptions(int pageIndex) {
-        Map<String, String> options = new HashMap<>();
-        options.put("per_page", String.valueOf(Constants.PER_PAGE));
-        options.put("include", "from_user,topic");
-        options.put("page", String.valueOf(pageIndex));
+private Map<String, String> getOptions(int pageIndex) {
+	Map<String, String> options = new HashMap<>();
+	options.put("per_page", String.valueOf(Constants.PER_PAGE));
+	options.put("include", "from_user,topic");
+	options.put("page", String.valueOf(pageIndex));
 
-        return options;
-    }
+	return options;
+}
 }

@@ -43,88 +43,88 @@ import java.util.Locale;
  */
 public class UserMessageAdapter extends RecyclerView.Adapter<UserMessageAdapter.MessageViewHolder> {
 
-    private Context mContext;
+private Context mContext;
 
-    private List<MessageEntity> mMessageList;
+private List<MessageEntity> mMessageList;
 
-    private Locale mLocale;
+private Locale mLocale;
 
-    private PrettyTime mPrettyTime;
+private PrettyTime mPrettyTime;
 
-    private SimpleDateFormat mDateFormat;
+private SimpleDateFormat mDateFormat;
 
-    @SuppressLint("SimpleDateFormat")
-    public UserMessageAdapter(Context context, List<MessageEntity> messageList) {
-        this.mContext = context;
-        this.mMessageList = messageList;
-        mLocale = mContext.getResources().getConfiguration().locale;
-        mPrettyTime = new PrettyTime(mLocale);
-        mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    }
+@SuppressLint("SimpleDateFormat")
+public UserMessageAdapter(Context context, List<MessageEntity> messageList) {
+	this.mContext = context;
+	this.mMessageList = messageList;
+	mLocale = mContext.getResources().getConfiguration().locale;
+	mPrettyTime = new PrettyTime(mLocale);
+	mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+}
 
-    @Override
-    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MessageViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_message, parent, false));
-    }
+@Override
+public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	return new MessageViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_message, parent, false));
+}
 
-    @Override
-    public void onBindViewHolder(MessageViewHolder holder, int position) {
-        final MessageEntity mEntity = mMessageList.get(position);
-        final UserEntity mUserEntity = mEntity.getFromUserEntity().getData();
+@Override
+public void onBindViewHolder(MessageViewHolder holder, int position) {
+	final MessageEntity mEntity = mMessageList.get(position);
+	final UserEntity mUserEntity = mEntity.getFromUserEntity().getData();
 
-        String msg = mEntity.getMessage();
+	String msg = mEntity.getMessage();
 
-        String msgDate = mUserEntity.getName();
-        if (mEntity.getCreatedAt() != null) {
+	String msgDate = mUserEntity.getName();
+	if (mEntity.getCreatedAt() != null) {
 
-            String dateStr = mEntity.getCreatedAt();
+		String dateStr = mEntity.getCreatedAt();
 
-            try {
-                msgDate += " • " + mPrettyTime.format(mDateFormat.parse(dateStr));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+		try {
+			msgDate += " • " + mPrettyTime.format(mDateFormat.parse(dateStr));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
 
-        holder.mMsgDateTv.setText(msgDate);
-        holder.mAvatarIv.setImageUrl(mUserEntity.getAvatar());
-        if (!TextUtils.isEmpty(msg)) {
-            holder.mReplyTv.setText(msg);
-        }
+	holder.mMsgDateTv.setText(msgDate);
+	holder.mAvatarIv.setImageUrl(mUserEntity.getAvatar());
+	if (!TextUtils.isEmpty(msg)) {
+		holder.mReplyTv.setText(msg);
+	}
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mEntity.getTopic().getData() != null) {
-                    mContext.startActivity(TopicDetailsActivity.newIntent(mContext, mEntity.getTopic().getData().getId()));
-                }
-            }
-        });
+	holder.itemView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        if (mEntity.getTopic().getData() != null) {
+			                mContext.startActivity(TopicDetailsActivity.newIntent(mContext, mEntity.getTopic().getData().getId()));
+				}
+			}
+		});
 
-        holder.mAvatarIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.startActivity(UserInfoActivity.newIntent(mContext, mUserEntity.getId()));
-            }
-        });
+	holder.mAvatarIv.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        mContext.startActivity(UserInfoActivity.newIntent(mContext, mUserEntity.getId()));
+			}
+		});
 
-    }
+}
 
-    @Override
-    public int getItemCount() {
-        return mMessageList.size();
-    }
+@Override
+public int getItemCount() {
+	return mMessageList.size();
+}
 
-    class MessageViewHolder extends RecyclerView.ViewHolder {
-        private MySimpleDraweeView mAvatarIv;
-        private TextView mMsgDateTv;
-        private TextView mReplyTv;
+class MessageViewHolder extends RecyclerView.ViewHolder {
+private MySimpleDraweeView mAvatarIv;
+private TextView mMsgDateTv;
+private TextView mReplyTv;
 
-        public MessageViewHolder(View itemView) {
-            super(itemView);
-            mAvatarIv = (MySimpleDraweeView) itemView.findViewById(R.id.user_img_iv);
-            mMsgDateTv = (TextView) itemView.findViewById(R.id.msg_date_tv);
-            mReplyTv = (TextView) itemView.findViewById(R.id.msg_details_tv);
-        }
-    }
+public MessageViewHolder(View itemView) {
+	super(itemView);
+	mAvatarIv = (MySimpleDraweeView) itemView.findViewById(R.id.user_img_iv);
+	mMsgDateTv = (TextView) itemView.findViewById(R.id.msg_date_tv);
+	mReplyTv = (TextView) itemView.findViewById(R.id.msg_details_tv);
+}
+}
 }

@@ -41,101 +41,101 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class UserMessageActivity extends BaseFrameActivity<MessagePresenter, MessageModel> implements MessageListContract.View {
 
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.multiStateView)
-    MultiStateView mMultiStateView;
-    @BindView(R.id.swipe_layout)
-    MySwipeRefreshLayout mSwipeLayout;
+@BindView(R.id.toolBar)
+Toolbar mToolBar;
+@BindView(R.id.recyclerView)
+RecyclerView mRecyclerView;
+@BindView(R.id.multiStateView)
+MultiStateView mMultiStateView;
+@BindView(R.id.swipe_layout)
+MySwipeRefreshLayout mSwipeLayout;
 
-    private UserMessageAdapter mAdapter;
+private UserMessageAdapter mAdapter;
 
-    private List<MessageEntity> mMessageList;
+private List<MessageEntity> mMessageList;
 
-    private int mPageIndex = 1;
+private int mPageIndex = 1;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_message);
-        ButterKnife.bind(this);
-    }
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_user_message);
+	ButterKnife.bind(this);
+}
 
-    @Override
-    public void initData() {
-        super.initData();
-        mMessageList = new ArrayList<>();
-        mAdapter = new UserMessageAdapter(this, mMessageList);
-    }
+@Override
+public void initData() {
+	super.initData();
+	mMessageList = new ArrayList<>();
+	mAdapter = new UserMessageAdapter(this, mMessageList);
+}
 
-    @Override
-    public void initView() {
-        super.initView();
-        setToolbar(mToolBar, getString(R.string.app_user_message));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
-    }
+@Override
+public void initView() {
+	super.initView();
+	setToolbar(mToolBar, getString(R.string.app_user_message));
+	mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+	mRecyclerView.setAdapter(mAdapter);
+}
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        mSwipeLayout.setPtrHandler(new PtrDefaultHandler2() {
-            @Override
-            public void onLoadMoreBegin(PtrFrameLayout ptrFrameLayout) {
-                mPageIndex ++;
-                mPresenter.getMessageList(mPageIndex);
-            }
+@Override
+public void initListener() {
+	super.initListener();
+	mSwipeLayout.setPtrHandler(new PtrDefaultHandler2() {
+			@Override
+			public void onLoadMoreBegin(PtrFrameLayout ptrFrameLayout) {
+			        mPageIndex++;
+			        mPresenter.getMessageList(mPageIndex);
+			}
 
-            @Override
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
-                mPageIndex = 1;
-                mPresenter.getMessageList(mPageIndex);
-            }
-        });
+			@Override
+			public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+			        mPageIndex = 1;
+			        mPresenter.getMessageList(mPageIndex);
+			}
+		});
 
-    }
+}
 
-    @Override
-    public void initLoad() {
-        super.initLoad();
-        mMultiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+@Override
+public void initLoad() {
+	super.initLoad();
+	mMultiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
 
-        mPresenter.getMessageList(mPageIndex);
-    }
+	mPresenter.getMessageList(mPageIndex);
+}
 
-    @Override
-    public void refreshMessageList(UserMessageEntity userMessageEntity) {
-        if (userMessageEntity.getData().size() == 0) {
-            mMultiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
-            return;
-        }
-        mMessageList.clear();
-        mMessageList.addAll(userMessageEntity.getData());
-        mAdapter.notifyDataSetChanged();
-    }
+@Override
+public void refreshMessageList(UserMessageEntity userMessageEntity) {
+	if (userMessageEntity.getData().size() == 0) {
+		mMultiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+		return;
+	}
+	mMessageList.clear();
+	mMessageList.addAll(userMessageEntity.getData());
+	mAdapter.notifyDataSetChanged();
+}
 
-    @Override
-    public void loadMoreMessageList(UserMessageEntity userMessageEntity) {
-        mMessageList.addAll(userMessageEntity.getData());
-        mAdapter.notifyDataSetChanged();
-    }
+@Override
+public void loadMoreMessageList(UserMessageEntity userMessageEntity) {
+	mMessageList.addAll(userMessageEntity.getData());
+	mAdapter.notifyDataSetChanged();
+}
 
-    @Override
-    public void onRequestStart() {
+@Override
+public void onRequestStart() {
 
-    }
+}
 
-    @Override
-    public void onRequestEnd() {
-        mSwipeLayout.refreshComplete();
-        mMultiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-    }
+@Override
+public void onRequestEnd() {
+	mSwipeLayout.refreshComplete();
+	mMultiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+}
 
-    @Override
-    public void onRequestError(String msg) {
-        super.onRequestError(msg);
-        mMultiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
-    }
+@Override
+public void onRequestError(String msg) {
+	super.onRequestError(msg);
+	mMultiStateView.setViewState(MultiStateView.VIEW_STATE_ERROR);
+}
 }

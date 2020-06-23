@@ -29,30 +29,30 @@ import rx.Observable;
 
 public interface TopicContract {
 
-    interface Model extends BaseModel {
+interface Model extends BaseModel {
 
-        Observable<TokenEntity> getTokenByForum();
+Observable<TokenEntity> getTokenByForum();
 
-        Observable<TopicListEntity> getTopicByForum(String type, int pageIndex);
+Observable<TopicListEntity> getTopicByForum(String type, int pageIndex);
 
-        Observable<TopicListEntity> getUserTopicPraise(int userId, int pageIndex);
+Observable<TopicListEntity> getUserTopicPraise(int userId, int pageIndex);
 
-        Observable<TopicListEntity> getUserTopicShare(int userId, int pageIndex);
+Observable<TopicListEntity> getUserTopicShare(int userId, int pageIndex);
 
-        Observable<TopicListEntity> getUserFollowUser(int userId, int pageIndex);
-    }
+Observable<TopicListEntity> getUserFollowUser(int userId, int pageIndex);
+}
 
-    interface View extends BaseView {
-        void refreshTopicList(TopicListEntity topicListEntity);
+interface View extends BaseView {
+void refreshTopicList(TopicListEntity topicListEntity);
 
-        void loadMoreTopicList(TopicListEntity topicListEntity);
-    }
+void loadMoreTopicList(TopicListEntity topicListEntity);
+}
 
-    abstract class Presenter extends BasePresenter<Model, View> {
+abstract class Presenter extends BasePresenter<Model, View> {
 
-        abstract void getTopicListByUser(int type, int userId, int pageIndex);
+abstract void getTopicListByUser(int type, int userId, int pageIndex);
 
-        abstract void getTopicListByForum(String type, int pageIndex);
+abstract void getTopicListByForum(String type, int pageIndex);
 
-    }
+}
 }

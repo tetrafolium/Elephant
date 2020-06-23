@@ -27,57 +27,57 @@ import rx.functions.Action0;
  */
 public class TopicPublishPresenter extends TopicPublishContract.Presenter {
 
-    private Observer<CategoryEntity> mCategoryObserver = new Observer<CategoryEntity>() {
-        @Override
-        public void onCompleted() {
-            mView.onRequestEnd();
-        }
+private Observer<CategoryEntity> mCategoryObserver = new Observer<CategoryEntity>() {
+	@Override
+	public void onCompleted() {
+		mView.onRequestEnd();
+	}
 
-        @Override
-        public void onError(Throwable e) {
-            mView.onRequestError(e.toString());
-            mView.onInternetError();
-        }
+	@Override
+	public void onError(Throwable e) {
+		mView.onRequestError(e.toString());
+		mView.onInternetError();
+	}
 
-        @Override
-        public void onNext(CategoryEntity categoryEntity) {
-            mView.getCategory(categoryEntity);
-        }
-    };
+	@Override
+	public void onNext(CategoryEntity categoryEntity) {
+		mView.getCategory(categoryEntity);
+	}
+};
 
-    private Observer<TopicPublishEntity> mTopicDetailObserver = new Observer<TopicPublishEntity>() {
-        @Override
-        public void onCompleted() {
-            mView.onRequestEnd();
-        }
+private Observer<TopicPublishEntity> mTopicDetailObserver = new Observer<TopicPublishEntity>() {
+	@Override
+	public void onCompleted() {
+		mView.onRequestEnd();
+	}
 
-        @Override
-        public void onError(Throwable e) {
-            mView.onRequestError(e.toString());
-            mView.onInternetError();
-        }
+	@Override
+	public void onError(Throwable e) {
+		mView.onRequestError(e.toString());
+		mView.onInternetError();
+	}
 
-        @Override
-        public void onNext(TopicPublishEntity topicPublishEntity) {
-            mView.publishTopicSuccess(topicPublishEntity.getData());
-        }
-    };
+	@Override
+	public void onNext(TopicPublishEntity topicPublishEntity) {
+		mView.publishTopicSuccess(topicPublishEntity.getData());
+	}
+};
 
-    @Override
-    public void getCategory() {
-        mRxManager.add(mModel.getCategories().subscribe(mCategoryObserver));
-    }
+@Override
+public void getCategory() {
+	mRxManager.add(mModel.getCategories().subscribe(mCategoryObserver));
+}
 
-    @Override
-    public void publishTopic(String title, String body, String categoryId) {
-        mRxManager.add(mModel.publishTopic(title, body, categoryId)
-        .doOnSubscribe(new Action0() {
-            @Override
-            public void call() {
-                mView.onRequestStart();
-            }
-        })
-        .subscribeOn(AndroidSchedulers.mainThread())
-        .subscribe(mTopicDetailObserver));
-    }
+@Override
+public void publishTopic(String title, String body, String categoryId) {
+	mRxManager.add(mModel.publishTopic(title, body, categoryId)
+	               .doOnSubscribe(new Action0() {
+			@Override
+			public void call() {
+			        mView.onRequestStart();
+			}
+		})
+	               .subscribeOn(AndroidSchedulers.mainThread())
+	               .subscribe(mTopicDetailObserver));
+}
 }

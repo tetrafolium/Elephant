@@ -23,65 +23,65 @@ import android.os.Parcelable;
  */
 public class UserInfoEntity implements Parcelable {
 
-    /**
-     * id : 1
-     * name : Summer
-     * avatar : http://phphub.org/uploads/avatars/1_1443413935.jpeg
-     * topic_count : 88
-     * reply_count : 645
-     * notification_count : 0
-     * is_banned : false
-     * twitter_account : Summe
-     * company :
-     * city : 南京
-     * email : summer.alex07@gmail.com
-     * signature : Little knowledge is dangerous
-     * introduction : A little knowledge is a dangerous thing
-     * github_name : summerblue
-     * github_url : https://github.com/summerblue
-     * real_name : I love it
-     * personal_website : summerblue.me
-     * created_at : 2014-08-18 01:00:03
-     * updated_at : 2016-04-15 12:53:08
-     * links : {"replies_web_view":"https://staging_api.phphub.org/v1/users/1/replies/web_view"}
-     */
+/**
+ * id : 1
+ * name : Summer
+ * avatar : http://phphub.org/uploads/avatars/1_1443413935.jpeg
+ * topic_count : 88
+ * reply_count : 645
+ * notification_count : 0
+ * is_banned : false
+ * twitter_account : Summe
+ * company :
+ * city : 南京
+ * email : summer.alex07@gmail.com
+ * signature : Little knowledge is dangerous
+ * introduction : A little knowledge is a dangerous thing
+ * github_name : summerblue
+ * github_url : https://github.com/summerblue
+ * real_name : I love it
+ * personal_website : summerblue.me
+ * created_at : 2014-08-18 01:00:03
+ * updated_at : 2016-04-15 12:53:08
+ * links : {"replies_web_view":"https://staging_api.phphub.org/v1/users/1/replies/web_view"}
+ */
 
-    private UserEntity data;
+private UserEntity data;
 
-    public UserEntity getData() {
-        return data;
-    }
+public UserEntity getData() {
+	return data;
+}
 
-    public void setData(UserEntity data) {
-        this.data = data;
-    }
+public void setData(UserEntity data) {
+	this.data = data;
+}
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+@Override
+public int describeContents() {
+	return 0;
+}
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.data, flags);
-    }
+@Override
+public void writeToParcel(Parcel dest, int flags) {
+	dest.writeParcelable(this.data, flags);
+}
 
-    public UserInfoEntity() {
-    }
+public UserInfoEntity() {
+}
 
-    protected UserInfoEntity(Parcel in) {
-        this.data = in.readParcelable(UserEntity.class.getClassLoader());
-    }
+protected UserInfoEntity(Parcel in) {
+	this.data = in.readParcelable(UserEntity.class.getClassLoader());
+}
 
-    public static final Creator<UserInfoEntity> CREATOR = new Creator<UserInfoEntity>() {
-        @Override
-        public UserInfoEntity createFromParcel(Parcel source) {
-            return new UserInfoEntity(source);
-        }
+public static final Creator<UserInfoEntity> CREATOR = new Creator<UserInfoEntity>() {
+	@Override
+	public UserInfoEntity createFromParcel(Parcel source) {
+		return new UserInfoEntity(source);
+	}
 
-        @Override
-        public UserInfoEntity[] newArray(int size) {
-            return new UserInfoEntity[size];
-        }
-    };
+	@Override
+	public UserInfoEntity[] newArray(int size) {
+		return new UserInfoEntity[size];
+	}
+};
 }

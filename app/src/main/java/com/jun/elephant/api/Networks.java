@@ -40,113 +40,113 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class Networks {
 
-    private static final int DEFAULT_TIMEOUT = 5;
+private static final int DEFAULT_TIMEOUT = 5;
 
-    private static Retrofit retrofit;
+private static Retrofit retrofit;
 
-    private static TokenApi mTokenApi;
+private static TokenApi mTokenApi;
 
-    private static TopicApi mTopicApi;
+private static TopicApi mTopicApi;
 
-    private static UserApi mUserApi;
+private static UserApi mUserApi;
 
-    private static String mToken = "";
+private static String mToken = "";
 
-    public static String getToken() {
-        return mToken;
-    }
+public static String getToken() {
+	return mToken;
+}
 
-    public static void setToken(String mToken) {
-        Networks.mToken = mToken;
-    }
+public static void setToken(String mToken) {
+	Networks.mToken = mToken;
+}
 
-    private static Networks mNetworks;
+private static Networks mNetworks;
 
-    public static Networks getInstance() {
-        if (mNetworks == null) {
-            mNetworks = new Networks();
-        }
-        return mNetworks;
-    }
+public static Networks getInstance() {
+	if (mNetworks == null) {
+		mNetworks = new Networks();
+	}
+	return mNetworks;
+}
 
-    public TokenApi getTokenApi() {
-        return mTokenApi == null ? configRetrofit(TokenApi.class, true): mTokenApi;
-    }
+public TokenApi getTokenApi() {
+	return mTokenApi == null ? configRetrofit(TokenApi.class, true) : mTokenApi;
+}
 
 
-    public  TopicApi getTopicApi() {
-        return mTopicApi == null ? configRetrofit(TopicApi.class, false) : mTopicApi;
-    }
+public TopicApi getTopicApi() {
+	return mTopicApi == null ? configRetrofit(TopicApi.class, false) : mTopicApi;
+}
 
-    public UserApi getUserApi() {
-        return mUserApi == null ? configRetrofit(UserApi.class, false) : mUserApi;
-    }
+public UserApi getUserApi() {
+	return mUserApi == null ? configRetrofit(UserApi.class, false) : mUserApi;
+}
 
-    private <T> T configRetrofit(Class<T> service, boolean isGetToken) {
-        retrofit = new Retrofit.Builder()
-        .baseUrl(BuildConfig.API_BASE_URL)
-        .client(configClient(isGetToken))
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-        .build();
+private <T> T configRetrofit(Class<T> service, boolean isGetToken) {
+	retrofit = new Retrofit.Builder()
+	           .baseUrl(BuildConfig.API_BASE_URL)
+	           .client(configClient(isGetToken))
+	           .addConverterFactory(GsonConverterFactory.create())
+	           .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+	           .build();
 
-        return retrofit.create(service);
+	return retrofit.create(service);
 
-    }
+}
 
-    private OkHttpClient configClient(final boolean isGetToken) {
-        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
+private OkHttpClient configClient(final boolean isGetToken) {
+	OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
 
-        //为所有请求添加头部 Header 配置的拦截器
-        Interceptor headerIntercept = new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request.Builder builder = chain.request().newBuilder();
-                builder.addHeader("X-Client-Platform", "Android");
-                builder.addHeader("X-Client-Version", BuildConfig.VERSION_NAME);
-                builder.addHeader("X-Client-Build", String.valueOf(BuildConfig.VERSION_CODE));
+	//为所有请求添加头部 Header 配置的拦截器
+	Interceptor headerIntercept = new Interceptor() {
+		@Override
+		public Response intercept(Chain chain) throws IOException {
+			Request.Builder builder = chain.request().newBuilder();
+			builder.addHeader("X-Client-Platform", "Android");
+			builder.addHeader("X-Client-Version", BuildConfig.VERSION_NAME);
+			builder.addHeader("X-Client-Build", String.valueOf(BuildConfig.VERSION_CODE));
 
-                builder.removeHeader("Accept");
-                if (isGetToken) {
-                    builder.addHeader("Accept", "application/vnd.PHPHub.v1+json");
-                } else {
-                    builder.addHeader("Accept", "application/vnd.OralMaster.v1+json");
-                }
+			builder.removeHeader("Accept");
+			if (isGetToken) {
+				builder.addHeader("Accept", "application/vnd.PHPHub.v1+json");
+			} else {
+				builder.addHeader("Accept", "application/vnd.OralMaster.v1+json");
+			}
 
-                if (!TextUtils.isEmpty(mToken)) {
-                    builder.addHeader("Authorization", "Bearer " + mToken);
-                }
+			if (!TextUtils.isEmpty(mToken)) {
+				builder.addHeader("Authorization", "Bearer " + mToken);
+			}
 
-                Request request = builder.build();
+			Request request = builder.build();
 
-                return chain.proceed(request);
-            }
-        };
+			return chain.proceed(request);
+		}
+	};
 
-        // Log信息拦截器
-        if (BuildConfig.LOG_DEBUG) {
-            Interceptor loggingIntercept = new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request request = chain.request();
-                    Response response = chain.proceed(request);
-                    ResponseBody responseBody = response.body();
-                    BufferedSource source = responseBody.source();
-                    source.request(Long.MAX_VALUE); // Buffer the entire body.
-                    Buffer buffer = source.buffer();
-                    Charset UTF8 = Charset.forName("UTF-8");
-                    JLog.logJ("REQUEST_JSON", buffer.clone().readString(UTF8));
-                    JLog.logi("REQUEST_URL", request.toString());
-                    return response;
-                }
-            };
-            okHttpClient.addInterceptor(loggingIntercept);
-        }
+	// Log信息拦截器
+	if (BuildConfig.LOG_DEBUG) {
+		Interceptor loggingIntercept = new Interceptor() {
+			@Override
+			public Response intercept(Chain chain) throws IOException {
+				Request request = chain.request();
+				Response response = chain.proceed(request);
+				ResponseBody responseBody = response.body();
+				BufferedSource source = responseBody.source();
+				source.request(Long.MAX_VALUE); // Buffer the entire body.
+				Buffer buffer = source.buffer();
+				Charset UTF8 = Charset.forName("UTF-8");
+				JLog.logJ("REQUEST_JSON", buffer.clone().readString(UTF8));
+				JLog.logi("REQUEST_URL", request.toString());
+				return response;
+			}
+		};
+		okHttpClient.addInterceptor(loggingIntercept);
+	}
 
-        okHttpClient.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        okHttpClient.addNetworkInterceptor(headerIntercept);
+	okHttpClient.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+	okHttpClient.addNetworkInterceptor(headerIntercept);
 
-        return okHttpClient.build();
-    }
+	return okHttpClient.build();
+}
 
 }

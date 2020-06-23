@@ -49,231 +49,230 @@ import butterknife.OnClick;
  * Created by Jun on 2016/8/24.
  */
 public class TopicPublishActivity extends BaseFrameActivity<TopicPublishPresenter, TopicPublishModel>
-    implements Toolbar.OnMenuItemClickListener, TopicPublishContract.View {
+	implements Toolbar.OnMenuItemClickListener, TopicPublishContract.View {
 
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
-    @BindView(R.id.topic_title_edt)
-    EditText mTopicTitleEdt;
-    @BindView(R.id.topic_node_tv)
-    TextView mTopicNodeTv;
-    @BindView(R.id.topic_content_edt)
-    MarkdownEditText mTopicContentEdt;
-    @BindView(R.id.edit_opt_ll)
-    LinearLayout mEditOptLl;
+@BindView(R.id.toolBar)
+Toolbar mToolBar;
+@BindView(R.id.topic_title_edt)
+EditText mTopicTitleEdt;
+@BindView(R.id.topic_node_tv)
+TextView mTopicNodeTv;
+@BindView(R.id.topic_content_edt)
+MarkdownEditText mTopicContentEdt;
+@BindView(R.id.edit_opt_ll)
+LinearLayout mEditOptLl;
 
-    private MaterialDialog.Builder mNodeListDialog;
-    private MaterialDialog mLoadingDialog;
+private MaterialDialog.Builder mNodeListDialog;
+private MaterialDialog mLoadingDialog;
 
-    private MarkdownUtil mMarkdownUtil;
+private MarkdownUtil mMarkdownUtil;
 
-    private List<CategoryEntity.Category> mCategory;
+private List<CategoryEntity.Category> mCategory;
 
-    private String nodeId;
+private String nodeId;
 
-    private List<String> mCategoryList;
+private List<String> mCategoryList;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topic_publish);
-        ButterKnife.bind(this);
-    }
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_topic_publish);
+	ButterKnife.bind(this);
+}
 
-    @Override
-    public void initData() {
-        super.initData();
-        mMarkdownUtil = new MarkdownUtil(mTopicContentEdt);
+@Override
+public void initData() {
+	super.initData();
+	mMarkdownUtil = new MarkdownUtil(mTopicContentEdt);
 
-        mCategory = new ArrayList<>();
-    }
+	mCategory = new ArrayList<>();
+}
 
-    @Override
-    public void initView() {
-        super.initView();
-        setToolbar(mToolBar, getString(R.string.app_publish));
-        mToolBar.inflateMenu(R.menu.menu_publish);
+@Override
+public void initView() {
+	super.initView();
+	setToolbar(mToolBar, getString(R.string.app_publish));
+	mToolBar.inflateMenu(R.menu.menu_publish);
 
-        mLoadingDialog = getLoadingDialog().content("正在发布...").build();
-    }
+	mLoadingDialog = getLoadingDialog().content("正在发布...").build();
+}
 
-    private void initListDialog() {
+private void initListDialog() {
 
-        if (mCategoryList == null)
-            return;
+	if (mCategoryList == null)
+		return;
 
-        mNodeListDialog = new MaterialDialog.Builder(this);
-        mNodeListDialog.title("请选择节点");
-        mNodeListDialog.titleColorRes(R.color.text_common);
-        mNodeListDialog.positiveColorRes(R.color.colorPrimary);
-        mNodeListDialog.positiveText("再看看");
+	mNodeListDialog = new MaterialDialog.Builder(this);
+	mNodeListDialog.title("请选择节点");
+	mNodeListDialog.titleColorRes(R.color.text_common);
+	mNodeListDialog.positiveColorRes(R.color.colorPrimary);
+	mNodeListDialog.positiveText("再看看");
 
-        if (!mCategoryList.isEmpty()) {
-            mNodeListDialog.items(mCategoryList);
-        }
+	if (!mCategoryList.isEmpty()) {
+		mNodeListDialog.items(mCategoryList);
+	}
 
-        mNodeListDialog.itemsCallback(new MaterialDialog.ListCallback() {
-            @Override
-            public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                JLog.logd("node click position",  " ===" + which);
-                nodeId = String.valueOf(mCategory.get(which).getId());
-                mTopicNodeTv.setText(text);
-            }
-        });
+	mNodeListDialog.itemsCallback(new MaterialDialog.ListCallback() {
+			@Override
+			public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+			        JLog.logd("node click position",  " ===" + which);
+			        nodeId = String.valueOf(mCategory.get(which).getId());
+			        mTopicNodeTv.setText(text);
+			}
+		});
 
-        mNodeListDialog.show();
-    }
+	mNodeListDialog.show();
+}
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        mToolBar.setOnMenuItemClickListener(this);
+@Override
+public void initListener() {
+	super.initListener();
+	mToolBar.setOnMenuItemClickListener(this);
 
-        mTopicContentEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    mEditOptLl.setVisibility(View.VISIBLE);
-                } else {
-                    mEditOptLl.setVisibility(View.GONE);
-                }
-            }
-        });
-    }
+	mTopicContentEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+			        if (hasFocus) {
+			                mEditOptLl.setVisibility(View.VISIBLE);
+				} else {
+			                mEditOptLl.setVisibility(View.GONE);
+				}
+			}
+		});
+}
 
-    @OnClick({R.id.topic_node_tv,
-              R.id.edit_bold_ib,
-              R.id.edit_code_ib,
-              R.id.edit_img_ib,
-              R.id.edit_italic_ib,
-              R.id.edit_line_ib,
-              R.id.edit_link_ib,
-              R.id.edit_list_ib,
-              R.id.edit_quote_ib,
-              R.id.edit_title_ib
-             })
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        Editable e = mTopicContentEdt.getText();
-        switch (v.getId()) {
-        case R.id.topic_node_tv:
-            initListDialog();
-            break;
-        case R.id.edit_bold_ib:
-            mMarkdownUtil.insertStrong(e);
-            break;
-        case R.id.edit_code_ib:
-            mMarkdownUtil.insertCodeBlock(e);
-            break;
-        case R.id.edit_img_ib:
-            mMarkdownUtil.insertImage(e);
-            break;
-        case R.id.edit_italic_ib:
-            mMarkdownUtil.insertItalic(e);
-            break;
-        case R.id.edit_line_ib:
-            mMarkdownUtil.insertHorizontalLine(e);
-            break;
-        case R.id.edit_link_ib:
-            mMarkdownUtil.insertLink(e);
-            break;
-        case R.id.edit_list_ib:
-            mMarkdownUtil.insertList(e);
-            break;
-        case R.id.edit_quote_ib:
-            mMarkdownUtil.insertBlockquotes(e);
-            break;
-        case R.id.edit_title_ib:
-            mMarkdownUtil.insertTitle(e);
-            break;
-        default:
-            finish();
-            break;
-        }
-    }
+@OnClick({R.id.topic_node_tv,
+          R.id.edit_bold_ib,
+          R.id.edit_code_ib,
+          R.id.edit_img_ib,
+          R.id.edit_italic_ib,
+          R.id.edit_line_ib,
+          R.id.edit_link_ib,
+          R.id.edit_list_ib,
+          R.id.edit_quote_ib,
+          R.id.edit_title_ib})
+@Override
+public void onClick(View v) {
+	super.onClick(v);
+	Editable e = mTopicContentEdt.getText();
+	switch (v.getId()) {
+	case R.id.topic_node_tv:
+		initListDialog();
+		break;
+	case R.id.edit_bold_ib:
+		mMarkdownUtil.insertStrong(e);
+		break;
+	case R.id.edit_code_ib:
+		mMarkdownUtil.insertCodeBlock(e);
+		break;
+	case R.id.edit_img_ib:
+		mMarkdownUtil.insertImage(e);
+		break;
+	case R.id.edit_italic_ib:
+		mMarkdownUtil.insertItalic(e);
+		break;
+	case R.id.edit_line_ib:
+		mMarkdownUtil.insertHorizontalLine(e);
+		break;
+	case R.id.edit_link_ib:
+		mMarkdownUtil.insertLink(e);
+		break;
+	case R.id.edit_list_ib:
+		mMarkdownUtil.insertList(e);
+		break;
+	case R.id.edit_quote_ib:
+		mMarkdownUtil.insertBlockquotes(e);
+		break;
+	case R.id.edit_title_ib:
+		mMarkdownUtil.insertTitle(e);
+		break;
+	default:
+		finish();
+		break;
+	}
+}
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.action_publish:
-            publishTopic();
-            break;
-        case R.id.action_preview:
+@Override
+public boolean onMenuItemClick(MenuItem item) {
+	switch (item.getItemId()) {
+	case R.id.action_publish:
+		publishTopic();
+		break;
+	case R.id.action_preview:
 //                FileUtil.saveNote(elephantApplication.getTopicDir(),mTopicContentEdt.getText().toString(),
 //                        mTopicTitleEdt.getText().toString());
-            Bundle bundle = new Bundle();
-            bundle.putString(Constants.Key.PREVIEW_TOPIC_TITLE, mTopicTitleEdt.getText().toString());
-            bundle.putString(Constants.Key.PREVIEW_TOPIC_CONTENT, mTopicContentEdt.getText().toString().replace("\n-", "\n\n-"));
-            openActivity(TopicPreviewActivity.class, bundle);
-            break;
-        }
-        return true;
-    }
+		Bundle bundle = new Bundle();
+		bundle.putString(Constants.Key.PREVIEW_TOPIC_TITLE, mTopicTitleEdt.getText().toString());
+		bundle.putString(Constants.Key.PREVIEW_TOPIC_CONTENT, mTopicContentEdt.getText().toString().replace("\n-", "\n\n-"));
+		openActivity(TopicPreviewActivity.class, bundle);
+		break;
+	}
+	return true;
+}
 
-    @Override
-    public void initLoad() {
-        super.initLoad();
-        mPresenter.getCategory();
-    }
+@Override
+public void initLoad() {
+	super.initLoad();
+	mPresenter.getCategory();
+}
 
-    public void publishTopic() {
-        String title = mTopicTitleEdt.getText().toString();
-        String body = mTopicContentEdt.getText().toString();
-        if (TextUtils.isEmpty(title)) {
-            showShortToast("请填写标题");
-            return;
-        }
+public void publishTopic() {
+	String title = mTopicTitleEdt.getText().toString();
+	String body = mTopicContentEdt.getText().toString();
+	if (TextUtils.isEmpty(title)) {
+		showShortToast("请填写标题");
+		return;
+	}
 
-        if (TextUtils.isEmpty(body)) {
-            showShortToast("请输入内容");
-            return;
-        }
+	if (TextUtils.isEmpty(body)) {
+		showShortToast("请输入内容");
+		return;
+	}
 
-        if (TextUtils.isEmpty(nodeId)) {
-            showShortToast("请选择发布类型");
-            return;
-        }
+	if (TextUtils.isEmpty(nodeId)) {
+		showShortToast("请选择发布类型");
+		return;
+	}
 
-        mPresenter.publishTopic(title, body, nodeId);
+	mPresenter.publishTopic(title, body, nodeId);
 
-    }
+}
 
-    @Override
-    public void getCategory(CategoryEntity categoryEntity) {
-        this.mCategory = categoryEntity.getData();
+@Override
+public void getCategory(CategoryEntity categoryEntity) {
+	this.mCategory = categoryEntity.getData();
 
-        if (!mCategory.isEmpty()) {
-            mCategoryList = new ArrayList<>();
-            for (int i = 0; i < mCategory.size(); i++) {
-                mCategoryList.add(i, mCategory.get(i).getName());
-            }
-        }
-    }
+	if (!mCategory.isEmpty()) {
+		mCategoryList = new ArrayList<>();
+		for (int i = 0; i < mCategory.size(); i++) {
+			mCategoryList.add(i, mCategory.get(i).getName());
+		}
+	}
+}
 
-    @Override
-    public void publishTopicSuccess(TopicPublishEntity.DataBean topicEntity) {
-        if (topicEntity != null) {
-            startActivity(TopicDetailsActivity.newIntent(this, topicEntity.getId()));
-            finish();
-        }
-    }
+@Override
+public void publishTopicSuccess(TopicPublishEntity.DataBean topicEntity) {
+	if (topicEntity != null) {
+		startActivity(TopicDetailsActivity.newIntent(this, topicEntity.getId()));
+		finish();
+	}
+}
 
-    @Override
-    public void onRequestStart() {
-        mLoadingDialog.show();
-    }
+@Override
+public void onRequestStart() {
+	mLoadingDialog.show();
+}
 
-    @Override
-    public void onRequestEnd() {
-        mLoadingDialog.dismiss();
-    }
+@Override
+public void onRequestEnd() {
+	mLoadingDialog.dismiss();
+}
 
-    @Override
-    public void onRequestError(String msg) {
-        super.onRequestError(msg);
-        JLog.e("publish fail msg === ",  msg);
-        showShortToast(getString(R.string.toast_publish_fail));
-        mLoadingDialog.dismiss();
-    }
+@Override
+public void onRequestError(String msg) {
+	super.onRequestError(msg);
+	JLog.e("publish fail msg === ",  msg);
+	showShortToast(getString(R.string.toast_publish_fail));
+	mLoadingDialog.dismiss();
+}
 }

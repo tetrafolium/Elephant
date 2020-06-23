@@ -32,74 +32,74 @@ import com.jun.elephant.global.UserConstant;
  */
 public class BaseFragment extends Fragment implements BaseFuncIml {
 
-    private View mContentView;
+private View mContentView;
 
-    private ViewGroup container;
+private ViewGroup container;
 
-    private UserConstant mUserConstant;
+private UserConstant mUserConstant;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+}
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        initData();
-        initView();
-        initListener();
-        initLoad();
-        this.container = container;
-        return mContentView;
-    }
+@Nullable
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	initData();
+	initView();
+	initListener();
+	initLoad();
+	this.container = container;
+	return mContentView;
+}
 
-    public void setContentView(int viewId) {
-        this.mContentView = getActivity().getLayoutInflater().inflate(viewId, container, false);
-    }
+public void setContentView(int viewId) {
+	this.mContentView = getActivity().getLayoutInflater().inflate(viewId, container, false);
+}
 
-    public View getContentView() {
-        return mContentView;
-    }
+public View getContentView() {
+	return mContentView;
+}
 
-    protected void showShortToast(String pMsg) {
-        Toast.makeText(getActivity(), pMsg, Toast.LENGTH_SHORT).show();
-    }
+protected void showShortToast(String pMsg) {
+	Toast.makeText(getActivity(), pMsg, Toast.LENGTH_SHORT).show();
+}
 
-    @Override
-    public void initData() {
-        mUserConstant = UserConstant.getInstance(getContext());
-    }
+@Override
+public void initData() {
+	mUserConstant = UserConstant.getInstance(getContext());
+}
 
-    @Override
-    public void initView() {
+@Override
+public void initView() {
 
-    }
+}
 
-    @Override
-    public void initListener() {
+@Override
+public void initListener() {
 
-    }
+}
 
-    @Override
-    public void initLoad() {
+@Override
+public void initLoad() {
 
-    }
+}
 
-    protected void openActivity(Class<? extends BaseActivity> toActivity) {
-        openActivity(toActivity, null);
-    }
+protected void openActivity(Class<? extends BaseActivity> toActivity) {
+	openActivity(toActivity, null);
+}
 
-    protected void openActivity(Class<? extends BaseActivity> toActivity, Bundle parameter) {
-        Intent intent = new Intent(getActivity(), toActivity);
-        if (parameter != null) {
-            intent.putExtras(parameter);
-        }
-        startActivity(intent);
+protected void openActivity(Class<? extends BaseActivity> toActivity, Bundle parameter) {
+	Intent intent = new Intent(getActivity(), toActivity);
+	if (parameter != null) {
+		intent.putExtras(parameter);
+	}
+	startActivity(intent);
 
-    }
+}
 
-    public UserConstant getUserConstant() {
-        return mUserConstant;
-    }
+public UserConstant getUserConstant() {
+	return mUserConstant;
+}
 }

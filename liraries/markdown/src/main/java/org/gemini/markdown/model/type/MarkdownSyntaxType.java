@@ -5,19 +5,19 @@ package org.gemini.markdown.model.type;
  */
 public enum MarkdownSyntaxType {
 
-    MarkdownSyntaxUnknown,
-    MarkdownSyntaxHeaders,
-    MarkdownSyntaxLinks,
-    MarkdownSyntaxBold,
-    MarkdownSyntaxItalic,
-    MarkdownSyntaxEmphasis,
-    MarkdownSyntaxDeletions,
-    MarkdownSyntaxQuotes,
-    MarkdownSyntaxInlineCode,
-    MarkdownSyntaxCodeBlock,
-    MarkdownSyntaxBlockquotes,
-    MarkdownSyntaxULLists,
-    MarkdownSyntaxOLLists,
-    NumberOfMarkdownSyntax
+	MarkdownSyntaxUnknown,
+	MarkdownSyntaxHeaders,
+	MarkdownSyntaxLinks,
+	MarkdownSyntaxBold,
+	MarkdownSyntaxItalic,
+	MarkdownSyntaxEmphasis,
+	MarkdownSyntaxDeletions,
+	MarkdownSyntaxQuotes,
+	MarkdownSyntaxInlineCode,
+	MarkdownSyntaxCodeBlock,
+	MarkdownSyntaxBlockquotes,
+	MarkdownSyntaxULLists,
+	MarkdownSyntaxOLLists,
+	NumberOfMarkdownSyntax
 
 }

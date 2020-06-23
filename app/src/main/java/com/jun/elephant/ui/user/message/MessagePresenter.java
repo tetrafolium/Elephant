@@ -24,33 +24,33 @@ import rx.Observer;
  */
 public class MessagePresenter extends MessageListContract.Presenter {
 
-    private Observer<UserMessageEntity> getMessageObserver(final int pageIndex) {
-        return new Observer<UserMessageEntity>() {
-            @Override
-            public void onCompleted() {
-                mView.onRequestEnd();
-            }
+private Observer<UserMessageEntity> getMessageObserver(final int pageIndex) {
+	return new Observer<UserMessageEntity>() {
+		       @Override
+		       public void onCompleted() {
+			       mView.onRequestEnd();
+		       }
 
-            @Override
-            public void onError(Throwable e) {
-                mView.onRequestError(e.toString());
-                mView.onInternetError();
-            }
+		       @Override
+		       public void onError(Throwable e) {
+			       mView.onRequestError(e.toString());
+			       mView.onInternetError();
+		       }
 
-            @Override
-            public void onNext(UserMessageEntity userMessageEntity) {
-                if (pageIndex == 1) {
-                    mView.refreshMessageList(userMessageEntity);
-                } else {
-                    mView.loadMoreMessageList(userMessageEntity);
-                }
-            }
-        };
-    }
+		       @Override
+		       public void onNext(UserMessageEntity userMessageEntity) {
+			       if (pageIndex == 1) {
+				       mView.refreshMessageList(userMessageEntity);
+			       } else {
+				       mView.loadMoreMessageList(userMessageEntity);
+			       }
+		       }
+	};
+}
 
 
-    @Override
-    public void getMessageList(int pageIndex) {
-        mRxManager.add(mModel.getUserMessage(pageIndex).subscribe(getMessageObserver(pageIndex)));
-    }
+@Override
+public void getMessageList(int pageIndex) {
+	mRxManager.add(mModel.getUserMessage(pageIndex).subscribe(getMessageObserver(pageIndex)));
+}
 }

@@ -22,91 +22,91 @@ import com.google.gson.annotations.SerializedName;
  */
 public class TopicReplyEntity {
 
-    private ReplyEntity data;
+private ReplyEntity data;
 
-    public ReplyEntity getData() {
-        return data;
-    }
+public ReplyEntity getData() {
+	return data;
+}
 
-    public void setData(ReplyEntity data) {
-        this.data = data;
-    }
+public void setData(ReplyEntity data) {
+	this.data = data;
+}
 
-    public static class ReplyEntity {
-        @SerializedName("topic_id")
-        int topicId;
+public static class ReplyEntity {
+@SerializedName("topic_id")
+int topicId;
 
-        String body;
+String body;
 
-        @SerializedName("user_id")
-        int userId;
+@SerializedName("user_id")
+int userId;
 
-        @SerializedName("body_original")
-        String bodyOriginal;
+@SerializedName("body_original")
+String bodyOriginal;
 
-        @SerializedName("updated_at")
-        String updatedAt;
+@SerializedName("updated_at")
+String updatedAt;
 
-        @SerializedName("created_at")
-        String createdAt;
+@SerializedName("created_at")
+String createdAt;
 
-        int id;
+int id;
 
-        public int getTopicId() {
-            return topicId;
-        }
+public int getTopicId() {
+	return topicId;
+}
 
-        public void setTopicId(int topicId) {
-            this.topicId = topicId;
-        }
+public void setTopicId(int topicId) {
+	this.topicId = topicId;
+}
 
-        public String getBody() {
-            return body;
-        }
+public String getBody() {
+	return body;
+}
 
-        public void setBody(String body) {
-            this.body = body;
-        }
+public void setBody(String body) {
+	this.body = body;
+}
 
-        public int getUserId() {
-            return userId;
-        }
+public int getUserId() {
+	return userId;
+}
 
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
+public void setUserId(int userId) {
+	this.userId = userId;
+}
 
-        public String getBodyOriginal() {
-            return bodyOriginal;
-        }
+public String getBodyOriginal() {
+	return bodyOriginal;
+}
 
-        public void setBodyOriginal(String bodyOriginal) {
-            this.bodyOriginal = bodyOriginal;
-        }
+public void setBodyOriginal(String bodyOriginal) {
+	this.bodyOriginal = bodyOriginal;
+}
 
-        public String getUpdatedAt() {
-            return updatedAt;
-        }
+public String getUpdatedAt() {
+	return updatedAt;
+}
 
-        public void setUpdatedAt(String updatedAt) {
-            this.updatedAt = updatedAt;
-        }
+public void setUpdatedAt(String updatedAt) {
+	this.updatedAt = updatedAt;
+}
 
-        public String getCreatedAt() {
-            return createdAt;
-        }
+public String getCreatedAt() {
+	return createdAt;
+}
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
+public void setCreatedAt(String createdAt) {
+	this.createdAt = createdAt;
+}
 
-        public int getId() {
-            return id;
-        }
+public int getId() {
+	return id;
+}
 
-        public void setId(int id) {
-            this.id = id;
-        }
-    }
+public void setId(int id) {
+	this.id = id;
+}
+}
 
 }

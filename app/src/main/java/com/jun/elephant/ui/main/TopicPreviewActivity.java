@@ -33,59 +33,59 @@ import butterknife.ButterKnife;
  * Created by Jun on 2016/5/16.
  */
 public class TopicPreviewActivity extends BaseWebViewActivity {
-    @BindView(R.id.webView)
-    WebView mWebView;
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
-    @BindView(R.id.multiStateView)
-    MultiStateView mMultiStateView;
+@BindView(R.id.webView)
+WebView mWebView;
+@BindView(R.id.toolBar)
+Toolbar mToolBar;
+@BindView(R.id.multiStateView)
+MultiStateView mMultiStateView;
 
-    private String title;
+private String title;
 
-    private String content;
+private String content;
 
-    private MarkDownRenderer markDownRenderer;
+private MarkDownRenderer markDownRenderer;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
-        ButterKnife.bind(this);
-    }
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_webview);
+	ButterKnife.bind(this);
+}
 
-    @Override
-    public void initData() {
-        super.initData();
-        title = getIntent().getExtras().getString(Constants.Key.PREVIEW_TOPIC_TITLE);
-        content = getIntent().getExtras().getString(Constants.Key.PREVIEW_TOPIC_CONTENT);
+@Override
+public void initData() {
+	super.initData();
+	title = getIntent().getExtras().getString(Constants.Key.PREVIEW_TOPIC_TITLE);
+	content = getIntent().getExtras().getString(Constants.Key.PREVIEW_TOPIC_CONTENT);
 
-        markDownRenderer = new MarkDownRenderer();
-    }
+	markDownRenderer = new MarkDownRenderer();
+}
 
-    @Override
-    public void initView() {
-        super.initView();
-        mToolBar.setTitle(title);
-        mToolBar.setNavigationIcon(R.mipmap.ic_action_return);
-    }
+@Override
+public void initView() {
+	super.initView();
+	mToolBar.setTitle(title);
+	mToolBar.setNavigationIcon(R.mipmap.ic_action_return);
+}
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        mWebView.setWebViewClient(new WebAppClient(this, mMultiStateView, mWebView));
-    }
+@Override
+public void initListener() {
+	super.initListener();
+	mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        finish();
+			}
+		});
+	mWebView.setWebViewClient(new WebAppClient(this, mMultiStateView, mWebView));
+}
 
-    @Override
-    public void initLoad() {
-        super.initLoad();
-        String markdownHtml = markDownRenderer.renderMarkdown(content);
-        mWebView.getSettings().setDefaultTextEncodingName("utf-8");
-        mWebView.loadData(markdownHtml, "text/html", "UTF-8");
-    }
+@Override
+public void initLoad() {
+	super.initLoad();
+	String markdownHtml = markDownRenderer.renderMarkdown(content);
+	mWebView.getSettings().setDefaultTextEncodingName("utf-8");
+	mWebView.loadData(markdownHtml, "text/html", "UTF-8");
+}
 }
