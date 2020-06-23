@@ -33,13 +33,13 @@ import java.util.List;
  * Created by Jun on 2016/3/9.
  */
 public class DrawerMenuAdapter extends RecyclerView.Adapter<DrawerMenuAdapter.DrawerHolder> {
-    
+
     private Context mContext;
-    
+
     private List<DrawerMenuEntity> mMenuList;
 
     private int mSelectPosition = 0;
-    
+
     private OnMenuItemClickListener onMenuItemClickListener;
 
     public DrawerMenuAdapter(Context context, List<DrawerMenuEntity> menuList) {
@@ -61,13 +61,13 @@ public class DrawerMenuAdapter extends RecyclerView.Adapter<DrawerMenuAdapter.Dr
         DrawerMenuEntity item = mMenuList.get(position);
         holder.mMenuText.setText(item.getTitle());
         holder.mMenuIcon.setImageResource(item.getIcon());
-        
+
         if (mSelectPosition == position) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.line_space));
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.text_white));
         }
-        
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +83,7 @@ public class DrawerMenuAdapter extends RecyclerView.Adapter<DrawerMenuAdapter.Dr
     }
 
     class DrawerHolder extends RecyclerView.ViewHolder {
-        
+
         private TextView mMenuText;
         private ImageView mMenuIcon;
 
@@ -93,7 +93,7 @@ public class DrawerMenuAdapter extends RecyclerView.Adapter<DrawerMenuAdapter.Dr
             mMenuIcon = (ImageView) itemView.findViewById(R.id.drawer_menu_ic);
         }
     }
-    
+
     public interface OnMenuItemClickListener {
         void onMenuItemClick(int position);
     }

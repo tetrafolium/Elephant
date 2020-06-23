@@ -75,9 +75,9 @@ import static com.jun.elephant.util.PermissionsChecker.REQUEST_STORAGE_PERMISSIO
  * Created by Jun on 2016/3/1.
  */
 public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,
-        ThemeDialog.OnThemeChangeListener,
-        DrawerMenuAdapter.OnMenuItemClickListener,
-        MaterialDialog.SingleButtonCallback {
+    ThemeDialog.OnThemeChangeListener,
+    DrawerMenuAdapter.OnMenuItemClickListener,
+    MaterialDialog.SingleButtonCallback {
 
     @BindView(R.id.toolBar)
     Toolbar mToolBar;
@@ -204,10 +204,10 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
 
     private void initExitLoginDialog() {
         mExitLoginDialog.content(getString(R.string.dialog_exit_login))
-                .positiveColorRes(R.color.colorPrimary)
-                .negativeColorRes(R.color.colorPrimary)
-                .positiveText(getString(R.string.dialog_exit_positive_text))
-                .negativeText(getString(R.string.dialog_exit_negative_text));
+        .positiveColorRes(R.color.colorPrimary)
+        .negativeColorRes(R.color.colorPrimary)
+        .positiveText(getString(R.string.dialog_exit_positive_text))
+        .negativeText(getString(R.string.dialog_exit_negative_text));
     }
 
     @Override
@@ -238,35 +238,35 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.login_success_rl:
-                mExitLoginDialog.show();
-                break;
+        case R.id.login_success_rl:
+            mExitLoginDialog.show();
+            break;
 
-            case R.id.login_tv:
-            case R.id.user_iv:
-                if (getUserConstant().isLogin()) {
-                    startActivity(UserInfoActivity.newIntent(this, getUserConstant().getUserData().getData().getId()));
-                    return;
-                }
-                //判断一下是否开启权限
-                if (PermissionsChecker.lacksPermissions(this, PermissionsChecker.photosPermissions)) {
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    startActivityForResult(intent, Constants.Activity.LoginActivity);
-                }
-                break;
-            case R.id.setting_ll:
-                mThemeDialog.show();
-                break;
-            case R.id.login_help_ll:
-                OpenWebViewUtils.loginHelp(this);
-                break;
-            default:
-                if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                    mDrawerLayout.closeDrawers();
-                } else {
-                    mDrawerLayout.openDrawer(Gravity.LEFT);
-                }
-                break;
+        case R.id.login_tv:
+        case R.id.user_iv:
+            if (getUserConstant().isLogin()) {
+                startActivity(UserInfoActivity.newIntent(this, getUserConstant().getUserData().getData().getId()));
+                return;
+            }
+            //判断一下是否开启权限
+            if (PermissionsChecker.lacksPermissions(this, PermissionsChecker.photosPermissions)) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivityForResult(intent, Constants.Activity.LoginActivity);
+            }
+            break;
+        case R.id.setting_ll:
+            mThemeDialog.show();
+            break;
+        case R.id.login_help_ll:
+            OpenWebViewUtils.loginHelp(this);
+            break;
+        default:
+            if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                mDrawerLayout.closeDrawers();
+            } else {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+            break;
         }
     }
 
@@ -278,19 +278,19 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     @Override
     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
         switch (which) {
-            case POSITIVE:
-                if (getUserConstant().logout()) { //退出登录
-                    mLoginShowRl.setVisibility(View.GONE);
-                    mLoginTv.setVisibility(View.VISIBLE);
-                    mMainMenuList.removeAll(mMyMenuList);
-                    mMenuAdapter.notifyDataSetChanged();
-                    mUserImgIv.setImageURI(Uri.parse("res://com.jun.elephant/" + R.color.main_bg));
-                    dialog.dismiss();
-                }
-                break;
-            case NEGATIVE:
+        case POSITIVE:
+            if (getUserConstant().logout()) { //退出登录
+                mLoginShowRl.setVisibility(View.GONE);
+                mLoginTv.setVisibility(View.VISIBLE);
+                mMainMenuList.removeAll(mMyMenuList);
+                mMenuAdapter.notifyDataSetChanged();
+                mUserImgIv.setImageURI(Uri.parse("res://com.jun.elephant/" + R.color.main_bg));
                 dialog.dismiss();
-                break;
+            }
+            break;
+        case NEGATIVE:
+            dialog.dismiss();
+            break;
         }
     }
 
@@ -301,37 +301,37 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     @Override
     public void onMenuItemClick(int position) {
         switch (position) {
-            case 0:
-                switchFragment(getString(R.string.menu_recommend), Constants.Topic.EXCELLENT);
-                break;
-            case 1:
-                switchFragment(getString(R.string.menu_hot), Constants.Topic.VOTE);
-                break;
-            case 2:
-                switchFragment(getString(R.string.menu_newest), Constants.Topic.NEWEST);
-                break;
-            case 3:
-                switchFragment(getString(R.string.menu_nobody), Constants.Topic.NOBODY);
-                break;
-            case 4:
-                switchFragment(getString(R.string.menu_jobs), Constants.Topic.JOBS);
-                break;
-            case 5:
-                switchFragment(getString(R.string.menu_wiki), Constants.Topic.WIKI);
-                break;
-            case 6:
-                mToolBar.setTitle(getString(R.string.menu_vote));
-                mTopicListByMeFragment.TYPE = Constants.User.USER_TOPIC_VOTES;
-                toUserFragment();
-                break;
-            case 7:
-                mToolBar.setTitle(getString(R.string.menu_topic));
-                mTopicListByMeFragment.TYPE = Constants.User.USER_TOPIC_MY;
-                toUserFragment();
-                break;
-            case 8:
-                OpenWebViewUtils.myReply(MainActivity.this, mUserInfoEntity.getData().getLinks().getReplies_web_view());
-                break;
+        case 0:
+            switchFragment(getString(R.string.menu_recommend), Constants.Topic.EXCELLENT);
+            break;
+        case 1:
+            switchFragment(getString(R.string.menu_hot), Constants.Topic.VOTE);
+            break;
+        case 2:
+            switchFragment(getString(R.string.menu_newest), Constants.Topic.NEWEST);
+            break;
+        case 3:
+            switchFragment(getString(R.string.menu_nobody), Constants.Topic.NOBODY);
+            break;
+        case 4:
+            switchFragment(getString(R.string.menu_jobs), Constants.Topic.JOBS);
+            break;
+        case 5:
+            switchFragment(getString(R.string.menu_wiki), Constants.Topic.WIKI);
+            break;
+        case 6:
+            mToolBar.setTitle(getString(R.string.menu_vote));
+            mTopicListByMeFragment.TYPE = Constants.User.USER_TOPIC_VOTES;
+            toUserFragment();
+            break;
+        case 7:
+            mToolBar.setTitle(getString(R.string.menu_topic));
+            mTopicListByMeFragment.TYPE = Constants.User.USER_TOPIC_MY;
+            toUserFragment();
+            break;
+        case 8:
+            OpenWebViewUtils.myReply(MainActivity.this, mUserInfoEntity.getData().getLinks().getReplies_web_view());
+            break;
         }
 
         if (position != 8) {
@@ -349,25 +349,25 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_notice:
-                if (getUserConstant().isLogin()) {
-                    openActivity(UserMessageActivity.class);
-                } else {
-                    showShortToast(getString(R.string.toast_no_login));
-                }
-                break;
+        case R.id.action_notice:
+            if (getUserConstant().isLogin()) {
+                openActivity(UserMessageActivity.class);
+            } else {
+                showShortToast(getString(R.string.toast_no_login));
+            }
+            break;
 
-            case R.id.action_about:
-                OpenWebViewUtils.aboutMe(this);
-                break;
+        case R.id.action_about:
+            OpenWebViewUtils.aboutMe(this);
+            break;
 
-            case R.id.action_search:
-                showShortToast(getString(R.string.toast_adorn));
-                break;
+        case R.id.action_search:
+            showShortToast(getString(R.string.toast_adorn));
+            break;
 
-            case R.id.action_settings:
-                openActivity(SettingActivity.class);
-                break;
+        case R.id.action_settings:
+            openActivity(SettingActivity.class);
+            break;
         }
         return true;
     }
@@ -465,18 +465,18 @@ public class MainActivity extends BaseActivity implements Toolbar.OnMenuItemClic
     @Override
     public void onChangeTheme(View view) {
         switch (view.getId()) {
-            case R.id.theme_blue:
-                setTheme(R.style.BlueTheme);                //设置主题
-                mThemeUtil.setTheme(Constants.Theme.Blue);  //保存当前主题
-                break;
-            case R.id.theme_gray:
-                setTheme(R.style.GrayTheme);
-                mThemeUtil.setTheme(Constants.Theme.Gray);
-                break;
-            case R.id.theme_white:
-                setTheme(R.style.WhiteTheme);
-                mThemeUtil.setTheme(Constants.Theme.White);
-                break;
+        case R.id.theme_blue:
+            setTheme(R.style.BlueTheme);                //设置主题
+            mThemeUtil.setTheme(Constants.Theme.Blue);  //保存当前主题
+            break;
+        case R.id.theme_gray:
+            setTheme(R.style.GrayTheme);
+            mThemeUtil.setTheme(Constants.Theme.Gray);
+            break;
+        case R.id.theme_white:
+            setTheme(R.style.WhiteTheme);
+            mThemeUtil.setTheme(Constants.Theme.White);
+            break;
         }
         changeTheme();
     }

@@ -37,7 +37,7 @@ public interface TopicApi {
 
     @GET("topics/{topicId}")
     Observable<TopicDetailEntity> getTopicDetail(@Path("topicId") double topicId,
-                                           @QueryMap Map<String, String> options);
+            @QueryMap Map<String, String> options);
 
     @GET("topics")
     Observable<TopicListEntity> getTopics(@QueryMap Map<String, String> options);

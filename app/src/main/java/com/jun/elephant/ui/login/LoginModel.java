@@ -40,10 +40,10 @@ public class LoginModel implements LoginContract.Model {
     @Override
     public Observable<TokenEntity> getLoginToken(Context context, String userName, String loginToken) {
         return Networks.getInstance().getTokenApi().getToken(
-                Constants.Token.AUTH_TYPE_USER,
-                BuildConfig.CLIENT_ID,
-                BuildConfig.CLIENT_SECRET,
-                userName, loginToken);
+                   Constants.Token.AUTH_TYPE_USER,
+                   BuildConfig.CLIENT_ID,
+                   BuildConfig.CLIENT_SECRET,
+                   userName, loginToken);
     }
 
     /**

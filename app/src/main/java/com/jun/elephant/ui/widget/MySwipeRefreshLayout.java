@@ -20,8 +20,9 @@ import in.srain.cube.views.ptr.header.MaterialHeader;
  */
 public class MySwipeRefreshLayout extends PtrFrameLayout {
 
-    private int[] colors = new int[]{Color.parseColor("#6E9AC1"), Color.parseColor("#6E9AC1"),
-            Color.parseColor("#6E9AC1"), Color.parseColor("#6E9AC1") };
+    private int[] colors = new int[] {Color.parseColor("#6E9AC1"), Color.parseColor("#6E9AC1"),
+                                      Color.parseColor("#6E9AC1"), Color.parseColor("#6E9AC1")
+                                     };
 
     public MySwipeRefreshLayout(Context context) {
         super(context);
@@ -44,7 +45,7 @@ public class MySwipeRefreshLayout extends PtrFrameLayout {
         MaterialHeader footer = new MaterialHeader(getContext());
         footer.setColorSchemeColors(colors);
         footer.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+                                                ViewGroup.LayoutParams.WRAP_CONTENT));
         footer.setPadding(0, 20, 0, 25);
         footer.setPtrFrameLayout(this);
 
@@ -56,7 +57,7 @@ public class MySwipeRefreshLayout extends PtrFrameLayout {
         MaterialHeader header = new MaterialHeader(getContext());
         header.setColorSchemeColors(colors);
         header.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+                                                ViewGroup.LayoutParams.WRAP_CONTENT));
         header.setPadding(0, 25, 0, 20);
         header.setPtrFrameLayout(this);
 

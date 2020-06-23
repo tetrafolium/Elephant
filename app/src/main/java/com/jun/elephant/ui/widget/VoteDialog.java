@@ -93,13 +93,13 @@ public class VoteDialog extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.vote_down_tv:
-                if (mOnVoteDialogClickListener != null)
-                    mOnVoteDialogClickListener.onVoteDownClick();
-                break;
-            case R.id.vote_up_tv:
-                if (mOnVoteDialogClickListener != null) mOnVoteDialogClickListener.onVoteUpClick();
-                break;
+        case R.id.vote_down_tv:
+            if (mOnVoteDialogClickListener != null)
+                mOnVoteDialogClickListener.onVoteDownClick();
+            break;
+        case R.id.vote_up_tv:
+            if (mOnVoteDialogClickListener != null) mOnVoteDialogClickListener.onVoteUpClick();
+            break;
         }
     }
 

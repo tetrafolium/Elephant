@@ -1,12 +1,12 @@
 /*
  * Copyright 2016 Freelander
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,17 +35,17 @@ public class TopicModel implements TopicContract.Model {
     @Override
     public Observable<TokenEntity> getTokenByForum() {
         return Networks.getInstance().getTokenApi().getToken(
-                Constants.Token.AUTH_TYPE_GUEST,
-                BuildConfig.CLIENT_ID,
-                BuildConfig.CLIENT_SECRET)
-                .compose(RxSchedulers.<TokenEntity>io_main());
+                   Constants.Token.AUTH_TYPE_GUEST,
+                   BuildConfig.CLIENT_ID,
+                   BuildConfig.CLIENT_SECRET)
+               .compose(RxSchedulers.<TokenEntity>io_main());
     }
 
     @Override
     public Observable<TopicListEntity> getTopicByForum(String type, int pageIndex) {
         return Networks.getInstance().getTopicApi()
-                .getTopics(getOptionsByForum(type, pageIndex))
-                .compose(RxSchedulers.<TopicListEntity>io_main());
+               .getTopics(getOptionsByForum(type, pageIndex))
+               .compose(RxSchedulers.<TopicListEntity>io_main());
     }
 
     /**
@@ -57,8 +57,8 @@ public class TopicModel implements TopicContract.Model {
     @Override
     public Observable<TopicListEntity> getUserTopicPraise(int userId, int pageIndex) {
         return Networks.getInstance().getUserApi()
-                .getVotes(userId, getOptionsByUser(pageIndex))
-                .compose(RxSchedulers.<TopicListEntity>io_main());
+               .getVotes(userId, getOptionsByUser(pageIndex))
+               .compose(RxSchedulers.<TopicListEntity>io_main());
     }
 
     /**
@@ -70,8 +70,8 @@ public class TopicModel implements TopicContract.Model {
     @Override
     public Observable<TopicListEntity> getUserTopicShare(int userId, int pageIndex) {
         return Networks.getInstance().getUserApi()
-                .getTopics(userId, getOptionsByUser(pageIndex))
-                .compose(RxSchedulers.<TopicListEntity>io_main());
+               .getTopics(userId, getOptionsByUser(pageIndex))
+               .compose(RxSchedulers.<TopicListEntity>io_main());
     }
 
     /**
@@ -83,8 +83,8 @@ public class TopicModel implements TopicContract.Model {
     @Override
     public Observable<TopicListEntity> getUserFollowUser(int userId, int pageIndex) {
         return Networks.getInstance().getUserApi()
-                .getAttentions(userId)
-                .compose(RxSchedulers.<TopicListEntity>io_main());
+               .getAttentions(userId)
+               .compose(RxSchedulers.<TopicListEntity>io_main());
     }
 
 

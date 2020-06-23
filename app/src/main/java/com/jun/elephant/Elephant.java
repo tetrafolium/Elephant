@@ -44,12 +44,12 @@ public class Elephant extends Application {
          * 设置 Fresco 图片缓存的路径
          */
         DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(getApplicationContext())
-                .setBaseDirectoryPath(getOwnCacheDirectory(this, APP_CACHE_PATH))
-                .build();
+                                          .setBaseDirectoryPath(getOwnCacheDirectory(this, APP_CACHE_PATH))
+                                          .build();
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(getApplicationContext())
-                .setMainDiskCacheConfig(diskCacheConfig)
-                .setSmallImageDiskCacheConfig(diskCacheConfig)
-                .build();
+                                     .setMainDiskCacheConfig(diskCacheConfig)
+                                     .setSmallImageDiskCacheConfig(diskCacheConfig)
+                                     .build();
 
         //初始化 Fresco 图片缓存库
         Fresco.initialize(this, config);

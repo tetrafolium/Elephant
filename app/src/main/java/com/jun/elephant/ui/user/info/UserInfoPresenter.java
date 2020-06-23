@@ -54,15 +54,15 @@ public class UserInfoPresenter extends UserInfoContract.Presenter {
     @Override
     public void saveUserInfoById(int userId, UserEntity userEntity) {
         mRxManager.add(mModel.saveUserInfoById(userId, userEntity)
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        mView.onRequestStart();
-                    }
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(getUserInfoObserver())
+        .doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                mView.onRequestStart();
+            }
+        })
+        .subscribeOn(AndroidSchedulers.mainThread())
+        .subscribe(getUserInfoObserver())
 
-        );
+                      );
     }
 }

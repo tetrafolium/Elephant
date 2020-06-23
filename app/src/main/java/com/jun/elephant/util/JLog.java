@@ -105,7 +105,7 @@ public class JLog {
             Logger.init(tag);
             Logger.e(message);
 
-            
+
         }
     }
 

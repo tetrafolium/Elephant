@@ -34,25 +34,25 @@ public class MySimpleDraweeView extends SimpleDraweeView {
     public void setImageURI(Uri uri) {
 
         ImageRequest request = ImageRequestBuilder
-                .newBuilderWithSource(uri)
-                .setLocalThumbnailPreviewsEnabled(true)
-                .setProgressiveRenderingEnabled(false)
-                .setResizeOptions(new ResizeOptions(50, 50))
-                .build();
-/*
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setUri(uri)
-                .setTapToRetryEnabled(true)
-                .setImageRequest(request)
-                .setOldController(getController())
-                .build();*/
+                               .newBuilderWithSource(uri)
+                               .setLocalThumbnailPreviewsEnabled(true)
+                               .setProgressiveRenderingEnabled(false)
+                               .setResizeOptions(new ResizeOptions(50, 50))
+                               .build();
+        /*
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setUri(uri)
+                        .setTapToRetryEnabled(true)
+                        .setImageRequest(request)
+                        .setOldController(getController())
+                        .build();*/
 
         PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
-                .setUri(uri)
-                .setTapToRetryEnabled(true)
-                .setImageRequest(request)
-                .setOldController(getController())
-                .build();
+                                              .setUri(uri)
+                                              .setTapToRetryEnabled(true)
+                                              .setImageRequest(request)
+                                              .setOldController(getController())
+                                              .build();
 
         setController(controller);
 

@@ -40,8 +40,8 @@ public class PermissionsChecker {
 
     public static int REQUEST_STORAGE_PERMISSION = 100;
 
-    public static String[] photosPermissions = new String[]{
-            Manifest.permission.CAMERA
+    public static String[] photosPermissions = new String[] {
+        Manifest.permission.CAMERA
     };
 
     private static List<String> closePermissions = new ArrayList<>();
@@ -89,16 +89,16 @@ public class PermissionsChecker {
         if (ActivityCompat.shouldShowRequestPermissionRationale(mContext,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
             new AlertDialog.Builder(mContext)
-                    .setMessage("你需要启动权限才能使用该功能")
-                    .setPositiveButton("允许", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions( mContext, permission, REQUEST_STORAGE_PERMISSION);//请求开启权限
-                        }
-                    })
-                    .setNegativeButton("拒绝",null)
-                    .create()
-                    .show();
+            .setMessage("你需要启动权限才能使用该功能")
+            .setPositiveButton("允许", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions( mContext, permission, REQUEST_STORAGE_PERMISSION);//请求开启权限
+                }
+            })
+            .setNegativeButton("拒绝",null)
+            .create()
+            .show();
         } else {
             ActivityCompat.requestPermissions(mContext, permission, REQUEST_STORAGE_PERMISSION);
         }

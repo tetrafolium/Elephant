@@ -1,12 +1,12 @@
 /*
  * Copyright 2016 Freelander
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -261,17 +261,17 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
     public boolean onTouchEvent(MotionEvent ev) {
         if (this.position == ScrollStateChangedListener.ScrollState.MIDDLE) {
             switch (ev.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
-                    this.mIsBeingDragged = false;
-                    this.mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
-                    this.startNestedScroll(2);
-                    break;
-                }
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL: {
-                    this.endTouch();
-                    break;
-                }
+            case MotionEvent.ACTION_DOWN: {
+                this.mIsBeingDragged = false;
+                this.mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                this.startNestedScroll(2);
+                break;
+            }
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL: {
+                this.endTouch();
+                break;
+            }
             }
             super.onTouchEvent(ev);
             return true;
@@ -288,119 +288,119 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
         this.direction = 0;
         boolean onTouchEvent = false;
         switch (actionMasked) {
-            case MotionEvent.ACTION_DOWN: {
-                // Remember where the motion event started
-                onTouchEvent = super.onTouchEvent(ev);
-                mLastMotionY = (int) (ev.getY() + 0.5f);
-                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
-                this.preY = vtev.getY();
-                this.mIsBeingDragged = false;
-                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
+        case MotionEvent.ACTION_DOWN: {
+            // Remember where the motion event started
+            onTouchEvent = super.onTouchEvent(ev);
+            mLastMotionY = (int) (ev.getY() + 0.5f);
+            mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+            this.preY = vtev.getY();
+            this.mIsBeingDragged = false;
+            startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
+            break;
+        }
+        case MotionEventCompat.ACTION_POINTER_DOWN: {
+            onTouchEvent = super.onTouchEvent(ev);
+            mLastMotionY = (int) (MotionEventCompat.getY(ev, index) + 0.5f);
+            mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+            break;
+        }
+        case MotionEvent.ACTION_MOVE:
+            final int activePointerIndex = MotionEventCompat.findPointerIndex(ev,
+                                           mActivePointerId);
+            if (activePointerIndex == -1) {
+                Log.e(TAG, "Invalid pointerId=" + mActivePointerId + " in onTouchEvent");
                 break;
             }
-            case MotionEventCompat.ACTION_POINTER_DOWN: {
-                onTouchEvent = super.onTouchEvent(ev);
-                mLastMotionY = (int) (MotionEventCompat.getY(ev, index) + 0.5f);
-                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
-                break;
+            if (!mIsBeingDragged && Math.abs(vtev.getY() - this.preY) > mTouchSlop) {
+                final ViewParent parent = getParent();
+                if (parent != null) {
+                    parent.requestDisallowInterceptTouchEvent(true);
+                }
+                mIsBeingDragged = true;
             }
-            case MotionEvent.ACTION_MOVE:
-                final int activePointerIndex = MotionEventCompat.findPointerIndex(ev,
-                        mActivePointerId);
-                if (activePointerIndex == -1) {
-                    Log.e(TAG, "Invalid pointerId=" + mActivePointerId + " in onTouchEvent");
-                    break;
-                }
-                if (!mIsBeingDragged && Math.abs(vtev.getY() - this.preY) > mTouchSlop) {
-                    final ViewParent parent = getParent();
-                    if (parent != null) {
-                        parent.requestDisallowInterceptTouchEvent(true);
-                    }
-                    mIsBeingDragged = true;
-                }
 //                if(!mIsBeingDragged){
 //                    setLongClickEnable(true);
 //                }
-                final int y = (int) (MotionEventCompat.getY(ev, activePointerIndex) + 0.5f);
-                Log.i(TAG, "mLastMotionY=====" + mLastMotionY);
-                Log.i(TAG, "YYYYYYY=====" + y);
-                int deltaY = mLastMotionY - y;
+            final int y = (int) (MotionEventCompat.getY(ev, activePointerIndex) + 0.5f);
+            Log.i(TAG, "mLastMotionY=====" + mLastMotionY);
+            Log.i(TAG, "YYYYYYY=====" + y);
+            int deltaY = mLastMotionY - y;
 
-                if (deltaY != 0) {
-                    this.direction = this.directionDetector.getDirection(deltaY, true, this.scrollStateChangedListener);
-                }
-                if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
-                    deltaY -= mScrollConsumed[1];
-                    vtev.offsetLocation(0, mScrollOffset[1]);
-                    mNestedYOffset += mScrollOffset[1];
-                }
-                if (mIsBeingDragged) {
+            if (deltaY != 0) {
+                this.direction = this.directionDetector.getDirection(deltaY, true, this.scrollStateChangedListener);
+            }
+            if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
+                deltaY -= mScrollConsumed[1];
+                vtev.offsetLocation(0, mScrollOffset[1]);
+                mNestedYOffset += mScrollOffset[1];
+            }
+            if (mIsBeingDragged) {
 //                    setJavaScriptEnable(true);
-                    // Scroll to follow the motion event
-                    mLastMotionY = y - mScrollOffset[1];
-                    Log.i(TAG, "deltaY===" + deltaY);
-                    Log.i(TAG, "this.consumedY===" + this.consumedY);
-                    final int unconsumedY = deltaY - this.consumedY;
+                // Scroll to follow the motion event
+                mLastMotionY = y - mScrollOffset[1];
+                Log.i(TAG, "deltaY===" + deltaY);
+                Log.i(TAG, "this.consumedY===" + this.consumedY);
+                final int unconsumedY = deltaY - this.consumedY;
 
-                    Log.i(TAG, " child consumed = " + this.mScrollConsumed[1] + " un_consumed = " + unconsumedY + " position = " + this.position + " direction = " + this.direction);
-                    onTouchEvent = super.onTouchEvent(ev);
-                    if (this.position == ScrollStateChangedListener.ScrollState.MIDDLE) {
-                        return true;
-                    }
-                    switch (this.direction) {
-                        case 1: {
-                            if ((this.position != ScrollStateChangedListener.ScrollState.BOTTOM) && (this.contentHeight != this.webviewHeight)) {
-                                scrollBy(0, unconsumedY);
-                                break;
-                            }
-                            Log.i(TAG, "1111111consumedY===" + consumedY + "  unconsumedY==" + unconsumedY);
-                            if (dispatchNestedScroll(0, this.consumedY, 0, unconsumedY, this.mScrollOffset)) {
-                                vtev.offsetLocation(0.0F, this.mScrollOffset[1]);
-                                this.mNestedYOffset += this.mScrollOffset[1];
-                                this.mLastMotionY -= this.mScrollOffset[1];
-                            }
-                        }
+                Log.i(TAG, " child consumed = " + this.mScrollConsumed[1] + " un_consumed = " + unconsumedY + " position = " + this.position + " direction = " + this.direction);
+                onTouchEvent = super.onTouchEvent(ev);
+                if (this.position == ScrollStateChangedListener.ScrollState.MIDDLE) {
+                    return true;
+                }
+                switch (this.direction) {
+                case 1: {
+                    if ((this.position != ScrollStateChangedListener.ScrollState.BOTTOM) && (this.contentHeight != this.webviewHeight)) {
+                        scrollBy(0, unconsumedY);
                         break;
-                        case 2:
-                            if ((this.position == ScrollStateChangedListener.ScrollState.TOP) || (this.contentHeight == this.webviewHeight)) {
-                                Log.i(TAG, "2222222consumedY===" + consumedY + "  unconsumedY==" + unconsumedY);
-                                if (dispatchNestedScroll(0, this.consumedY, 0, unconsumedY, this.mScrollOffset)) {
-                                    vtev.offsetLocation(0.0F, this.mScrollOffset[1]);
-                                    this.mNestedYOffset += this.mScrollOffset[1];
-                                    this.mLastMotionY -= this.mScrollOffset[1];
-                                }
-                            } else {
-                                scrollBy(0, unconsumedY);
-                            }
-                            break;
-                        default:
-                            break;
+                    }
+                    Log.i(TAG, "1111111consumedY===" + consumedY + "  unconsumedY==" + unconsumedY);
+                    if (dispatchNestedScroll(0, this.consumedY, 0, unconsumedY, this.mScrollOffset)) {
+                        vtev.offsetLocation(0.0F, this.mScrollOffset[1]);
+                        this.mNestedYOffset += this.mScrollOffset[1];
+                        this.mLastMotionY -= this.mScrollOffset[1];
                     }
                 }
                 break;
-            case MotionEvent.ACTION_CANCEL:
-                onTouchEvent = super.onTouchEvent(ev);
-                break;
-            case MotionEvent.ACTION_UP:
-                onTouchEvent = super.onTouchEvent(ev);
-                if (mIsBeingDragged) {
-                    final VelocityTracker velocityTracker = mVelocityTracker;
-                    velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
-                    int initialVelocity = (int) VelocityTrackerCompat.getYVelocity(velocityTracker, mActivePointerId);
-                    if ((Math.abs(initialVelocity) > mMinimumVelocity)) {
-                        flingWithNestedDispatch(-initialVelocity);
+                case 2:
+                    if ((this.position == ScrollStateChangedListener.ScrollState.TOP) || (this.contentHeight == this.webviewHeight)) {
+                        Log.i(TAG, "2222222consumedY===" + consumedY + "  unconsumedY==" + unconsumedY);
+                        if (dispatchNestedScroll(0, this.consumedY, 0, unconsumedY, this.mScrollOffset)) {
+                            vtev.offsetLocation(0.0F, this.mScrollOffset[1]);
+                            this.mNestedYOffset += this.mScrollOffset[1];
+                            this.mLastMotionY -= this.mScrollOffset[1];
+                        }
+                    } else {
+                        scrollBy(0, unconsumedY);
                     }
+                    break;
+                default:
+                    break;
                 }
-                mActivePointerId = INVALID_POINTER;
-                endTouch();
-                break;
+            }
+            break;
+        case MotionEvent.ACTION_CANCEL:
+            onTouchEvent = super.onTouchEvent(ev);
+            break;
+        case MotionEvent.ACTION_UP:
+            onTouchEvent = super.onTouchEvent(ev);
+            if (mIsBeingDragged) {
+                final VelocityTracker velocityTracker = mVelocityTracker;
+                velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+                int initialVelocity = (int) VelocityTrackerCompat.getYVelocity(velocityTracker, mActivePointerId);
+                if ((Math.abs(initialVelocity) > mMinimumVelocity)) {
+                    flingWithNestedDispatch(-initialVelocity);
+                }
+            }
+            mActivePointerId = INVALID_POINTER;
+            endTouch();
+            break;
 
-            case MotionEventCompat.ACTION_POINTER_UP:
-                onTouchEvent = super.onTouchEvent(ev);
-                onSecondaryPointerUp(ev);
-                mLastMotionY = (int) (MotionEventCompat.getY(ev,
-                        MotionEventCompat.findPointerIndex(ev, mActivePointerId)) + 0.5F);
-                break;
+        case MotionEventCompat.ACTION_POINTER_UP:
+            onTouchEvent = super.onTouchEvent(ev);
+            onSecondaryPointerUp(ev);
+            mLastMotionY = (int) (MotionEventCompat.getY(ev,
+                                  MotionEventCompat.findPointerIndex(ev, mActivePointerId)) + 0.5F);
+            break;
         }
         if (mVelocityTracker != null) {
             mVelocityTracker.addMovement(vtev);
@@ -411,7 +411,7 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
 
     private void onSecondaryPointerUp(MotionEvent ev) {
         final int pointerIndex = (ev.getAction() & MotionEventCompat.ACTION_POINTER_INDEX_MASK) >>
-                MotionEventCompat.ACTION_POINTER_INDEX_SHIFT;
+                                 MotionEventCompat.ACTION_POINTER_INDEX_SHIFT;
         final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
         if (pointerId == mActivePointerId) {
             // This was our active pointer going up. Choose getDirection new

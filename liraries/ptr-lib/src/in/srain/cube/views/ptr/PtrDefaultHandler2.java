@@ -11,8 +11,8 @@ public abstract class PtrDefaultHandler2 extends PtrDefaultHandler implements Pt
             if (view instanceof AbsListView) {
                 final AbsListView absListView = (AbsListView) view;
                 return absListView.getChildCount() > 0
-                        && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
-                        || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
+                       && (absListView.getLastVisiblePosition() < absListView.getChildCount() - 1
+                           || absListView.getChildAt(absListView.getChildCount() - 1).getBottom() > absListView.getPaddingBottom());
             } else if (view instanceof ScrollView) {
                 ScrollView scrollView = (ScrollView) view;
                 if (scrollView.getChildCount() == 0) {

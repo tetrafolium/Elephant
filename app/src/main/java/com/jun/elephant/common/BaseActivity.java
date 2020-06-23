@@ -36,7 +36,7 @@ import com.umeng.analytics.MobclickAgent;
 /**
  * Created by Jun on 2016/4/29.
  */
-public class BaseActivity extends AppCompatActivity implements BaseFuncIml , View.OnClickListener {
+public class BaseActivity extends AppCompatActivity implements BaseFuncIml, View.OnClickListener {
 
     protected Fragment mCurrFragment;
 
@@ -120,11 +120,11 @@ public class BaseActivity extends AppCompatActivity implements BaseFuncIml , Vie
 
         if (toFragment.isAdded()) {
             getSupportFragmentManager().beginTransaction().hide(mCurrFragment)
-                    .show(toFragment).commit();
+            .show(toFragment).commit();
         } else {
             getSupportFragmentManager().beginTransaction().hide(mCurrFragment)
-                    .add(mFragmentId, toFragment).show(toFragment)
-                    .commit();
+            .add(mFragmentId, toFragment).show(toFragment)
+            .commit();
         }
 
         mCurrFragment = toFragment;
@@ -174,21 +174,21 @@ public class BaseActivity extends AppCompatActivity implements BaseFuncIml , Vie
         mThemeUtil = ThemeUtil.getInstance(this);
         String theme = mThemeUtil.getTheme();
         switch (theme) {
-            case Constants.Theme.Blue:
-                setTheme(R.style.BlueTheme);
-                break;
+        case Constants.Theme.Blue:
+            setTheme(R.style.BlueTheme);
+            break;
 
-            case Constants.Theme.White:
-                setTheme(R.style.WhiteTheme);
-                break;
+        case Constants.Theme.White:
+            setTheme(R.style.WhiteTheme);
+            break;
 
-            case Constants.Theme.Gray:
-                setTheme(R.style.GrayTheme);
-                break;
+        case Constants.Theme.Gray:
+            setTheme(R.style.GrayTheme);
+            break;
 
-            default:
-                setTheme(R.style.BlueTheme);
-                break;
+        default:
+            setTheme(R.style.BlueTheme);
+            break;
         }
     }
 

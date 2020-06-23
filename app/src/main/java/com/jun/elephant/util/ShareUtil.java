@@ -34,7 +34,7 @@ public class ShareUtil {
     /**
      * 分享
      */
-    public static void share(Context context, String content){
+    public static void share(Context context, String content) {
         Intent intent=new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.share));
@@ -51,7 +51,7 @@ public class ShareUtil {
         final Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         PackageManager pm = context.getPackageManager();
         List<ResolveInfo> infos = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        if (infos == null || infos.size() <= 0){
+        if (infos == null || infos.size() <= 0) {
             Toast.makeText(context, context.getString(R.string.no_email), Toast.LENGTH_SHORT).show();
             return;
         }

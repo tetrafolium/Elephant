@@ -22,15 +22,15 @@ public abstract class PtrUIHandlerHook implements Runnable {
             mResumeAction = resumeAction;
         }
         switch (mStatus) {
-            case STATUS_PREPARE:
-                mStatus = STATUS_IN_HOOK;
-                run();
-                break;
-            case STATUS_IN_HOOK:
-                break;
-            case STATUS_RESUMED:
-                resume();
-                break;
+        case STATUS_PREPARE:
+            mStatus = STATUS_IN_HOOK;
+            run();
+            break;
+        case STATUS_IN_HOOK:
+            break;
+        case STATUS_RESUMED:
+            resume();
+            break;
         }
     }
 

@@ -56,11 +56,11 @@ public class NetworkUtils {
      */
     public static boolean isWifiEnabled(Context context) {
         ConnectivityManager mgrConn = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+                                      .getSystemService(Context.CONNECTIVITY_SERVICE);
         TelephonyManager mgrTel = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+                                  .getSystemService(Context.TELEPHONY_SERVICE);
         return ((mgrConn.getActiveNetworkInfo() != null && mgrConn
-                .getActiveNetworkInfo().getState() == NetworkInfo.State.CONNECTED) || mgrTel
+                 .getActiveNetworkInfo().getState() == NetworkInfo.State.CONNECTED) || mgrTel
                 .getNetworkType() == TelephonyManager.NETWORK_TYPE_UMTS);
     }
 
@@ -71,7 +71,7 @@ public class NetworkUtils {
      */
     public static boolean is3rd(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+                                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkINfo = cm.getActiveNetworkInfo();
         if (networkINfo != null
                 && networkINfo.getType() == ConnectivityManager.TYPE_MOBILE) {
@@ -87,7 +87,7 @@ public class NetworkUtils {
      */
     public static boolean isWifi(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+                                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkINfo = cm.getActiveNetworkInfo();
         if (networkINfo != null
                 && networkINfo.getType() == ConnectivityManager.TYPE_WIFI) {

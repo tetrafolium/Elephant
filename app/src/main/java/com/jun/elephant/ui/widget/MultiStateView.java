@@ -91,21 +91,21 @@ public class MultiStateView extends FrameLayout {
         int viewState = a.getInt(R.styleable.MultiStateView_msv_viewState, VIEW_STATE_CONTENT);
 
         switch (viewState) {
-            case VIEW_STATE_CONTENT:
-                mViewState = VIEW_STATE_CONTENT;
-                break;
+        case VIEW_STATE_CONTENT:
+            mViewState = VIEW_STATE_CONTENT;
+            break;
 
-            case VIEW_STATE_ERROR:
-                mViewState = VIEW_STATE_ERROR;
-                break;
+        case VIEW_STATE_ERROR:
+            mViewState = VIEW_STATE_ERROR;
+            break;
 
-            case VIEW_STATE_EMPTY:
-                mViewState = VIEW_STATE_EMPTY;
-                break;
+        case VIEW_STATE_EMPTY:
+            mViewState = VIEW_STATE_EMPTY;
+            break;
 
-            case VIEW_STATE_LOADING:
-                mViewState = VIEW_STATE_LOADING;
-                break;
+        case VIEW_STATE_LOADING:
+            mViewState = VIEW_STATE_LOADING;
+            break;
         }
 
         a.recycle();
@@ -172,20 +172,20 @@ public class MultiStateView extends FrameLayout {
     @Nullable
     public View getView(@ViewState int state) {
         switch (state) {
-            case VIEW_STATE_LOADING:
-                return mLoadingView;
+        case VIEW_STATE_LOADING:
+            return mLoadingView;
 
-            case VIEW_STATE_CONTENT:
-                return mContentView;
+        case VIEW_STATE_CONTENT:
+            return mContentView;
 
-            case VIEW_STATE_EMPTY:
-                return mEmptyView;
+        case VIEW_STATE_EMPTY:
+            return mEmptyView;
 
-            case VIEW_STATE_ERROR:
-                return mErrorView;
+        case VIEW_STATE_ERROR:
+            return mErrorView;
 
-            default:
-                return null;
+        default:
+            return null;
         }
     }
 
@@ -216,51 +216,51 @@ public class MultiStateView extends FrameLayout {
      */
     private void setView() {
         switch (mViewState) {
-            case VIEW_STATE_LOADING:
-                if (mLoadingView == null) {
-                    throw new NullPointerException("Loading View");
-                }
+        case VIEW_STATE_LOADING:
+            if (mLoadingView == null) {
+                throw new NullPointerException("Loading View");
+            }
 
-                mLoadingView.setVisibility(View.VISIBLE);
-                if (mContentView != null) mContentView.setVisibility(View.GONE);
-                if (mErrorView != null) mErrorView.setVisibility(View.GONE);
-                if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
-                break;
+            mLoadingView.setVisibility(View.VISIBLE);
+            if (mContentView != null) mContentView.setVisibility(View.GONE);
+            if (mErrorView != null) mErrorView.setVisibility(View.GONE);
+            if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
+            break;
 
-            case VIEW_STATE_EMPTY:
-                if (mEmptyView == null) {
-                    throw new NullPointerException("Empty View");
-                }
+        case VIEW_STATE_EMPTY:
+            if (mEmptyView == null) {
+                throw new NullPointerException("Empty View");
+            }
 
-                mEmptyView.setVisibility(View.VISIBLE);
-                if (mLoadingView != null) mLoadingView.setVisibility(View.GONE);
-                if (mErrorView != null) mErrorView.setVisibility(View.GONE);
-                if (mContentView != null) mContentView.setVisibility(View.GONE);
-                break;
+            mEmptyView.setVisibility(View.VISIBLE);
+            if (mLoadingView != null) mLoadingView.setVisibility(View.GONE);
+            if (mErrorView != null) mErrorView.setVisibility(View.GONE);
+            if (mContentView != null) mContentView.setVisibility(View.GONE);
+            break;
 
-            case VIEW_STATE_ERROR:
-                if (mErrorView == null) {
-                    throw new NullPointerException("Error View");
-                }
+        case VIEW_STATE_ERROR:
+            if (mErrorView == null) {
+                throw new NullPointerException("Error View");
+            }
 
-                mErrorView.setVisibility(View.VISIBLE);
-                if (mLoadingView != null) mLoadingView.setVisibility(View.GONE);
-                if (mContentView != null) mContentView.setVisibility(View.GONE);
-                if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
-                break;
+            mErrorView.setVisibility(View.VISIBLE);
+            if (mLoadingView != null) mLoadingView.setVisibility(View.GONE);
+            if (mContentView != null) mContentView.setVisibility(View.GONE);
+            if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
+            break;
 
-            case VIEW_STATE_CONTENT:
-            default:
-                if (mContentView == null) {
-                    // Should never happen, the view should throw an exception if no content view is present upon creation
-                    throw new NullPointerException("Content View");
-                }
+        case VIEW_STATE_CONTENT:
+        default:
+            if (mContentView == null) {
+                // Should never happen, the view should throw an exception if no content view is present upon creation
+                throw new NullPointerException("Content View");
+            }
 
-                mContentView.setVisibility(View.VISIBLE);
-                if (mLoadingView != null) mLoadingView.setVisibility(View.GONE);
-                if (mErrorView != null) mErrorView.setVisibility(View.GONE);
-                if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
-                break;
+            mContentView.setVisibility(View.VISIBLE);
+            if (mLoadingView != null) mLoadingView.setVisibility(View.GONE);
+            if (mErrorView != null) mErrorView.setVisibility(View.GONE);
+            if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
+            break;
         }
     }
 
@@ -287,29 +287,29 @@ public class MultiStateView extends FrameLayout {
      */
     public void setViewForState(View view, @ViewState int state, boolean switchToState) {
         switch (state) {
-            case VIEW_STATE_LOADING:
-                if (mLoadingView != null) removeView(mLoadingView);
-                mLoadingView = view;
-                addView(mLoadingView);
-                break;
+        case VIEW_STATE_LOADING:
+            if (mLoadingView != null) removeView(mLoadingView);
+            mLoadingView = view;
+            addView(mLoadingView);
+            break;
 
-            case VIEW_STATE_EMPTY:
-                if (mEmptyView != null) removeView(mEmptyView);
-                mEmptyView = view;
-                addView(mEmptyView);
-                break;
+        case VIEW_STATE_EMPTY:
+            if (mEmptyView != null) removeView(mEmptyView);
+            mEmptyView = view;
+            addView(mEmptyView);
+            break;
 
-            case VIEW_STATE_ERROR:
-                if (mErrorView != null) removeView(mErrorView);
-                mErrorView = view;
-                addView(mErrorView);
-                break;
+        case VIEW_STATE_ERROR:
+            if (mErrorView != null) removeView(mErrorView);
+            mErrorView = view;
+            addView(mErrorView);
+            break;
 
-            case VIEW_STATE_CONTENT:
-                if (mContentView != null) removeView(mContentView);
-                mContentView = view;
-                addView(mContentView);
-                break;
+        case VIEW_STATE_CONTENT:
+            if (mContentView != null) removeView(mContentView);
+            mContentView = view;
+            addView(mContentView);
+            break;
         }
 
         if (switchToState) setViewState(state);

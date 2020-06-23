@@ -48,7 +48,7 @@ import butterknife.OnClick;
  * Created by Jun on 2016/3/13.
  */
 public class TopicDetailsActivity extends BaseFrameWebViewActivity<TopicDetailsPresenter, TopicDetailsModel> implements
-        Toolbar.OnMenuItemClickListener, VoteDialog.OnVoteDialogClickListener, TopicDetailsContract.View {
+    Toolbar.OnMenuItemClickListener, VoteDialog.OnVoteDialogClickListener, TopicDetailsContract.View {
 
     @BindView(R.id.toolBar)
     Toolbar mToolBar;
@@ -168,32 +168,32 @@ public class TopicDetailsActivity extends BaseFrameWebViewActivity<TopicDetailsP
         if (!isLoadFinish) return; //若还没有加载完成阻止继续下面操作
 
         switch (view.getId()) {
-            case R.id.point_tv:
-                if (!getUserConstant().isLogin()) {
-                    showShortToast(getString(R.string.toast_no_login));
-                    return;
-                }
+        case R.id.point_tv:
+            if (!getUserConstant().isLogin()) {
+                showShortToast(getString(R.string.toast_no_login));
+                return;
+            }
 
-                mVoteDialog.setTopicEntity(mTopicEntity);
-                mVoteDialog.show();
-                break;
-            case R.id.comment_tv:
-                startActivity(TopicCommentListActivity.newIntent(this, mTopicEntity.getLinks().getRepliesWebView(), mTopicEntity.getId()));
-                break;
-            case R.id.user_img_iv:
-                startActivity(UserInfoActivity.newIntent(this, Integer.parseInt(mTopicEntity.getUser().getData().getId())));
-                break;
+            mVoteDialog.setTopicEntity(mTopicEntity);
+            mVoteDialog.show();
+            break;
+        case R.id.comment_tv:
+            startActivity(TopicCommentListActivity.newIntent(this, mTopicEntity.getLinks().getRepliesWebView(), mTopicEntity.getId()));
+            break;
+        case R.id.user_img_iv:
+            startActivity(UserInfoActivity.newIntent(this, Integer.parseInt(mTopicEntity.getUser().getData().getId())));
+            break;
         }
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_share:
-                if (isLoadFinish)
-                    ShareUtil.share(this, "分享 " + mTopicEntity.getUser().getData().getName() + " 的文章" + mTopicEntity.getTitle()
-                        + " " + mTopicEntity.getLinks().getWebUrl() + "「来自:大象」");
-                break;
+        case R.id.action_share:
+            if (isLoadFinish)
+                ShareUtil.share(this, "分享 " + mTopicEntity.getUser().getData().getName() + " 的文章" + mTopicEntity.getTitle()
+                                + " " + mTopicEntity.getLinks().getWebUrl() + "「来自:大象」");
+            break;
         }
         return true;
     }
@@ -238,39 +238,39 @@ public class TopicDetailsActivity extends BaseFrameWebViewActivity<TopicDetailsP
         int voteCount = mTopicEntity.getVoteCount();
 
         switch (type) {
-            case Constants.TopicOpt.TOPIC_VOTE_DOWN:
-                if (mTopicEntity.isVoteDown()) {
-                    mTopicEntity.setVoteDown(false);
-                    changeVoteStyle(-1);
-                    voteCount++;
-                } else {
-
-                    if (mTopicEntity.isVoteUp()) {
-                        voteCount -= 2;
-                    } else {
-                        voteCount--;
-                    }
-                    mTopicEntity.setVoteDown(true);
-                    changeVoteStyle(type);
-                }
-                mTopicEntity.setVoteUp(false);
-                break;
-            case Constants.TopicOpt.TOPIC_VOTE_UP:
-                if (mTopicEntity.isVoteUp()) {
-                    mTopicEntity.setVoteUp(false);
-                    changeVoteStyle(-1);
-                    voteCount--;
-                } else {
-                    if (mTopicEntity.isVoteDown()) {
-                        voteCount += 2;
-                    } else {
-                        voteCount++;
-                    }
-                    mTopicEntity.setVoteUp(true);
-                    changeVoteStyle(type);
-                }
+        case Constants.TopicOpt.TOPIC_VOTE_DOWN:
+            if (mTopicEntity.isVoteDown()) {
                 mTopicEntity.setVoteDown(false);
-                break;
+                changeVoteStyle(-1);
+                voteCount++;
+            } else {
+
+                if (mTopicEntity.isVoteUp()) {
+                    voteCount -= 2;
+                } else {
+                    voteCount--;
+                }
+                mTopicEntity.setVoteDown(true);
+                changeVoteStyle(type);
+            }
+            mTopicEntity.setVoteUp(false);
+            break;
+        case Constants.TopicOpt.TOPIC_VOTE_UP:
+            if (mTopicEntity.isVoteUp()) {
+                mTopicEntity.setVoteUp(false);
+                changeVoteStyle(-1);
+                voteCount--;
+            } else {
+                if (mTopicEntity.isVoteDown()) {
+                    voteCount += 2;
+                } else {
+                    voteCount++;
+                }
+                mTopicEntity.setVoteUp(true);
+                changeVoteStyle(type);
+            }
+            mTopicEntity.setVoteDown(false);
+            break;
         }
 
         mTopicEntity.setVoteCount(voteCount);
@@ -286,17 +286,17 @@ public class TopicDetailsActivity extends BaseFrameWebViewActivity<TopicDetailsP
         mPointTv.setTextColor(ContextCompat.getColor(this, R.color.text_white));
 
         switch (type) {
-            case Constants.TopicOpt.TOPIC_VOTE_DOWN:
-                setDrawableLeft(mPointTv, R.mipmap.ic_vote_down);
-                break;
-            case Constants.TopicOpt.TOPIC_VOTE_UP:
-                setDrawableLeft(mPointTv, R.mipmap.ic_vote_up);
-                break;
-            default:
-                setDrawableLeft(mPointTv, R.mipmap.ic_point);
-                mPointTv.setBackgroundResource(R.drawable.btn1_normal);
-                mPointTv.setTextColor(ContextCompat.getColor(this, R.color.bg_gray));
-                break;
+        case Constants.TopicOpt.TOPIC_VOTE_DOWN:
+            setDrawableLeft(mPointTv, R.mipmap.ic_vote_down);
+            break;
+        case Constants.TopicOpt.TOPIC_VOTE_UP:
+            setDrawableLeft(mPointTv, R.mipmap.ic_vote_up);
+            break;
+        default:
+            setDrawableLeft(mPointTv, R.mipmap.ic_point);
+            mPointTv.setBackgroundResource(R.drawable.btn1_normal);
+            mPointTv.setTextColor(ContextCompat.getColor(this, R.color.bg_gray));
+            break;
         }
 
     }

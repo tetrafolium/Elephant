@@ -132,31 +132,31 @@ public abstract class BaseWebViewActivity extends BaseActivity {
 
         private void addImageClickEvent() {
             LocalifyModule localify = new LocalifyClient.Builder()
-                    .withAssetManager(context.getAssets())
-                    .build()
-                    .localify();
+            .withAssetManager(context.getAssets())
+            .build()
+            .localify();
 
             localify.rx()
-                    .loadAssetsFile("js/ImageClickEvent.js")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .filter(new Func1<String, Boolean>() {
-                        @Override
-                        public Boolean call(String javascript) {
-                            return !TextUtils.isEmpty(javascript);
-                        }
-                    })
-                    .subscribe(new Action1<String>() {
-                        @Override
-                        public void call(String javascript) {
-                            contentView.loadUrl(javascript.replace("{platform}", PLATFORM));
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            Logger.e(throwable.toString());
-                        }
-                    });
+            .loadAssetsFile("js/ImageClickEvent.js")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .filter(new Func1<String, Boolean>() {
+                @Override
+                public Boolean call(String javascript) {
+                    return !TextUtils.isEmpty(javascript);
+                }
+            })
+            .subscribe(new Action1<String>() {
+                @Override
+                public void call(String javascript) {
+                    contentView.loadUrl(javascript.replace("{platform}", PLATFORM));
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    Logger.e(throwable.toString());
+                }
+            });
         }
     }
 

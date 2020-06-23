@@ -49,7 +49,7 @@ import butterknife.OnClick;
  * Created by Jun on 2016/8/24.
  */
 public class TopicPublishActivity extends BaseFrameActivity<TopicPublishPresenter, TopicPublishModel>
-        implements Toolbar.OnMenuItemClickListener, TopicPublishContract.View {
+    implements Toolbar.OnMenuItemClickListener, TopicPublishContract.View {
 
     @BindView(R.id.toolBar)
     Toolbar mToolBar;
@@ -142,71 +142,71 @@ public class TopicPublishActivity extends BaseFrameActivity<TopicPublishPresente
     }
 
     @OnClick({R.id.topic_node_tv,
-            R.id.edit_bold_ib,
-            R.id.edit_code_ib,
-            R.id.edit_img_ib,
-            R.id.edit_italic_ib,
-            R.id.edit_line_ib,
-            R.id.edit_link_ib,
-            R.id.edit_list_ib,
-            R.id.edit_quote_ib,
-            R.id.edit_title_ib
-    })
+              R.id.edit_bold_ib,
+              R.id.edit_code_ib,
+              R.id.edit_img_ib,
+              R.id.edit_italic_ib,
+              R.id.edit_line_ib,
+              R.id.edit_link_ib,
+              R.id.edit_list_ib,
+              R.id.edit_quote_ib,
+              R.id.edit_title_ib
+             })
     @Override
     public void onClick(View v) {
         super.onClick(v);
         Editable e = mTopicContentEdt.getText();
         switch (v.getId()) {
-            case R.id.topic_node_tv:
-                initListDialog();
-                break;
-            case R.id.edit_bold_ib:
-                mMarkdownUtil.insertStrong(e);
-                break;
-            case R.id.edit_code_ib:
-                mMarkdownUtil.insertCodeBlock(e);
-                break;
-            case R.id.edit_img_ib:
-                mMarkdownUtil.insertImage(e);
-                break;
-            case R.id.edit_italic_ib:
-                mMarkdownUtil.insertItalic(e);
-                break;
-            case R.id.edit_line_ib:
-                mMarkdownUtil.insertHorizontalLine(e);
-                break;
-            case R.id.edit_link_ib:
-                mMarkdownUtil.insertLink(e);
-                break;
-            case R.id.edit_list_ib:
-                mMarkdownUtil.insertList(e);
-                break;
-            case R.id.edit_quote_ib:
-                mMarkdownUtil.insertBlockquotes(e);
-                break;
-            case R.id.edit_title_ib:
-                mMarkdownUtil.insertTitle(e);
-                break;
-            default:
-                finish();
-                break;
+        case R.id.topic_node_tv:
+            initListDialog();
+            break;
+        case R.id.edit_bold_ib:
+            mMarkdownUtil.insertStrong(e);
+            break;
+        case R.id.edit_code_ib:
+            mMarkdownUtil.insertCodeBlock(e);
+            break;
+        case R.id.edit_img_ib:
+            mMarkdownUtil.insertImage(e);
+            break;
+        case R.id.edit_italic_ib:
+            mMarkdownUtil.insertItalic(e);
+            break;
+        case R.id.edit_line_ib:
+            mMarkdownUtil.insertHorizontalLine(e);
+            break;
+        case R.id.edit_link_ib:
+            mMarkdownUtil.insertLink(e);
+            break;
+        case R.id.edit_list_ib:
+            mMarkdownUtil.insertList(e);
+            break;
+        case R.id.edit_quote_ib:
+            mMarkdownUtil.insertBlockquotes(e);
+            break;
+        case R.id.edit_title_ib:
+            mMarkdownUtil.insertTitle(e);
+            break;
+        default:
+            finish();
+            break;
         }
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_publish:
-                publishTopic();
-                break;
-            case R.id.action_preview:
+        case R.id.action_publish:
+            publishTopic();
+            break;
+        case R.id.action_preview:
 //                FileUtil.saveNote(elephantApplication.getTopicDir(),mTopicContentEdt.getText().toString(),
 //                        mTopicTitleEdt.getText().toString());
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.Key.PREVIEW_TOPIC_TITLE, mTopicTitleEdt.getText().toString());
-                bundle.putString(Constants.Key.PREVIEW_TOPIC_CONTENT, mTopicContentEdt.getText().toString().replace("\n-", "\n\n-"));
-                openActivity(TopicPreviewActivity.class, bundle);
-                break;
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.Key.PREVIEW_TOPIC_TITLE, mTopicTitleEdt.getText().toString());
+            bundle.putString(Constants.Key.PREVIEW_TOPIC_CONTENT, mTopicContentEdt.getText().toString().replace("\n-", "\n\n-"));
+            openActivity(TopicPreviewActivity.class, bundle);
+            break;
         }
         return true;
     }

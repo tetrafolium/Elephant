@@ -107,7 +107,7 @@ public class UserMessageActivity extends BaseFrameActivity<MessagePresenter, Mes
 
     @Override
     public void refreshMessageList(UserMessageEntity userMessageEntity) {
-        if (userMessageEntity.getData().size() == 0){
+        if (userMessageEntity.getData().size() == 0) {
             mMultiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
             return;
         }

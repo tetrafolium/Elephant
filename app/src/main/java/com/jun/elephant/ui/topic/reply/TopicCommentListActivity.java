@@ -40,7 +40,7 @@ import butterknife.OnClick;
  * Created by Jun on 2016/3/14.
  */
 public class TopicCommentListActivity extends BaseFrameWebViewActivity<TopicReplyPresenter, TopicReplyModel>
-        implements TopicReplyContract.View {
+    implements TopicReplyContract.View {
     @BindView(R.id.toolBar)
     Toolbar mToolBar;
     @BindView(R.id.multiStateView)
@@ -97,18 +97,18 @@ public class TopicCommentListActivity extends BaseFrameWebViewActivity<TopicRepl
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.send_iv:
-                if (getUserConstant().isLogin()) {
-                    if (TextUtils.isEmpty(mCommentEdt.getText())) {
-                        showShortToast(getString(R.string.toast_no_content));
-                        return;
-                    }
-
-                    mPresenter.reply(mTopicId, mCommentEdt.getText().toString());
-                } else {
-                    showShortToast(getString(R.string.toast_no_login));
+        case R.id.send_iv:
+            if (getUserConstant().isLogin()) {
+                if (TextUtils.isEmpty(mCommentEdt.getText())) {
+                    showShortToast(getString(R.string.toast_no_content));
+                    return;
                 }
-                break;
+
+                mPresenter.reply(mTopicId, mCommentEdt.getText().toString());
+            } else {
+                showShortToast(getString(R.string.toast_no_login));
+            }
+            break;
         }
     }
 

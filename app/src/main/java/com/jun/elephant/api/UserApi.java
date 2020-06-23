@@ -49,13 +49,13 @@ public interface UserApi {
 
     @GET("user/{userId}/topics")
     Observable<TopicListEntity> getTopics(@Path("userId") int userId,
-                                      @QueryMap Map<String, String> options);
+                                          @QueryMap Map<String, String> options);
 
     @GET("me/notifications")
     Observable<UserMessageEntity> getMyMessage(@QueryMap Map<String, String> options);
 
     @PUT("users/{userId}")
     Observable<UserInfoEntity> saveUserInfo(@Path("userId") int userId,
-                                                 @Body UserEntity userInfo);
+                                            @Body UserEntity userInfo);
 
 }

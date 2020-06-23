@@ -84,11 +84,11 @@ public class Networks {
 
     private <T> T configRetrofit(Class<T> service, boolean isGetToken) {
         retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.API_BASE_URL)
-                .client(configClient(isGetToken))
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
+        .baseUrl(BuildConfig.API_BASE_URL)
+        .client(configClient(isGetToken))
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        .build();
 
         return retrofit.create(service);
 

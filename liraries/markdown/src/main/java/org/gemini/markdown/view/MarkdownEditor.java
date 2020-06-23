@@ -16,7 +16,7 @@ import org.gemini.markdown.R;
 /**
  * Created by geminiwen on 15/3/14.
  */
-public class MarkdownEditor extends RelativeLayout implements View.OnClickListener{
+public class MarkdownEditor extends RelativeLayout implements View.OnClickListener {
 
     private MarkdownEditText mEditText;
 
@@ -43,9 +43,9 @@ public class MarkdownEditor extends RelativeLayout implements View.OnClickListen
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         final TypedArray a = context.obtainStyledAttributes(
-                attrs, R.styleable.MarkdownEditor, defStyleAttr, 0);
+                                 attrs, R.styleable.MarkdownEditor, defStyleAttr, 0);
         final LayoutInflater inflater = (LayoutInflater) context.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
+                                            Context.LAYOUT_INFLATER_SERVICE);
 
         int layoutId = a.getResourceId(R.styleable.MarkdownEditor_layout, R.layout.mk_editor_layout);
         inflater.inflate(layoutId, this, true);
@@ -82,9 +82,9 @@ public class MarkdownEditor extends RelativeLayout implements View.OnClickListen
         if (!isInEditMode()) {
 
             final TypedArray a = context.obtainStyledAttributes(
-                    attrs, R.styleable.MarkdownEditor, defStyleAttr, defStyleRes);
+                                     attrs, R.styleable.MarkdownEditor, defStyleAttr, defStyleRes);
             final LayoutInflater inflater = (LayoutInflater) context.getSystemService(
-                    Context.LAYOUT_INFLATER_SERVICE);
+                                                Context.LAYOUT_INFLATER_SERVICE);
 
             int layoutId = a.getResourceId(R.styleable.MarkdownEditor_layout, R.layout.mk_editor_layout);
             inflater.inflate(layoutId, this, true);

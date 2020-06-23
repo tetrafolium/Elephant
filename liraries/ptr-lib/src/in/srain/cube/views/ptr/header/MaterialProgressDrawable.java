@@ -82,11 +82,11 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
     private static final float SHADOW_RADIUS = 3.5f;
     private static final float X_OFFSET = 0f;
     private static final float Y_OFFSET = 1.75f;
-    private final int[] COLORS = new int[]{
-            0xFFC93437,
-            0xFF375BF1,
-            0xFFF7D23E,
-            0xFF34A350
+    private final int[] COLORS = new int[] {
+        0xFFC93437,
+        0xFF375BF1,
+        0xFFF7D23E,
+        0xFF34A350
     };
     /**
      * The list of animators operating on this drawable.
@@ -173,10 +173,10 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
     public void updateSizes(int size) {
         if (size == LARGE) {
             setSizeParameters(CIRCLE_DIAMETER_LARGE, CIRCLE_DIAMETER_LARGE, CENTER_RADIUS_LARGE,
-                    STROKE_WIDTH_LARGE, ARROW_WIDTH_LARGE, ARROW_HEIGHT_LARGE);
+                              STROKE_WIDTH_LARGE, ARROW_WIDTH_LARGE, ARROW_HEIGHT_LARGE);
         } else {
             setSizeParameters(CIRCLE_DIAMETER, CIRCLE_DIAMETER, CENTER_RADIUS, STROKE_WIDTH,
-                    ARROW_WIDTH, ARROW_HEIGHT);
+                              ARROW_WIDTH, ARROW_HEIGHT);
         }
     }
 
@@ -331,13 +331,13 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
                 // shrink back down and complete a full rotation before starting other circles
                 // Rotation goes between [0..1].
                 float targetRotation = (float) (Math.floor(ring.getStartingRotation()
-                        / MAX_PROGRESS_ARC) + 1f);
+                                                / MAX_PROGRESS_ARC) + 1f);
                 final float startTrim = ring.getStartingStartTrim()
-                        + (ring.getStartingEndTrim() - ring.getStartingStartTrim())
-                        * interpolatedTime;
+                                        + (ring.getStartingEndTrim() - ring.getStartingStartTrim())
+                                        * interpolatedTime;
                 ring.setStartTrim(startTrim);
                 final float rotation = ring.getStartingRotation()
-                        + ((targetRotation - ring.getStartingRotation()) * interpolatedTime);
+                                       + ((targetRotation - ring.getStartingRotation()) * interpolatedTime);
                 ring.setRotation(rotation);
                 ring.setArrowScale(1 - interpolatedTime);
             }
@@ -367,23 +367,23 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
                 // The minProgressArc is calculated from 0 to create an angle that
                 // matches the stroke width.
                 final float minProgressArc = (float) Math.toRadians(ring.getStrokeWidth()
-                        / (2 * Math.PI * ring.getCenterRadius()));
+                                             / (2 * Math.PI * ring.getCenterRadius()));
                 final float startingEndTrim = ring.getStartingEndTrim();
                 final float startingTrim = ring.getStartingStartTrim();
                 final float startingRotation = ring.getStartingRotation();
                 // Offset the minProgressArc to where the endTrim is located.
                 final float minArc = MAX_PROGRESS_ARC - minProgressArc;
                 final float endTrim = startingEndTrim
-                        + (minArc * START_CURVE_INTERPOLATOR.getInterpolation(interpolatedTime));
+                                      + (minArc * START_CURVE_INTERPOLATOR.getInterpolation(interpolatedTime));
                 ring.setEndTrim(endTrim);
                 final float startTrim = startingTrim
-                        + (MAX_PROGRESS_ARC * END_CURVE_INTERPOLATOR
-                        .getInterpolation(interpolatedTime));
+                                        + (MAX_PROGRESS_ARC * END_CURVE_INTERPOLATOR
+                                           .getInterpolation(interpolatedTime));
                 ring.setStartTrim(startTrim);
                 final float rotation = startingRotation + (0.25f * interpolatedTime);
                 ring.setRotation(rotation);
                 float groupRotation = ((720.0f / NUM_POINTS) * interpolatedTime)
-                        + (720.0f * (mRotationCount / NUM_POINTS));
+                                      + (720.0f * (mRotationCount / NUM_POINTS));
                 setRotation(groupRotation);
             }
         };
@@ -510,14 +510,14 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
                 mArrow.moveTo(0, 0);
                 mArrow.lineTo(mArrowWidth * mArrowScale, 0);
                 mArrow.lineTo((mArrowWidth * mArrowScale / 2), (mArrowHeight
-                        * mArrowScale));
+                              * mArrowScale));
                 mArrow.offset(x - inset, y);
                 mArrow.close();
                 // draw a triangle
                 mArrowPaint.setColor(mColors[mColorIndex]);
                 mArrowPaint.setAlpha(mAlpha);
                 c.rotate(startAngle + sweepAngle - ARROW_OFFSET_ANGLE, bounds.exactCenterX(),
-                        bounds.exactCenterY());
+                         bounds.exactCenterY());
                 c.drawPath(mArrow, mArrowPaint);
             }
         }
@@ -740,9 +740,9 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
             mShadowRadius = shadowRadius;
             mCircleDiameter = circleDiameter;
             mRadialGradient = new RadialGradient(mCircleDiameter / 2, mCircleDiameter / 2,
-                    mShadowRadius, new int[]{
-                    FILL_SHADOW_COLOR, Color.TRANSPARENT
-            }, null, Shader.TileMode.CLAMP);
+                                                 mShadowRadius, new int[] {
+                                                     FILL_SHADOW_COLOR, Color.TRANSPARENT
+                                                 }, null, Shader.TileMode.CLAMP);
             mShadowPaint.setShader(mRadialGradient);
         }
 
@@ -751,7 +751,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
             final int viewWidth = getBounds().width();
             final int viewHeight = getBounds().height();
             canvas.drawCircle(viewWidth / 2, viewHeight / 2, (mCircleDiameter / 2 + mShadowRadius),
-                    mShadowPaint);
+                              mShadowPaint);
             canvas.drawCircle(viewWidth / 2, viewHeight / 2, (mCircleDiameter / 2), paint);
         }
     }

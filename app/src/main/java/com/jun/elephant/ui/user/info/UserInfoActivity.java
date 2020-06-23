@@ -174,11 +174,11 @@ public class UserInfoActivity extends BaseFrameActivity<UserInfoPresenter, UserI
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.user_avatar_civ:
-                break;
-            case R.id.edit_tv:
-                startActivityForResult(UserInfoEditActivity.newIntent(this, mUserEntity), Constants.Activity.UserInfoEditActivity);
-                break;
+        case R.id.user_avatar_civ:
+            break;
+        case R.id.edit_tv:
+            startActivityForResult(UserInfoEditActivity.newIntent(this, mUserEntity), Constants.Activity.UserInfoEditActivity);
+            break;
         }
     }
 
@@ -228,7 +228,7 @@ public class UserInfoActivity extends BaseFrameActivity<UserInfoPresenter, UserI
                 alphaView(mUserInfoLl, 200, 4);
                 isShowUserInfo = false;
             }
-        } else if (!isShowUserInfo){
+        } else if (!isShowUserInfo) {
             alphaView(mUserInfoLl, 200, 0);
             isShowUserInfo = true;
         }
@@ -268,8 +268,8 @@ public class UserInfoActivity extends BaseFrameActivity<UserInfoPresenter, UserI
 
     private void initUserInfo(UserEntity userEntity) {
         Glide.with(this).load(userEntity.getAvatar())
-                .bitmapTransform(new BlurTransformation(this, 5))
-                .into(mUserImgBg);
+        .bitmapTransform(new BlurTransformation(this, 5))
+        .into(mUserImgBg);
         mCollapsingToolbar.setTitle(userEntity.getName());
         mPageTitleTv.setText(userEntity.getName());
         mUserNameTv.setText(userEntity.getName());
@@ -305,19 +305,19 @@ public class UserInfoActivity extends BaseFrameActivity<UserInfoPresenter, UserI
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_github:
-                startActivity(WebViewActivity.newIntent(this, mUserEntity.getGithub_name(), mUserEntity.getGithub_url()));
-                break;
-            case R.id.action_blog:
-                String temp = mUserEntity.getPersonal_website();
-                if (!temp.contains("http://") && !temp.contains("https://")) {
-                    temp = "http://" + temp;
-                }
-                startActivity(WebViewActivity.newIntent(this, mUserEntity.getName(), temp));
-                break;
-            case R.id.action_email:
-                ShareUtil.feedback(this, mUserEntity.getEmail());
-                break;
+        case R.id.action_github:
+            startActivity(WebViewActivity.newIntent(this, mUserEntity.getGithub_name(), mUserEntity.getGithub_url()));
+            break;
+        case R.id.action_blog:
+            String temp = mUserEntity.getPersonal_website();
+            if (!temp.contains("http://") && !temp.contains("https://")) {
+                temp = "http://" + temp;
+            }
+            startActivity(WebViewActivity.newIntent(this, mUserEntity.getName(), temp));
+            break;
+        case R.id.action_email:
+            ShareUtil.feedback(this, mUserEntity.getEmail());
+            break;
         }
         return true;
     }

@@ -24,13 +24,13 @@ public class RxManager {
         Observable<?> mObservable = mRxBus.register(eventName);
         mObservables.put(eventName, mObservable);
         mCompositeSubscription
-                .add(mObservable.observeOn(AndroidSchedulers.mainThread())
-                .subscribe(action1, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                }));
+        .add(mObservable.observeOn(AndroidSchedulers.mainThread())
+        .subscribe(action1, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        }));
     }
 
     public void add(Subscription m) {

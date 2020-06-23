@@ -34,7 +34,7 @@ public class UserInfoModel implements UserInfoContract.Model {
     @Override
     public Observable<UserInfoEntity> getUserInfoById(int userId) {
         return Networks.getInstance().getUserApi().getUserInfoById(userId)
-                .compose(RxSchedulers.<UserInfoEntity>io_main());
+               .compose(RxSchedulers.<UserInfoEntity>io_main());
     }
 
     /**
@@ -46,6 +46,6 @@ public class UserInfoModel implements UserInfoContract.Model {
     @Override
     public Observable<UserInfoEntity> saveUserInfoById(int userId, UserEntity userEntity) {
         return Networks.getInstance().getUserApi().saveUserInfo(userId, userEntity)
-                .compose(RxSchedulers.<UserInfoEntity>io_main());
+               .compose(RxSchedulers.<UserInfoEntity>io_main());
     }
 }

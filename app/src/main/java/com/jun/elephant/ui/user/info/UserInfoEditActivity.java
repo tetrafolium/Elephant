@@ -154,18 +154,18 @@ public class UserInfoEditActivity extends BaseFrameActivity<UserInfoPresenter, U
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
-            case R.id.user_name_ll:
-            case R.id.user_signature_ll:
-            case R.id.user_intro_ll:
-            case R.id.user_address_ll:
-            case R.id.user_github_ll:
-            case R.id.user_blog_ll:
-            case R.id.user_twitter_ll:
-                showDialogs(id);
-                break;
-            default:
-                finish();
-                break;
+        case R.id.user_name_ll:
+        case R.id.user_signature_ll:
+        case R.id.user_intro_ll:
+        case R.id.user_address_ll:
+        case R.id.user_github_ll:
+        case R.id.user_blog_ll:
+        case R.id.user_twitter_ll:
+            showDialogs(id);
+            break;
+        default:
+            finish();
+            break;
         }
     }
 
@@ -183,34 +183,34 @@ public class UserInfoEditActivity extends BaseFrameActivity<UserInfoPresenter, U
 
     private void showDialogs(int id) {
         switch (id) {
-            case R.id.user_name_ll:
-                mInputDialog.title(getString(R.string.dialog_edit_name));
-                mInputDialog.input("", mUserEntity.getName(),nameCallback);
-                break;
-            case R.id.user_signature_ll:
-                mInputDialog.title(getString(R.string.dialog_edit_signature));
-                mInputDialog.input("", mUserEntity.getSignature(), signatureCallback);
-                break;
-            case R.id.user_intro_ll:
-                mInputDialog.title(getString(R.string.dialog_edit_intro));
-                mInputDialog.input("", mUserEntity.getIntroduction(), introCallback);
-                break;
-            case R.id.user_address_ll:
-                mInputDialog.title(getString(R.string.dialog_edit_address));
-                mInputDialog.input("", mUserEntity.getCity(), addressCallback);
-                break;
-            case R.id.user_github_ll:
-                mInputDialog.title(getString(R.string.dialog_edit_github));
-                mInputDialog.input("", mUserEntity.getGithub_name(), githubCallback);
-                break;
-            case R.id.user_blog_ll:
-                mInputDialog.title(getString(R.string.dialog_edit_blog));
-                mInputDialog.input("", mUserEntity.getPersonal_website(), blogCallback);
-                break;
-            case R.id.user_twitter_ll:
-                mInputDialog.title(getString(R.string.dialog_edit_twitter));
-                mInputDialog.input("", mUserEntity.getTwitter_account(), twitterCallback);
-                break;
+        case R.id.user_name_ll:
+            mInputDialog.title(getString(R.string.dialog_edit_name));
+            mInputDialog.input("", mUserEntity.getName(),nameCallback);
+            break;
+        case R.id.user_signature_ll:
+            mInputDialog.title(getString(R.string.dialog_edit_signature));
+            mInputDialog.input("", mUserEntity.getSignature(), signatureCallback);
+            break;
+        case R.id.user_intro_ll:
+            mInputDialog.title(getString(R.string.dialog_edit_intro));
+            mInputDialog.input("", mUserEntity.getIntroduction(), introCallback);
+            break;
+        case R.id.user_address_ll:
+            mInputDialog.title(getString(R.string.dialog_edit_address));
+            mInputDialog.input("", mUserEntity.getCity(), addressCallback);
+            break;
+        case R.id.user_github_ll:
+            mInputDialog.title(getString(R.string.dialog_edit_github));
+            mInputDialog.input("", mUserEntity.getGithub_name(), githubCallback);
+            break;
+        case R.id.user_blog_ll:
+            mInputDialog.title(getString(R.string.dialog_edit_blog));
+            mInputDialog.input("", mUserEntity.getPersonal_website(), blogCallback);
+            break;
+        case R.id.user_twitter_ll:
+            mInputDialog.title(getString(R.string.dialog_edit_twitter));
+            mInputDialog.input("", mUserEntity.getTwitter_account(), twitterCallback);
+            break;
         }
 
         mInputDialog.show();

@@ -78,45 +78,45 @@ public class SettingActivity extends BaseActivity implements MaterialDialog.Sing
     @OnClick({R.id.feedback_tv, R.id.clear_cache_ll, R.id.about_app_tv, R.id.get_open_source_tv, R.id.about_phphub_tv, R.id.about_me_tv})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.feedback_tv:
-                ShareUtil.feedback(this, Constants.CONTACT_INFO);
-                break;
+        case R.id.feedback_tv:
+            ShareUtil.feedback(this, Constants.CONTACT_INFO);
+            break;
 
-            case R.id.clear_cache_ll:
-                mDialog.show();
-                break;
+        case R.id.clear_cache_ll:
+            mDialog.show();
+            break;
 
-            case R.id.get_open_source_tv:
-                OpenWebViewUtils.getOpenSource(this);
-                break;
+        case R.id.get_open_source_tv:
+            OpenWebViewUtils.getOpenSource(this);
+            break;
 
-            case R.id.about_phphub_tv:
-                OpenWebViewUtils.aboutPHPHub(this);
-                break;
+        case R.id.about_phphub_tv:
+            OpenWebViewUtils.aboutPHPHub(this);
+            break;
 
-            case R.id.about_me_tv:
-                OpenWebViewUtils.aboutMe(this);
-                break;
+        case R.id.about_me_tv:
+            OpenWebViewUtils.aboutMe(this);
+            break;
 
-            case R.id.about_app_tv:
-                openActivity(AboutAppActivity.class);
-                break;
+        case R.id.about_app_tv:
+            openActivity(AboutAppActivity.class);
+            break;
 
-            default:
-                finish();
-                break;
+        default:
+            finish();
+            break;
         }
     }
 
     @Override
     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
         switch (which) {
-            case POSITIVE:
-                cleanCache();
-                break;
-            case NEGATIVE:
-                dialog.dismiss();
-                break;
+        case POSITIVE:
+            cleanCache();
+            break;
+        case NEGATIVE:
+            dialog.dismiss();
+            break;
         }
     }
 
