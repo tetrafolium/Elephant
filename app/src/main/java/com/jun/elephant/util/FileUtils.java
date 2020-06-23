@@ -244,10 +244,8 @@ public class FileUtils {
       if (file.isFile()) {
         if (!deleteFile(file))
           return false;
-      } else if (file.isDirectory()) {
-        if (!deleteDir(file))
-          return false;
-      }
+      } else if ((file.isDirectory()) && (!deleteDir(file)))
+        return false;
     }
     return dir.delete();
   }
